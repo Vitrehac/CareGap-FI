@@ -1,26 +1,161 @@
+/* CareGap FI · Baltic planning instrument · Gap → County → Experiment → Brief */
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-ink: #101820;
+  --color-ink-soft: #3a4a58;
+  --color-ink-faint: #6a7a88;
+  --color-paper: #e6ebf0;
+  --color-paper-raised: #f7f9fb;
+  --color-rule: #b8c4d0;
+  --color-accent: #1e4d8c;
+  --color-accent-soft: #d8e4f2;
+  --color-alarm: #a61c1c;
+  --color-alarm-soft: #f3e0de;
+  --font-sans: var(--font-schibsted), "Schibsted Grotesk", ui-sans-serif, sans-serif;
+  --font-display: var(--font-newsreader), "Newsreader", ui-serif, Georgia, serif;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+html {
+  -webkit-font-smoothing: antialiased;
+  overflow-x: clip;
 }
 
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background:
+    linear-gradient(
+      180deg,
+      color-mix(in srgb, var(--color-accent) 4%, transparent) 0%,
+      transparent 28rem
+    ),
+    repeating-linear-gradient(
+      0deg,
+      transparent,
+      transparent 31px,
+      color-mix(in srgb, var(--color-rule) 28%, transparent) 32px
+    ),
+    var(--color-paper);
+  background-attachment: local;
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+}
+
+::selection {
+  background: var(--color-accent-soft);
+  color: var(--color-ink);
+}
+
+.font-display {
+  font-family: var(--font-display);
+}
+
+.nums {
+  font-variant-numeric: tabular-nums;
+}
+
+@keyframes bar-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes mark-draw {
+  from {
+    stroke-dashoffset: 500;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
+@keyframes mark-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes brief-flash {
+  from {
+    opacity: 0.4;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes stop-trip {
+  0% {
+    transform: scale(1);
+  }
+  40% {
+    transform: scale(1.008);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+.motion-bar {
+  transform-origin: left center;
+  animation: bar-grow 0.85s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.motion-mark-ring {
+  stroke-dasharray: 500;
+  stroke-dashoffset: 500;
+  animation: mark-draw 1.1s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+}
+
+.motion-mark-hand {
+  animation: mark-fade 0.5s ease-out 0.55s both;
+}
+
+.motion-brief {
+  animation: brief-flash 0.35s ease-out both;
+}
+
+.motion-stop-trip {
+  animation: stop-trip 0.7s ease-out both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .motion-bar,
+  .motion-mark-ring,
+  .motion-mark-hand,
+  .motion-brief,
+  .motion-stop-trip {
+    animation: none;
+  }
+
+  .motion-mark-ring {
+    stroke-dashoffset: 0;
+  }
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 2px;
+}
+
+@media print {
+  body {
+    background: white;
+  }
+
+  header,
+  footer,
+  .no-print {
+    display: none !important;
+  }
+
+  .pilot-brief {
+    border: none !important;
+    box-shadow: none !important;
+  }
 }

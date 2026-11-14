@@ -1,0 +1,30 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" role="img" aria-label="CareGap FI mark">
+  <!-- Open instrument ring: missing arc = unmeasured CT handoff -->
+  <path
+    d="M186 54 A98 98 0 1 1 70 54"
+    fill="none"
+    stroke="#101820"
+    stroke-width="22"
+    stroke-linecap="butt"
+  />
+  <!-- Minute hand toward the gap -->
+  <path
+    d="M128 128 L176 92"
+    fill="none"
+    stroke="#1E4D8C"
+    stroke-width="16"
+    stroke-linecap="square"
+  />
+  <!-- Hour hand -->
+  <path
+    d="M128 128 V60"
+    fill="none"
+    stroke="#101820"
+    stroke-width="16"
+    stroke-linecap="square"
+  />
+  <!-- Hub -->
+  <circle cx="128" cy="128" r="10" fill="#101820"/>
+  <!-- Gap tick -->
+  <circle cx="200" cy="70" r="12" fill="#A61C1C"/>
+</svg>

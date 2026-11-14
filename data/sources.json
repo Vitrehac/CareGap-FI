@@ -1,0 +1,518 @@
+{
+  "meta": {
+    "title": "CareGap FI — provenance vault",
+    "compiled": "2026-11-14",
+    "rule": "Every UI number must reference an id here, or be Estimate/Unknown. Do not invent URLs or statistics.",
+    "humanReadable": "SOURCES.md"
+  },
+  "sources": [
+    {
+      "id": "fican-strategy-2026",
+      "category": "strategy",
+      "title": "National Cancer Strategy 2026–2035 (Finland)",
+      "url": "https://fican.fi/wp-content/uploads/2026/01/National_Cancer_Strategy_2026-2035_Finland.pdf",
+      "publisher": "FICAN",
+      "accessed": "2026-11-13",
+      "notes": "Goal 3 equal and effective cancer care; indicators and sub-objectives 3.1–3.5."
+    },
+    {
+      "id": "thl-ohjaus-21-2016",
+      "category": "strategy",
+      "title": "THL Ohjaus 21/2016 — target times for access to care",
+      "url": null,
+      "publisher": "THL",
+      "accessed": null,
+      "notes": "URL must be confirmed before UI. Used only as context for target-time language."
+    },
+    {
+      "id": "ihe-dashboard-finland-2026",
+      "category": "outcomes",
+      "title": "IHE Cancer Dashboard Finland",
+      "url": "https://ihe.se/app/uploads/2026/04/IHE-Cancer-Dashboard-Finland_.pdf",
+      "publisher": "IHE",
+      "accessed": "2026-11-13",
+      "notes": "Nordic comparisons; CT capacity/exams; primary-care CT access discussion."
+    },
+    {
+      "id": "nordcan",
+      "category": "outcomes",
+      "title": "NORDCAN",
+      "url": "https://nordcan.iarc.fr/",
+      "publisher": "IARC / NORDCAN",
+      "accessed": "2026-11-13",
+      "notes": "Paste specific indicator extractions into data files with year/sex before quoting numbers."
+    },
+    {
+      "id": "acta-oncol-nordic-lc-2025",
+      "category": "outcomes",
+      "title": "Comparative study of lung cancer care and survival outcomes across the Nordic countries",
+      "url": "https://doi.org/10.2340/1651-226x.2025.42778",
+      "publisher": "Acta Oncologica",
+      "accessed": "2026-11-13",
+      "notes": "Survey study; cites Leskelä 17% among staged university-hospital NSCLC (28% coverage) and Gouliaev DK/NO registry stage I >25%; authors state causal link remains hypothetical; MSD co-author. Do not treat FI ~17% stage I as a national Acta/registry comparison."
+    },
+    {
+      "id": "jtho-lung-finland-2024",
+      "category": "outcomes",
+      "title": "Lung Cancer in Finland",
+      "url": "https://doi.org/10.1016/j.jtho.2024.06.005",
+      "publisher": "Journal of Thoracic Oncology",
+      "accessed": "2026-11-13",
+      "notes": "Diagnostic pathway; limited CT access at primary care."
+    },
+    {
+      "id": "aalto-lc-pathway-delays",
+      "category": "outcomes",
+      "title": "Delays in the diagnostic pathway of lung cancer and their reduction in Finland",
+      "url": "https://aaltodoc.aalto.fi/bitstreams/7a3fc0ca-7013-48df-bc69-29fb7183dc50/download",
+      "publisher": "Aalto University",
+      "accessed": "2026-11-13",
+      "notes": "Patient/doctor/system delays; chest X-ray sensitivity; CT availability."
+    },
+    {
+      "id": "satakunta-kansa-2025",
+      "category": "pilot",
+      "title": "Sata-alue new pathway for finding lung cancer — ~170 patients imaged",
+      "url": "https://www.satakunnankansa.fi/satakunta/art-2000012403607.html",
+      "publisher": "Satakunnan Kansa",
+      "accessed": "2026-11-13",
+      "notes": "Direct CT from primary care; high-risk + symptoms; ~170 patients; impact study ongoing. UI: say high-risk patients, not smokers. No peer-reviewed evaluation found as of 2026-11-14; impact study described as ongoing in press only."
+    },
+    {
+      "id": "cancer-finland-2024",
+      "category": "outcomes",
+      "title": "Cancer in Finland 2024 (regional survival)",
+      "url": null,
+      "publisher": "Finnish Cancer Registry / related report",
+      "accessed": null,
+      "notes": "Team brief: regional 5-yr survival flat for major sites. Confirm official URL before UI."
+    },
+    {
+      "id": "bmj-ph-equity-2025",
+      "category": "equity",
+      "title": "BMJ Public Health 2025 — education and language gaps (team brief)",
+      "url": null,
+      "publisher": "BMJ Public Health",
+      "accessed": null,
+      "notes": "Confirm exact article URL. Colorectal screening uptake figures in team brief must be verified before UI."
+    },
+    {
+      "id": "torkki-acta-2025",
+      "category": "outcomes",
+      "title": "Torkki et al., Acta Oncologica 2025 — primary care bottleneck (team brief)",
+      "url": null,
+      "publisher": "Acta Oncologica",
+      "accessed": null,
+      "notes": "Confirm DOI. ~2 week primary-care waits; nurse first contact share."
+    },
+    {
+      "id": "sotkanet-rest",
+      "category": "open-data",
+      "title": "Sotkanet REST API (THL)",
+      "url": "https://sotkanet.fi/rest/1.1/csv",
+      "publisher": "THL Sotkanet",
+      "accessed": "2026-11-13",
+      "notes": "Fetch-once only. Example: indicator=3625&years=2023&genders=total. Regions: /rest/1.1/regions."
+    },
+    {
+      "id": "sotkanet-3620",
+      "category": "open-data",
+      "title": "Sotkanet indicator 3620 (screening-related)",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=3620",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 3620,
+      "accessed": null,
+      "notes": "Goal 2 context / equity only — not Goal 3 core."
+    },
+    {
+      "id": "sotkanet-3621",
+      "category": "open-data",
+      "title": "Sotkanet indicator 3621 (screening-related)",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=3621",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 3621,
+      "accessed": null,
+      "notes": ""
+    },
+    {
+      "id": "sotkanet-6103",
+      "category": "open-data",
+      "title": "Sotkanet indicator 6103 (screening-related)",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=6103",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 6103,
+      "accessed": null,
+      "notes": ""
+    },
+    {
+      "id": "sotkanet-3625",
+      "category": "open-data",
+      "title": "Sotkanet indicator 3625 — 5-year survival breast cancer",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=3625&years=2023&genders=total",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 3625,
+      "accessed": null,
+      "notes": "Available open survival series; Goal 3 pitch still centres poor-prognosis cancers from NORDCAN/IHE."
+    },
+    {
+      "id": "sotkanet-3626",
+      "category": "open-data",
+      "title": "Sotkanet indicator 3626 — 5-year survival cervical cancer",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=3626",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 3626,
+      "accessed": null,
+      "notes": ""
+    },
+    {
+      "id": "sotkanet-3627",
+      "category": "open-data",
+      "title": "Sotkanet indicator 3627 — 5-year survival bowel cancer",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=3627",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 3627,
+      "accessed": null,
+      "notes": ""
+    },
+    {
+      "id": "sotkanet-10024",
+      "category": "open-data",
+      "title": "Sotkanet indicator 10024 — cancer mortality",
+      "url": "https://sotkanet.fi/rest/1.1/csv?indicator=10024",
+      "publisher": "THL Sotkanet",
+      "indicatorCode": 10024,
+      "accessed": null,
+      "notes": "Goal 3 mortality context."
+    },
+    {
+      "id": "mdcg-2019-11",
+      "category": "legal",
+      "title": "MDCG 2019-11 — Guidance on qualification and classification of software (MDR/IVDR)",
+      "url": "https://health.ec.europa.eu/system/files/2025-06/mdcg_2019_11_en.pdf",
+      "publisher": "European Commission / MDCG",
+      "accessed": "2026-11-13",
+      "notes": "Defines MDSW; admin/population software often out of scope; Rule 11; example cancer risk calculator as MDSW."
+    },
+    {
+      "id": "mdr-2017-745",
+      "category": "legal",
+      "title": "Regulation (EU) 2017/745 on medical devices (MDR)",
+      "url": "https://eur-lex.europa.eu/eli/reg/2017/745/oj",
+      "publisher": "EUR-Lex",
+      "accessed": "2026-11-13",
+      "notes": "Article 2 device definition; Annex VIII Rule 11."
+    },
+    {
+      "id": "ai-act-2024-1689",
+      "category": "legal",
+      "title": "Regulation (EU) 2024/1689 (Artificial Intelligence Act)",
+      "url": "https://eur-lex.europa.eu/eli/reg/2024/1689/oj",
+      "publisher": "EUR-Lex",
+      "accessed": "2026-11-13",
+      "notes": "High-risk AI; prohibited practices; staged application."
+    },
+    {
+      "id": "ai-act-annex-iii",
+      "category": "legal",
+      "title": "AI Act Annex III — high-risk use cases",
+      "url": "https://ai-act-service-desk.ec.europa.eu/en/ai-act/annex-3",
+      "publisher": "European Commission AI Act Service Desk",
+      "accessed": "2026-11-13",
+      "notes": "Includes essential healthcare benefits eligibility and emergency healthcare patient triage."
+    },
+    {
+      "id": "ec-mdr-aia-qa",
+      "category": "legal",
+      "title": "Q&A — Interplay between MDR/IVDR and the AI Act",
+      "url": "https://health.ec.europa.eu/document/download/b78a17d7-e3cd-4943-851d-e02a2f22bbb4_en",
+      "publisher": "European Commission",
+      "accessed": "2026-11-13",
+      "notes": "When medical device AI is high-risk under Art. 6(1)."
+    },
+    {
+      "id": "fimea-ai-md",
+      "category": "legal",
+      "title": "Using artificial intelligence in medical devices",
+      "url": "https://fimea.fi/en/medical-devices/using-artificial-intelligence-in-medical-devices",
+      "publisher": "Fimea",
+      "accessed": "2026-11-13",
+      "notes": "Finnish competent authority; AIA complements MDR."
+    },
+    {
+      "id": "pmc-cdss-mdr",
+      "category": "legal",
+      "title": "Clinical Decision Support and New Regulatory Frameworks for Medical Devices",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC10105190/",
+      "publisher": "PMC",
+      "accessed": "2026-11-13",
+      "notes": "Explains Rule 11 class floor for diagnostic/therapeutic software."
+    },
+    {
+      "id": "findata-legislation",
+      "category": "legal",
+      "title": "Findata — Legislation (Secondary Use Act)",
+      "url": "https://findata.fi/en/services-and-instructions/legislation/",
+      "publisher": "Findata",
+      "accessed": "2026-11-13",
+      "notes": "Act 552/2019; permitted secondary purposes; ban on marketing / insurance-style use."
+    },
+    {
+      "id": "findata-permits",
+      "category": "legal",
+      "title": "Findata — Permits",
+      "url": "https://findata.fi/en/permits/",
+      "publisher": "Findata",
+      "accessed": "2026-11-13",
+      "notes": "When a data permit is required."
+    },
+    {
+      "id": "lvv-secondary-env",
+      "category": "legal",
+      "title": "Operating environments under the Secondary Use Act",
+      "url": "https://lvv.fi/en/healthcare-and-social-welfare/operating-environments",
+      "publisher": "Finnish Supervisory Agency (LVV)",
+      "accessed": "2026-11-13",
+      "notes": "Secure processing environments for secondary use data."
+    },
+    {
+      "id": "tietosuoja-healthcare",
+      "category": "legal",
+      "title": "Data Protection Ombudsman — Health care FAQ",
+      "url": "https://tietosuoja.fi/en/faq-health-care",
+      "publisher": "Office of the Data Protection Ombudsman",
+      "accessed": "2026-11-13",
+      "notes": "Patient record confidentiality; Kanta sharing consent; need-to-know access."
+    },
+    {
+      "id": "kanta-repository",
+      "category": "legal",
+      "title": "Kanta Patient Data Repository (professionals)",
+      "url": "https://www.kanta.fi/en/professionals/patient-data-repository",
+      "publisher": "Kela / Kanta",
+      "accessed": "2026-11-13",
+      "notes": "Real inter-provider sharing path — not replaceable by a hackathon app."
+    },
+    {
+      "id": "ibanet-telemed-fi",
+      "category": "legal",
+      "title": "Healthcare Telemedicine Survey — Finland (Krogerus / IBA)",
+      "url": "https://www.ibanet.org/document?id=Healthcare-Telemedicine-Survey-Finland",
+      "publisher": "IBA / Krogerus",
+      "accessed": "2026-11-13",
+      "notes": "Telemedicine treated as ordinary care; Patient Act 785/1992; Client Data Act / Kanta."
+    },
+    {
+      "id": "lvv-etapalvelut",
+      "category": "legal",
+      "title": "Etäpalvelut sosiaali- ja terveydenhuollossa",
+      "url": "https://lvv.fi/sosiaali-ja-terveydenhuolto/etapalvelut",
+      "publisher": "LVV",
+      "accessed": "2026-11-13",
+      "notes": "Remote service premises, staff, confidentiality, security obligations."
+    },
+    {
+      "id": "ai-act-prohibited-guide",
+      "category": "legal",
+      "title": "Commission guidelines on prohibited AI practices (AI Act)",
+      "url": "https://ai-act-service-desk.ec.europa.eu/sites/default/files/2026-01/guide-prohibited_en.pdf",
+      "publisher": "European Commission",
+      "accessed": "2026-11-13",
+      "notes": "Article 5 context; interplay with high-risk systems."
+    },
+    {
+      "id": "pmc-ai-act-healthcare",
+      "category": "legal",
+      "title": "Navigating the European Union Artificial Intelligence Act for Healthcare",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC11319791/",
+      "publisher": "PMC",
+      "accessed": "2026-11-13",
+      "notes": "Healthcare high-risk examples including triage."
+    },
+    {
+      "id": "stuk-radiology-2024",
+      "category": "open-data",
+      "title": "Radiologiset tutkimus- ja toimenpidemäärät 2024 (open data, CC BY 4.0)",
+      "url": "https://stuk.fi/avoin-data",
+      "publisher": "STUK (Finnish Radiation and Nuclear Safety Authority)",
+      "accessed": "2026-11-14",
+      "notes": "Examination counts by THL procedure code and age band, national only — no regional split. Chest X-ray with radiologist report GD1AA = 674,757; thorax CT GD1AD = 35,058. Downloaded to raw/stuk_2024.xlsx; parsed by scripts/stuk_thorax.py."
+    },
+    {
+      "id": "stuk-radiology-report-2024",
+      "category": "open-data",
+      "title": "Radiologisten tutkimusten ja toimenpiteiden määrät vuonna 2024 (report)",
+      "url": "https://www.julkari.fi/items/dde44a08-9c97-4f45-b0bd-3a1ecd45121d",
+      "publisher": "STUK / Julkari",
+      "accessed": "2026-11-14",
+      "notes": "663,000 CT examinations in 2024, 115 per 1,000 inhabitants. Survey response rate 92%."
+    },
+    {
+      "id": "dk-sst-forlobstider-2025",
+      "category": "nordic-pathway",
+      "title": "Monitorering af forløbstider på kræftområdet — årsopgørelse for 2025",
+      "url": "https://www.sst.dk/udgivelser/2026/monitorering-af-forloebstider-paa-kraeftomraadet-aarsopgoerelse-for-2025",
+      "publisher": "Sundhedsstyrelsen (Denmark)",
+      "accessed": "2026-11-14",
+      "notes": "Lung cancer B26 within standard pathway time 2025: surgery 77% national (Sjælland 53%, Syddanmark 86%), drug 86%, radiotherapy 70% (Sjælland 49%, Syddanmark 85%). Standard times 44/41/45 days. 58% of lung cancer pathways have the cancer suspicion ruled out during workup."
+    },
+    {
+      "id": "dk-dlcr-2024",
+      "category": "nordic-pathway",
+      "title": "Dansk Lunge Cancer Register — Årsrapport 2024",
+      "url": "https://www.sundk.dk/media/cadgkmwq/dlcr-aarsrapport-2024-offentliggjort-version-07-08-2025.pdf",
+      "publisher": "Dansk Lunge Cancer Gruppe / Sundhedsvæsenets Kvalitetsinstitut",
+      "accessed": "2026-11-14",
+      "notes": "Regional 1/2/5-year survival, indicator tables 3.1.1–3.1.3. National 5-year 25.3% (2019 cohort), regions 23.3%–28.5%. Registry attributes Region Sjælland's historical deficit to late arrival at specialist workup."
+    },
+    {
+      "id": "se-nlcr-2024",
+      "category": "nordic-pathway",
+      "title": "Lungcancer — Nationell kvalitetsrapport för 2024",
+      "url": "https://cancercentrum.se/download/18.7d1de12419afcbb274f2d4c8/1765795067212/20251212_nlcr_nationell_rapport2024.pdf",
+      "publisher": "Regionala cancercentrum / Nationella lungcancerregistret (Sweden)",
+      "accessed": "2026-11-14",
+      "notes": "Against an 80% target, 36% started drug treatment within 40 days and 10% started surgery or radiotherapy within 44 days. Hospital variation 8%–68%. Registry coverage 98%. Also publishes EGFR testing rate per hospital."
+    },
+    {
+      "id": "se-svf-lungcancer",
+      "category": "nordic-pathway",
+      "title": "Standardiserat vårdförlopp lungcancer — ledtider",
+      "url": "https://kunskapsbanken.cancercentrum.se/diagnoser/lungcancer/vardforlopp/",
+      "publisher": "Regionala cancercentrum i samverkan (Sweden)",
+      "accessed": "2026-11-14",
+      "notes": "Target 80% within 40 days to drug treatment, 44 days to surgery/radiotherapy. Pre-pathway design allows 1 day referral decision to arrival, 5 days to lung X-ray/CT, 1 day result to referrer — about 7 days to a chest imaging result."
+    },
+    {
+      "id": "no-helsedir-pakkeforlop",
+      "category": "nordic-pathway",
+      "title": "Pakkeforløp for 24 organspesifikke kreftformer (quality indicator)",
+      "url": "https://www.helsedirektoratet.no/statistikk/kvalitetsindikatorer/kreft-behandling-og-overlevelse/pakkeforl%C3%B8p-for-26-organspesifikke-kreftformer",
+      "publisher": "Helsedirektoratet (Norway)",
+      "accessed": "2026-11-14",
+      "notes": "Target 70% of pathways within standard time; not met by any regional health authority 2023–2025. Lung cancer 57% in 2024. CAUTION: national publication is currently suspended pending correction of a reporting error in NPR."
+    },
+    {
+      "id": "kanta-imaging-repository",
+      "category": "legal",
+      "title": "Imaging Data Repository (Kuva-aineistojen tietovaranto)",
+      "url": "https://www.kanta.fi/en/professionals/imaging-data-repository",
+      "publisher": "Kela / Kanta",
+      "accessed": "2026-11-14",
+      "notes": "National DICOM archive; radiology storable since 2018, CT explicitly in scope. Access requires certified class-A PACS/RIS, provider status and patient consent; research use goes through Findata. Not reachable by a hackathon prototype, and deliberately not used."
+    },
+    {
+      "id": "stat-fi-hyvinvointialue-wfs",
+      "category": "open-data",
+      "title": "Statistics Finland WFS — wellbeing services county boundaries 2025",
+      "url": "https://geo.stat.fi/geoserver/tilastointialueet/wfs",
+      "publisher": "Statistics Finland",
+      "accessed": "2026-11-14",
+      "notes": "Layer tilastointialueet:hyvinvointialue4500k_2025. Map geometry in this app is projected and Douglas-Peucker simplified by scripts/build_map.py; small islands dropped, so coastlines are approximate."
+    },
+    {
+      "id": "gouliaev-registries-2023",
+      "category": "outcomes",
+      "title": "Lung cancer registries in Denmark, Finland, Norway and Sweden: a comparison and proposal for harmonization",
+      "url": "https://doi.org/10.1080/0284186X.2023.2172687",
+      "publisher": "Acta Oncologica",
+      "accessed": "2026-11-14",
+      "notes": "Table 2 stage: DK I 25.4%, NO I 26.4%, SE I 22.6%; FI only Local 6% / Non-local 47% / Unknown 47%. Explains why Acta 2025 'FI 17% stage I' cannot come from this paper. AstraZeneca-funded. Critical for stage-claim honesty."
+    },
+    {
+      "id": "leskela-nsclc-treatment-2022",
+      "category": "outcomes",
+      "title": "Trends in treatment of non-small cell lung cancer in Finland 2014–2019",
+      "url": "https://doi.org/10.1080/0284186X.2022.2042474",
+      "publisher": "Acta Oncologica",
+      "accessed": "2026-11-14",
+      "notes": "Actual source of '17% stage I': among 28% of 4047 university-hospital NSCLC patients with recorded stage (n=1133): I 17%, II 12%, III 22%, IV 49%. Not national population stage share. MSD co-authors."
+    },
+    {
+      "id": "guldbrandt-ldct-rct-2015",
+      "category": "nordic-pathway",
+      "title": "The effect of direct access to CT scan in early lung cancer detection: an unblinded, cluster-randomised trial",
+      "url": "https://doi.org/10.1186/s12885-015-1941-2",
+      "publisher": "BMC Cancer",
+      "accessed": "2026-11-14",
+      "notes": "Only RCT of GP direct chest LDCT. Aarhus, 331 LC patients. No significant effect on stage at diagnosis or diagnostic interval. Strongest disconfirming evidence for 'CT access will fix stage/survival'."
+    },
+    {
+      "id": "eu-just-ct-finland-gp",
+      "category": "outcomes",
+      "title": "Computed tomography referral guidelines adherence in Europe: insights from a seven-country audit",
+      "url": "https://doi.org/10.1007/s00330-024-11325-y",
+      "publisher": "European Radiology / EU-JUST-CT",
+      "accessed": "2026-11-14",
+      "notes": "Primary-source sentence: 'In Finland, general practitioners cannot refer to CT'. Strong independent confirmation of referral-rule claim (also Estonia, Hungary)."
+    },
+    {
+      "id": "no-hdir-filterfunksjon-lc",
+      "category": "nordic-pathway",
+      "title": "Pakkeforløp lungekreft — Filterfunksjon",
+      "url": "https://www.helsedirektoratet.no/nasjonale-forlop/lungekreft/inngang-til-pakkeforlop-for-lungekreft/filterfunksjon",
+      "publisher": "Helsedirektoratet (Norway)",
+      "accessed": "2026-11-14",
+      "notes": "CT thorax (or chest X-ray) without delay on clinical suspicion, even if prior chest X-ray normal. Primary-care filter equivalent."
+    },
+    {
+      "id": "dk-sst-lungekraeft-2025",
+      "category": "nordic-pathway",
+      "title": "Pakkeforløb for lungekræft (January 2025)",
+      "url": "https://www.sst.dk/media/estk2oo1/pakkeforloeb-for-lungekraeft-jan-2025.pdf",
+      "publisher": "Sundhedsstyrelsen (Denmark)",
+      "accessed": "2026-11-14",
+      "notes": "GP/referring doctor should consider contrast CT thorax+upper abdomen for listed symptoms in >40 with tobacco history; suspicious imaging opens lung pathway."
+    },
+    {
+      "id": "dk-sst-diagnostisk-pakkeforloeb-2023",
+      "category": "nordic-pathway",
+      "title": "Diagnostisk pakkeforløb (updated December 2023)",
+      "url": "https://www.sst.dk/media/1odjlxo2/diagnostisk-pakkeforloeb_final_-opdateret-dec-2023docx.pdf",
+      "publisher": "Sundhedsstyrelsen (Denmark)",
+      "accessed": "2026-11-14",
+      "notes": "Requires GP direct access to diagnostic CT-TAB among other tests for non-specific serious symptoms pathway."
+    },
+    {
+      "id": "andersson-sweden-dci-2020",
+      "category": "outcomes",
+      "title": "Estimates of lung and pancreatic cancer survival in Sweden with and without inclusion of death certificate initiated (DCI) cases",
+      "url": "https://doi.org/10.1080/0284186X.2020.1826572",
+      "publisher": "Acta Oncologica",
+      "accessed": "2026-11-14",
+      "notes": "Including DCI lung cases lowered 1-year OS 45%→41% in two Swedish regions. Disconfirms naive Sweden–Finland survival gap magnitude."
+    },
+    {
+      "id": "fcr-fican-lung-2019-2023",
+      "category": "outcomes",
+      "title": "Lung Cancer in Finland 2019–2023 — diagnostics, care pathways and quality of care (FCR/FICAN quality registry pilot report)",
+      "url": "https://syoparekisteri.fi/assets/themes/ssy3/factsheets/keuhkosyoparaportti.html",
+      "publisher": "Finnish Cancer Registry / FICAN / THL",
+      "accessed": "2026-11-14",
+      "notes": "Stage missing 47.7%; localized ~5% of all / ~11% of staged; ~27% curative-intent first treatment (FICAN English summary). Refutes 'Finland cannot measure anything' while confirming measurement is incomplete."
+    },
+    {
+      "id": "fican-quality-registry-project",
+      "category": "strategy",
+      "title": "Cancer quality registry project",
+      "url": "https://fican.fi/en/what-we-do/quality-and-monitoring/cancer-quality-registry-project/",
+      "publisher": "FICAN",
+      "accessed": "2026-11-14",
+      "notes": "Joint FCR–THL–FICAN feasibility work toward national cancer quality register; lung reports 2018–2022 and 2019–2023 already published."
+    },
+    {
+      "id": "jensen-cpp-prognosis-2017",
+      "category": "nordic-pathway",
+      "title": "Prognostic consequences of implementing cancer patient pathways in Denmark: a comparative cohort study of symptomatic cancer patients in primary care",
+      "url": "https://doi.org/10.1186/s12885-017-3623-8",
+      "publisher": "BMC Cancer",
+      "accessed": "2026-11-14",
+      "notes": "3-year RS improved after Danish CPP implementation (lung among cancers with significant change). Authors warn lead-time/selection bias. Evaluates whole three-legged reform, not GP-CT alone."
+    }
+  ],
+  "pendingUrlConfirmation": [
+    "thl-ohjaus-21-2016",
+    "cancer-finland-2024",
+    "bmj-ph-equity-2025",
+    "torkki-acta-2025"
+  ]
+}

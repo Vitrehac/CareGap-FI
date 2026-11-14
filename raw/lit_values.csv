@@ -1,0 +1,40 @@
+lit_id,metric,population,region_id,sex,value,value_low,value_high,qualifier,unit,period_start,period_end,source_id,note
+L01,lung_cancer_deaths_c34,all,FI,T,2410,,,exact,count,2022,2022,Z7,C34 only; fact_statfin_deaths covers C32-C34
+L02,lung_cancer_deaths_c34,all,FI,M,1495,,,exact,count,2022,2022,Z7,
+L03,lung_cancer_deaths_c34,all,FI,F,915,,,exact,count,2022,2022,Z7,Now the most common cause of cancer death also in women
+L04,share_patients_with_significant_smoking_history,lung_cancer_patients,FI,T,0.85,,,exact,share,2022,2022,Z7,
+L05,share_died_within_6_months_of_diagnosis,lung_cancer_patients,FI-HVA-06,T,,,0.333,approx_upper,share,2021,2022,Z13,Almost one third
+L06,share_treated_with_surgery,lung_cancer_patients,FI-HVA-06,T,0.11,,,exact,share,2021,2022,Z13,
+L07,first_gp_visit_to_referral_days,lung_cancer_patients,FI-HVA-06,T,14,,,approx,days,2021,2022,Z13,
+L08,referral_to_diagnosis_days,lung_cancer_patients,FI-HVA-06,T,55,,,approx,days,2021,2022,Z13,
+L09,share_diagnosed_after_spread,lung_cancer_patients,FI-HVA-05,T,0.5,,,approx,share,2025,2025,Z14,About half
+L10,diagnosis_to_surgery_days_median,operated_lung_cancer_patients,FI,T,69,53,92,median_iqr,days,2025,2025,Z15,Eastern Finland only
+L11,symptom_to_treatment_days_mean,lung_cancer_patients,FI,T,155,,,mean,days,2025,2025,Z18,"Unpublished study, Kuopio, Tampere, Turku, Rovaniemi"
+L12,five_year_survival_stage_I,lung_cancer_patients,,T,0.823,,,exact,share,,,Z16,"He et al., cited"
+L13,five_year_survival_stage_IV,lung_cancer_patients,,T,,,,unverified,share,,,Z16,"Earlier transcription gave 0.31, implausible for stage IV; check source before use"
+L14,years_of_life_lost_per_patient,lung_cancer_patients,FI,T,11.6,,,exact,years,2022,2022,Z20,Breast cancer 3.3
+L15,years_of_life_lost_per_year,lung_cancer,FI,T,34600,,,exact,years,,,Z19,
+L16,radon_attributable_cases_per_year,lung_cancer,FI,T,300,,,lower_bound,count,,,Z8,Over 300 (STUK)
+L17,radon_attributable_fraction,lung_cancer,FI,T,,0.03,0.08,range,share,2017,2017,Z55,Small cell carcinoma 0.08-0.13
+L18,stage_iv_or_low_vs_high_education,all_cancers,FI,M,1.1,,,exact,odds_ratio,2000,2019,Z4,
+L19,stage_iv_or_low_vs_high_education,all_cancers,FI,F,1.15,,,exact,odds_ratio,2000,2019,Z4,
+L20,mortality_hr_low_vs_high_education,all_cancers,FI,M,1.13,,,exact,hazard_ratio,2000,2019,Z4,
+L21,mortality_hr_low_vs_high_education,all_cancers,FI,F,1.14,,,exact,hazard_ratio,2000,2019,Z4,
+L22,incidence_srr_low_vs_high_education,all_cancers,FI,M,1.17,1.16,1.19,exact,rate_ratio,2000,2019,Z4,
+L23,incidence_srr_low_vs_high_education,all_cancers,FI,F,1.05,1.04,1.06,exact,rate_ratio,2000,2019,Z4,
+L24,mortality_hr_low_vs_high_education,lung_cancer_patients,FI,F,1.22,1.12,1.33,exact,hazard_ratio,2000,2019,Z4,Lung-specific
+L25,surgery_or_education,lung_cancer_nsclc,FI,F,0.85,0.78,0.93,exact,odds_ratio,2000,2019,Z4,"Lung-specific, check direction in Figure 3"
+L26,radiotherapy_or_education,lung_cancer_nsclc,FI,M,0.94,0.9,0.99,exact,odds_ratio,2000,2019,Z4,"Lung-specific, check direction in Figure 3"
+L27,early_stage_or_high_vs_low_education,all_cancers,FI,M,1.14,,,exact,odds_ratio,2000,2020,Z5,
+L28,surgery_or_high_vs_low_education,all_cancers,FI,M,1.18,,,exact,odds_ratio,2000,2020,Z5,
+L29,mortality_hr_high_vs_low_education,all_cancers,FI,M,0.79,,,exact,hazard_ratio,2000,2020,Z5,
+L30,adults_seeing_physician_within_14_days,adults,FI,T,0.59,,,exact,share,2025,2025,Z11,
+L31,lung_symptom_patients_seeing_only_nurse_first,adults,FI,T,,0.4,0.6,range,share,2025,2025,Z12,
+L32,gp_waiting_time_days_mean,adults,FI,T,14,,,approx,days,2025,2025,Z12,Other Nordic countries under 7 days
+L33,ldct_pilot_participation,smokers,FI,T,0.967,,,exact,share,2022,2024,Z17,200 smokers
+L34,ldct_pilot_ppv,smokers,FI,T,0.75,,,exact,share,2022,2024,Z17,
+L35,ldct_pilot_cancers_stage_I,smokers,FI,T,5,,,exact,count_of_6,2022,2024,Z17,
+L36,workers_exposed_tobacco_smoke_waiters,waiters,FI,T,4653,,,exact,persons,2006,2006,Z25,
+L37,workers_exposed_chromates_nickel_welders,welders,FI,T,2236,,,exact,persons,2006,2006,Z25,
+L38,smoking_ratio_basic_vs_tertiary_education,men,FI-KU-091,M,4,,,lower_bound,ratio,,,Z22,Over four times
+L39,clinical_stage_notification_coverage,all_cancers,FI,T,0.4,,,approx,share,2026,2026,Z27,Stage known for only about 40 % of cases

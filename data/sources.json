@@ -40,7 +40,7 @@
       "url": "https://nordcan.iarc.fr/",
       "publisher": "IARC / NORDCAN",
       "accessed": "2026-11-13",
-      "notes": "Paste specific indicator extractions into data files with year/sex before quoting numbers."
+      "notes": "5-year relative survival, lung, group ALL, extract year code 2022, men and women, FI/SE/DK/NO/IS, with 95% CI. Copied into raw/nordcan_survival_lung.csv on 2026-11-14 from raw/nordcan.csv. The csv year field is 2022; this repo's older notes call that cohort 2020-2024, which is not a column in the file."
     },
     {
       "id": "acta-oncol-nordic-lc-2025",

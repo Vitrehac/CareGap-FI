@@ -89,7 +89,7 @@ export function HomeCockpit() {
                     align="left"
                     underline={false}
                     title={c.country === "FI" ? "Finland" : c.country === "SE" ? "Sweden" : c.country === "NO" ? "Norway" : c.country === "DK" ? "Denmark" : "Iceland"}
-                    body={`${c.value.toFixed(1)} of 100 men alive 5 years after a lung-cancer diagnosis.${isFi ? " The lowest in the Nordics — about 13 fewer per 100 than Sweden." : ""} Source: NORDCAN, diagnosed 2020–2024.`}
+                    body={`${c.value.toFixed(1)} of 100 men alive 5 years after a lung-cancer diagnosis. Source: raw/nordcan_survival_lung.csv, extract year code 2022. Sourced.`}
                   >
                     {c.country}
                   </Tip>

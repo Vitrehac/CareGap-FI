@@ -32,7 +32,7 @@ export function CountyMap({ selected, onSelect, className = "" }: Props) {
               tabIndex={0}
               role="button"
               aria-pressed={active}
-              aria-label={`${c.name}, about ${c.ctPerWeekEst.toFixed(1)} CT slots per week${blocked ? ", capacity blocked" : ""}`}
+              aria-label={`${c.name}, about ${c.ctPerWeekEst.toFixed(1)} extra CT scans per week${blocked ? ", over the safe limit" : ""}`}
               onClick={() => onSelect(c.slug)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -40,14 +40,14 @@ export function CountyMap({ selected, onSelect, className = "" }: Props) {
                   onSelect(c.slug);
                 }
               }}
-              className={`cursor-pointer stroke-rule transition-[fill,stroke-width,opacity] duration-200 outline-none focus-visible:stroke-accent focus-visible:stroke-[3] ${
+              className={`cursor-pointer stroke-paper stroke-[2] transition-[fill,opacity] duration-200 outline-none focus-visible:stroke-ink focus-visible:stroke-[3] ${
                 active
                   ? blocked
-                    ? "fill-alarm stroke-alarm stroke-[2.5]"
-                    : "fill-accent stroke-accent stroke-[2.5]"
+                    ? "fill-alarm"
+                    : "fill-accent"
                   : blocked
-                    ? "fill-alarm-soft/80 stroke-rule hover:fill-alarm/25"
-                    : "fill-paper-raised stroke-rule hover:fill-accent-soft"
+                    ? "fill-[#f3c4b8] hover:fill-[#e9a493]"
+                    : "fill-[#c9e3d4] hover:fill-[#9fd0b4]"
               }`}
             />
           );
@@ -56,11 +56,11 @@ export function CountyMap({ selected, onSelect, className = "" }: Props) {
       <div className="mt-3 flex flex-wrap gap-3 text-[11px] text-ink-faint">
         <span className="inline-flex items-center gap-1.5">
           <span className="inline-block h-2.5 w-2.5 rounded-sm bg-accent" />
-          Selected
+          Your county
         </span>
         <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5 rounded-sm bg-alarm-soft ring-1 ring-alarm/40" />
-          Est. demand &gt; 8 slots/wk
+          <span className="inline-block h-2.5 w-2.5 rounded-sm bg-[#f3c4b8]" />
+          Over the safe limit (8 extra scans a week)
         </span>
       </div>
     </div>

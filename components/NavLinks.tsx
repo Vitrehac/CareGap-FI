@@ -2,10 +2,11 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { Glitch } from "@/components/mithril/Effects";
 
 const NAV = [
   { href: "/", label: "Gap" },
-  { href: "/pilot", label: "Experiment" },
+  { href: "/pilot", label: "Scenario" },
   { href: "/sources", label: "Sources" },
 ];
 
@@ -24,13 +25,11 @@ export function NavLinks() {
             key={item.href}
             href={item.href}
             aria-current={active ? "page" : undefined}
-            className={`text-sm transition-colors ${
-              active
-                ? "font-semibold text-ink"
-                : "text-ink-soft hover:text-ink"
+            className={`label transition-colors ${
+              active ? "text-ink" : "text-ink-faint hover:text-accent"
             }`}
           >
-            {item.label}
+            <Glitch>{item.label}</Glitch>
           </Link>
         );
       })}

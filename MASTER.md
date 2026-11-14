@@ -50,6 +50,11 @@ Hero line: *A ready-made pilot for one wellbeing services county.*
 - “17% stage I vs >25%” as clean Acta fact.  
 - Claiming Satakunta cut waits or saved lives.
 
+### 2026-11-14 afternoon — Mithril skin + data downloads (branch `mithril-skin`)
+- Visual layer swapped to the Mithril look (dark ctOS + ASCII); content, UX, copy, data and stop-rule logic unchanged. See DESIGN.md note.
+- `/sources` now opens with **Download the data**: every raw extract (`raw/`) and chart (`docs/charts/`) as a download with owner, contents and what it feeds. Copies live in `public/data/` (re-copy if the pipeline regenerates `raw/`). Metadata: `lib/downloads.ts`.
+- WhatsApp files posted in Notokens after 13:00 were checked: all 12 data files + 5 charts are identical to `raw/` and `docs/charts/` (same names, sizes, dimensions).
+
 ---
 
 ## 2. Product thesis (locked)

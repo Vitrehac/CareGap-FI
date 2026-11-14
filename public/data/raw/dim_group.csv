@@ -1,0 +1,85 @@
+group_id,group_type,name_en,age_from,age_to
+AGE_0,age,0,0,
+AGE_0_14,age,0-14,0,14
+AGE_0_4,age,0-4,0,4
+AGE_1_4,age,1-4,1,4
+AGE_5_9,age,5-9,5,9
+AGE_10_14,age,10-14,10,14
+AGE_15_19,age,15-19,15,19
+AGE_15_64,age,15-64,15,64
+AGE_20_24,age,20-24,20,24
+AGE_25_29,age,25-29,25,29
+AGE_30_34,age,30-34,30,34
+AGE_35_39,age,35-39,35,39
+AGE_40_44,age,40-44,40,44
+AGE_45_49,age,45-49,45,49
+AGE_50_54,age,50-54,50,54
+AGE_55_59,age,55-59,55,59
+AGE_60_64,age,60-64,60,64
+AGE_65_69,age,65-69,65,69
+AGE_65_PLUS,age,65-,65,
+AGE_70_74,age,70-74,70,74
+AGE_75_79,age,75-79,75,79
+AGE_80_84,age,80-84,80,84
+AGE_85_89,age,85-89,85,89
+AGE_85_PLUS,age,85+,85,
+AGE_90_94,age,90-94,90,94
+AGE_95_99,age,95-99,95,99
+AGE_95_PLUS,age,95-,95,
+AGE_100_PLUS,age,100+,100,
+ALL,all,All,,
+OCC_ADMINISTRATORS,occupation,Administrators,,
+OCC_ARTISTIC_WORKERS,occupation,Artistic workers,,
+OCC_ASSISTANT_NURSES,occupation,Assistant nurses,,
+OCC_BEVERAGE_WORKERS,occupation,Beverage workers,,
+OCC_BRICKLAYERS,occupation,Bricklayers,,
+OCC_BUILDING_CARETAKERS,occupation,Building caretakers,,
+OCC_CHEMICAL_PROCESS_WORKERS,occupation,Chemical process workers,,
+OCC_CHIMNEY_SWEEPS,occupation,Chimney sweeps,,
+OCC_CLERICAL_WORKERS,occupation,Clerical workers,,
+OCC_COOKS_AND_STEWARDS,occupation,Cooks and stewards,,
+OCC_DENTISTS,occupation,Dentists,,
+OCC_DRIVERS,occupation,Drivers,,
+OCC_ECONOMICALLY_INACTIVE,occupation,Economically inactive,,
+OCC_ELECTRICAL_WORKERS,occupation,Electrical workers,,
+OCC_ENGINE_OPERATORS,occupation,Engine operators,,
+OCC_FARMERS,occupation,Farmers,,
+OCC_FISHERMEN,occupation,Fishermen,,
+OCC_FOOD_WORKERS,occupation,Food workers,,
+OCC_FORESTRY_WORKERS,occupation,Forestry workers,,
+OCC_GARDENERS,occupation,Gardeners,,
+OCC_GLASS_MAKERS_ETC,occupation,Glass makers etc,,
+OCC_HAIRDRESSERS,occupation,Hairdressers,,
+OCC_HOME_HELPERS,occupation,Home helpers,,
+OCC_JOURNALISTS,occupation,Journalists,,
+OCC_LABORATORY_ASSISTANTS,occupation,Laboratory assistants,,
+OCC_LAUNDERERS,occupation,Launderers,,
+OCC_MECHANICS,occupation,Mechanics,,
+OCC_MILITARY_PERSONNEL,occupation,Military personnel,,
+OCC_MINERS_AND_QUARRY_WORKERS,occupation,Miners and quarry workers,,
+OCC_NURSES,occupation,Nurses,,
+OCC_OTHER_CONSTRUCTION_WORKERS,occupation,Other construction workers,,
+OCC_OTHER_HEALTH_WORKERS,occupation,Other health workers,,
+OCC_OTHER_WORKERS,occupation,Other workers,,
+OCC_PACKERS,occupation,Packers,,
+OCC_PAINTERS,occupation,Painters,,
+OCC_PHYSICIANS,occupation,Physicians,,
+OCC_PLUMBERS,occupation,Plumbers,,
+OCC_POSTAL_WORKERS,occupation,Postal workers,,
+OCC_PRINTERS,occupation,Printers,,
+OCC_PUBLIC_SAFETY_WORKERS,occupation,Public safety workers,,
+OCC_RELIGIOUS_WORKERS_ETC,occupation,Religious workers etc,,
+OCC_SALES_AGENTS,occupation,Sales agents,,
+OCC_SEAMEN,occupation,Seamen,,
+OCC_SHOE_AND_LEATHER_WORKERS,occupation,Shoe and leather workers,,
+OCC_SHOP_WORKERS,occupation,Shop workers,,
+OCC_SMELTING_WORKERS,occupation,Smelting workers,,
+OCC_TEACHERS,occupation,Teachers,,
+OCC_TECHNICAL_WORKERS_ETC,occupation,"Technical workers, etc",,
+OCC_TEXTILE_WORKERS,occupation,Textile workers,,
+OCC_TOBACCO_WORKERS,occupation,Tobacco workers,,
+OCC_TOTAL,occupation,Total,,
+OCC_TRANSPORT_WORKERS,occupation,Transport workers,,
+OCC_WAITERS,occupation,Waiters,,
+OCC_WELDERS,occupation,Welders,,
+OCC_WOOD_WORKERS,occupation,Wood workers,,

@@ -1,0 +1,177 @@
+// Downloadable datasets and charts behind Liwe's figures.
+// Files are copies of raw/ and docs/charts/ served from public/data/ (keep them in sync when the
+// research pipeline regenerates raw/). Owners and URLs follow raw/catalog.csv and data/sources.json.
+
+export type Download = {
+  file: string;
+  href: string;
+  kind: "data" | "chart" | "reference";
+  title: string;
+  owner: string;
+  url?: string;
+  contents: string;
+  usedFor: string;
+};
+
+export const DOWNLOADS: Download[] = [
+  {
+    file: "nordcan.csv",
+    href: "/data/raw/nordcan.csv",
+    kind: "data",
+    title: "NORDCAN 2.0 — Nordic lung cancer incidence, mortality, survival",
+    owner: "IARC / Association of the Nordic Cancer Registries",
+    url: "https://nordcan.iarc.fr/",
+    contents: "Rates by country, sex, age group and year (long format: indicator, region, sex, group, year, value).",
+    usedFor: "Nordic survival gap (FI 17.9% vs SE 31.3%), Nordic mortality charts.",
+  },
+  {
+    file: "deaths.csv",
+    href: "/data/raw/deaths.csv",
+    kind: "data",
+    title: "StatFin causes of death — C32–C34 deaths and rates",
+    owner: "Statistics Finland",
+    url: "https://stat.fi/fi/tilasto/ksyyt",
+    contents: "Deaths and mortality rates, Finland and wellbeing-services counties, by sex and year.",
+    usedFor: "County mortality charts, need ranking, demand sizing seed.",
+  },
+  {
+    file: "kela.csv",
+    href: "/data/raw/kela.csv",
+    kind: "data",
+    title: "Kela open data — medicine reimbursement rights",
+    owner: "Kela",
+    url: "https://tietotarjotin.fi/tilastodata/2242438/avoin-data",
+    contents: "Reimbursement rights started/active by county, age and sex (lung-relevant codes only).",
+    usedFor: "County context in the research vault (aggregate only).",
+  },
+  {
+    file: "nocca.csv",
+    href: "/data/raw/nocca.csv",
+    kind: "data",
+    title: "NOCCA — cancer by occupation",
+    owner: "Finnish Cancer Registry",
+    url: "https://astra.cancer.fi/NOCCA/",
+    contents: "Observed and expected lung cancer cases by occupation, Finland, follow-up 1961–2005.",
+    usedFor: "Research vault only — never an individual risk multiplier.",
+  },
+  {
+    file: "stuk_2024.xlsx",
+    href: "/data/raw/stuk_2024.xlsx",
+    kind: "data",
+    title: "STUK radiological examinations 2024 (CC BY 4.0)",
+    owner: "STUK — Radiation and Nuclear Safety Authority",
+    url: "https://stuk.fi/avoin-data",
+    contents: "Examination counts by THL procedure code and age band, national only.",
+    usedFor: "National thorax CT volume (35,058 in 2024 ≈ 674/week) behind the capacity framing.",
+  },
+  {
+    file: "hva.geojson",
+    href: "/data/raw/hva.geojson",
+    kind: "data",
+    title: "Wellbeing services county boundaries 2025",
+    owner: "Statistics Finland (WFS)",
+    url: "https://geo.stat.fi/geoserver/tilastointialueet/wfs",
+    contents: "County polygons (GeoJSON).",
+    usedFor: "The county map on /pilot.",
+  },
+  {
+    file: "lit_values.csv",
+    href: "/data/raw/lit_values.csv",
+    kind: "data",
+    title: "Literature values — single published pathway figures",
+    owner: "Liwe research vault",
+    contents: "One row per published figure with value range, period and source id.",
+    usedFor: "Pathway facts quoted in the app and brief.",
+  },
+  {
+    file: "dim_indicator.csv",
+    href: "/data/raw/dim_indicator.csv",
+    kind: "reference",
+    title: "Indicator dimension",
+    owner: "Liwe research vault",
+    contents: "Indicator ids, names (FI/EN), units, domains and source ids for every fact table.",
+    usedFor: "Decoding indicator_id in the data files.",
+  },
+  {
+    file: "dim_region.csv",
+    href: "/data/raw/dim_region.csv",
+    kind: "reference",
+    title: "Region dimension",
+    owner: "Liwe research vault",
+    contents: "Countries, wellbeing-services counties and municipalities with codes and hierarchy.",
+    usedFor: "Decoding region_id in the data files.",
+  },
+  {
+    file: "dim_group.csv",
+    href: "/data/raw/dim_group.csv",
+    kind: "reference",
+    title: "Group dimension",
+    owner: "Liwe research vault",
+    contents: "Age bands and occupation groups.",
+    usedFor: "Decoding group_id in the data files.",
+  },
+  {
+    file: "catalog.csv",
+    href: "/data/raw/catalog.csv",
+    kind: "reference",
+    title: "Data source catalog",
+    owner: "Liwe research vault",
+    contents: "Every source considered, its owner, access type and whether it was ingested (and why not).",
+    usedFor: "Provenance of the files above.",
+  },
+  {
+    file: "wfs_caps.xml",
+    href: "/data/raw/wfs_caps.xml",
+    kind: "reference",
+    title: "WFS capabilities — Statistics Finland boundary service",
+    owner: "Statistics Finland",
+    url: "https://geo.stat.fi/geoserver/tilastointialueet/wfs",
+    contents: "Service description used to fetch the county boundaries.",
+    usedFor: "Reproducing hva.geojson.",
+  },
+  {
+    file: "county_crude_mortality_2021_2024.png",
+    href: "/data/charts/county_crude_mortality_2021_2024.png",
+    kind: "chart",
+    title: "County crude mortality, C32–C34, 2021–2024",
+    owner: "Chart from Statistics Finland data",
+    contents: "Deaths per 100,000 by wellbeing-services county, both sexes, all ages.",
+    usedFor: "County need context.",
+  },
+  {
+    file: "county_death_counts_2021_2024.png",
+    href: "/data/charts/county_death_counts_2021_2024.png",
+    kind: "chart",
+    title: "County death counts, pooled 2021–2024",
+    owner: "Chart from Statistics Finland data",
+    contents: "Death counts by wellbeing-services county.",
+    usedFor: "Demand sizing context.",
+  },
+  {
+    file: "finland_asr_mortality_by_sex.png",
+    href: "/data/charts/finland_asr_mortality_by_sex.png",
+    kind: "chart",
+    title: "Finland age-standardised mortality by sex",
+    owner: "Chart from Statistics Finland data",
+    contents: "National trend, men / women / both.",
+    usedFor: "National context.",
+  },
+  {
+    file: "nordic_asr_mortality_by_sex_2024.png",
+    href: "/data/charts/nordic_asr_mortality_by_sex_2024.png",
+    kind: "chart",
+    title: "Nordic age-standardised mortality by sex, 2024",
+    owner: "Chart from NORDCAN data",
+    contents: "Country × sex comparison.",
+    usedFor: "Nordic comparison.",
+  },
+  {
+    file: "age_specific_mortality_FI_vs_SE_2024.png",
+    href: "/data/charts/age_specific_mortality_FI_vs_SE_2024.png",
+    kind: "chart",
+    title: "Age-specific mortality, Finland vs Sweden, 2024",
+    owner: "Chart from NORDCAN data",
+    contents: "Rate per 100,000 by age group and sex.",
+    usedFor: "Nordic comparison.",
+  },
+];

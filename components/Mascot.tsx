@@ -80,7 +80,7 @@ const PLAYBOOK: { keys: string[]; answer: string }[] = [
   {
     keys: ["endpoint", "day", "count", "calculat", "number", "target"],
     answer:
-      "The pilot target is a median of 10 days or less from the symptomatic GP visit to the CT report. I also show cost per person scanned, cost per cancer found sooner, and what share of the county's chest CT the route would use. I do not estimate deaths avoided. Open a plan and scroll to “How this plan is calculated”.",
+      "The pilot target is a median of 10 days or less from the symptomatic GP visit to the CT report. I also show cost per person scanned, cost per cancer on the fast CT route, and what share of the county's chest CT the route would use. I do not estimate deaths avoided. Open a plan and scroll to “How this plan is calculated”.",
   },
   {
     keys: ["data", "source", "where", "kanta", "record", "connect"],
@@ -94,7 +94,7 @@ const PLAYBOOK: { keys: string[]; answer: string }[] = [
   {
     keys: ["worth", "money", "cost", "price", "euro", "€", "budget"],
     answer:
-      "Each plan shows cost per person scanned and cost per cancer found sooner. The badge says whether the visit-to-CT clock is within 10 days and inside capacity. Enter real supplier prices in the Investments table and the costs recalculate.",
+      "Each plan shows cost per person scanned and cost per cancer on the fast CT route. The badge says whether the visit-to-CT clock is within 10 days and inside capacity. I do not estimate deaths avoided. Enter real supplier prices in the Investments table and the costs recalculate.",
   },
   {
     keys: ["actual", "track", "real", "estimate"],

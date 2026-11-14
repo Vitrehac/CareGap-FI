@@ -143,8 +143,7 @@ export function evaluate(plan: Plan) {
 
   // ---- the working, step by step
   const steps: Step[] = [
-    { label: "Lung-cancer deaths a year", value: num(county.deathsPerYear, 0), how: `${county.deathsPooled} deaths in ${county.name} 2021–2024 ÷ 4 years`, source: src("Z2") },
-    { label: "New lung cancers a year", value: num(county.casesPerYearEst, 0), how: `deaths × ${national.incidenceMortalityRatio} (Finland: ${national.incidencePooled.toLocaleString("en-GB")} new cases for ${national.mortalityPooled.toLocaleString("en-GB")} deaths, same years)`, source: src("Z52") },
+    { label: "New lung cancers a year", value: num(county.casesPerYearEst, 0), how: "County new-case estimate already stored in the dataset. The mortality series used to size it stays in the data and is not listed here.", source: src("Z52") },
     { label: "People scanned to find one cancer", value: num(PER_CANCER, 2), how: `in Denmark's fast track ${pct(national.dkRuledOutShare)} of people referred turn out not to have cancer → 1 ÷ ${num(1 - national.dkRuledOutShare, 2)}`, source: { title: "Sundhedsstyrelsen, cancer pathway annual report 2025 (lung cancer, B26)", url: "https://www.sst.dk/" } },
     { label: "People scanned a year", value: num(peopleScannedYear, 0), how: `${num(scans)} scans a week × 52${scans < wanted ? ` (you asked for ${num(wanted)}; ${LIMITER_TEXT[limiter].toLowerCase()})` : ""}` },
     { label: "Lung cancers found on the fast route", value: num(cancersRoute), how: `${num(effective * 52, 0)} people ÷ ${num(PER_CANCER, 2)}${scans > useful ? ` — capped: only ≈ ${pct(ASSUMED.maxRouteShare)} of cancers start with a GP visit, so scans above ${num(useful)} a week find no extra cancers` : ""} = ${pct(reach)} of the county's cancers` },
@@ -153,7 +152,7 @@ export function evaluate(plan: Plan) {
     { label: "Days from the GP visit to the CT report", value: `${visitToCt} days`, how: `Sweden's filter budget is ${CT_RESULT_DAYS} days when the reserved slots cover demand. The pilot target is ≤ ${ASSUMED.endpointDays} days.`, source: src("Z41") },
     { label: "Share of estimated county chest CT", value: pct(capacityShare), how: `STUK 2024 national thorax CT (${national.thoraxCt2024.toLocaleString("en-GB")}) split by population. Estimate. Announcement blocks above ${pct(ASSUMED.capacityShareLimit)}.` },
     { label: "Cost per person scanned", value: Number.isFinite(perPatient) ? money(perPatient) : "—", how: "Yearly programme cost ÷ people scanned. Estimate until supplier prices are entered." },
-    { label: "Cost per lung cancer found sooner", value: Number.isFinite(perCancer) ? money(perCancer) : "—", how: "Yearly programme cost ÷ cancers on the fast route. Estimate. Not a survival figure." },
+    { label: "Cost per lung cancer on the fast CT route", value: Number.isFinite(perCancer) ? money(perCancer) : "—", how: "Yearly programme cost ÷ cancers on the fast route. Estimate. Not a survival figure." },
   ];
 
   return {

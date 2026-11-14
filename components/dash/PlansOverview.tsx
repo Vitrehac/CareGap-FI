@@ -30,7 +30,7 @@ export function PlansOverview() {
         <>
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <Kpi tone="accent" label="People get a CT answer sooner" value={num(people, 0)} sub={`a year, across ${plans.length} plan${plans.length === 1 ? "" : "s"}`} />
-            <Kpi label="Lung cancers found sooner" value={num(cancers, 0)} sub="a year" />
+            <Kpi label="Lung cancers on the fast CT route" value={num(cancers, 0)} sub="a year" />
             <Kpi label="Plans on the endpoint" value={String(meeting)} sub="median visit → CT report within 10 days, inside capacity" />
             <Kpi label="Running cost" value={money(yearly)} sub="a year, all plans together" />
           </div>
@@ -53,7 +53,7 @@ export function PlansOverview() {
                     </div>
                     <div>
                       <p className="font-display text-3xl text-ink">{num(ev.sim.cancersRoute, 0)}</p>
-                      <p className="text-xs text-ink-faint">cancers found sooner</p>
+                      <p className="text-xs text-ink-faint">on the fast CT route</p>
                     </div>
                     <div>
                       <p className="font-display text-3xl text-ink">{ev.sim.visitToCt}</p>

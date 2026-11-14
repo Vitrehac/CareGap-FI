@@ -67,7 +67,7 @@ export type Plan = {
   weeks: WeekReport[];
 };
 
-const KEY = "liwe.plans.v3";
+const KEY = "liwe.plans.v4";
 const listeners = new Set<() => void>();
 let cacheRaw: string | null | undefined;
 let cache: Plan[] = [];
@@ -160,7 +160,7 @@ export function defaultInputs(slug: string): PlanInputs {
     slug,
     scansPerWeek: suggestedScans(slug),
     start: "2026-01",
-    horizonYears: 5,
+    horizonYears: 1,
     yearlyFunding: 150_000,
     oneOffBudget: 50_000,
     spareCtSlots: 8,

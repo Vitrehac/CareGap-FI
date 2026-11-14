@@ -53,7 +53,7 @@ export function Shell({ children }: { children: React.ReactNode }) {
           </Suspense>
           <div className="mt-auto hidden lg:block">
             <p className="rounded-xl bg-sand-soft px-3 py-3 text-xs leading-relaxed text-ink-faint">
-              Prototype · plans are saved in this browser. Pathway data is a demo feed until a county connects its records.
+              Prototype, not a medical device. Plans are saved in this browser. Pathway data is a demo feed until a county connects its records.
             </p>
           </div>
         </div>

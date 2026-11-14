@@ -38,7 +38,7 @@ export function PlanView() {
       }
       sub={
         <span>
-          <Link href="/dashboard" className="hover:text-accent">↲ Plans</Link> · {ev.county.name} · {num(plan.inputs.scansPerWeek)} scans a week · {plan.inputs.horizonYears} years from {plan.inputs.start}
+          <Link href="/dashboard" className="hover:text-accent">↲ Plans</Link> · {ev.county.name} · {num(plan.inputs.scansPerWeek)} scans a week · {plan.inputs.horizonYears === 1 ? "12-month pilot" : `${plan.inputs.horizonYears} years`} from {plan.inputs.start}
         </span>
       }
       actions={
@@ -76,6 +76,22 @@ export function PlanView() {
 function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: (p: Plan) => void }) {
   return (
     <div className="space-y-4">
+      <div className="grid gap-3 sm:grid-cols-3">
+        <div className="rounded-2xl bg-sand-soft px-4 py-3">
+          <p className="text-xs text-ink-faint">CT report · Estimate</p>
+          <p className="font-display text-3xl text-ink">about {ev.sim.visitToCt} days</p>
+        </div>
+        <div className="rounded-2xl bg-sand-soft px-4 py-3">
+          <p className="text-xs text-ink-faint">{ev.county.slug === "kainuu" ? "Liwe estimate for Kainuu today" : "Liwe estimate for today"} · Estimate</p>
+          <p className="font-display text-3xl text-ink">{ev.sim.daysToday - ev.sim.savedRoute} vs {ev.sim.daysToday} days</p>
+          <p className="text-xs text-ink-faint">diagnosis, plan vs today</p>
+        </div>
+        <div className="rounded-2xl bg-sand-soft px-4 py-3">
+          <p className="text-xs text-ink-faint">Chest-CT capacity stop · Estimate/Mock</p>
+          <p className="font-display text-3xl text-ink">{num(ev.capacityShare * 100, 1)}%</p>
+          <p className="text-xs text-ink-faint">{ev.capacityShare > 0.05 ? "Over 5%. Pause the route." : "Under 5%. Stop rule clear."}</p>
+        </div>
+      </div>
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Kpi
           tone="accent"
@@ -84,8 +100,8 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
           sub={`a year · ${num(ev.ruledOutYear, 0)} hear it is not cancer`}
           tip={{ title: "Everyone the route scans", body: `${num(ev.scans)} reserved scans a week × 52. Each person gets the answer ${ev.sim.savedRoute} days sooner than on today's path, whether it turns out to be cancer or not.` }}
         />
-        <Kpi label="Diagnosed sooner" value={`${ev.sim.savedRoute} days`} sub={`${ev.sim.daysToday} → ${ev.sim.daysToday - ev.sim.savedRoute} days for fast-route patients`} />
-        <Kpi label="Lung cancers found sooner" value={num(ev.sim.cancersRoute)} sub={`a year · ${num(ev.sim.reach * 100, 0)}% of ${Math.round(ev.county.casesPerYearEst)} new cases`} />
+        <Kpi label="Diagnosis" value={`${ev.sim.daysToday - ev.sim.savedRoute} vs ${ev.sim.daysToday} days`} sub={ev.county.slug === "kainuu" ? "plan vs Liwe estimate for Kainuu today · Estimate" : "plan vs today · Estimate"} />
+        <Kpi label="Lung cancers on the fast CT route" value={num(ev.sim.cancersRoute)} sub={`a year · ${num(ev.sim.reach * 100, 0)}% of ${Math.round(ev.county.casesPerYearEst)} new cases`} />
         <Kpi
           label="Public visit → CT report"
           value={`${ev.sim.visitToCt} days`}
@@ -118,7 +134,7 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
         <Card title="Time to diagnosis" aside={<span className="text-sm text-ink-faint">hover a bar</span>}>
           <div className="space-y-4">
             <div>
-              <p className="mb-1.5 text-sm text-ink-soft">Today</p>
+              <p className="mb-1.5 text-sm text-ink-soft">{ev.county.slug === "kainuu" ? "Liwe estimate for Kainuu today · Estimate" : "Today · Estimate"}</p>
               <JourneyBar max={ev.sim.daysToday} total={ev.sim.daysToday} stages={ev.sim.today.map((s, i) => ({ label: s.label, days: s.days, color: ["#c9cfcb", "#b3bab6", "#9aa59f"][i] }))} />
             </div>
             <div>
@@ -154,13 +170,13 @@ function Worth({ plan, ev }: { plan: Plan; ev: Evaluation }) {
     <Card title="Against the pilot target" aside={<VerdictPill v={ev.verdict} />}>
       <p className="text-ink-soft">{v.text}</p>
       <p className="mt-1 text-sm text-ink-faint">
-        Whole-county cost of the CT route, {money(ev.total)} over {plan.inputs.horizonYears} years ({money(ev.oneOff)} once + {money(ev.yearly)} a year).
+        Whole-county cost of the CT route, {money(ev.total)} over {plan.inputs.horizonYears === 1 ? "the 12-month pilot" : `${plan.inputs.horizonYears} years`} ({money(ev.oneOff)} once + {money(ev.yearly)} a year).
       </p>
       <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4">
         {[
           ["per person scanned", fin(ev.perPatient), "Estimate"],
-          ["per cancer found sooner", fin(ev.perCancer), "Estimate"],
-          ["visit → CT report", `${ev.sim.visitToCt} days`, "Estimate"],
+          ["per cancer on the fast CT route", fin(ev.perCancer), "Estimate"],
+          ["CT report", `about ${ev.sim.visitToCt} days`, "Estimate"],
           ["county CT used", `${num(ev.capacityShare * 100)}%`, "Estimate"],
         ].map(([k, val, tag]) => (
           <div key={k}>
@@ -210,7 +226,7 @@ function Funnel({ ev }: { ev: Evaluation }) {
   const rows = [
     { k: "People scanned", v: ev.peopleScannedYear, c: "#9fd0b4" },
     { k: "Not cancer — reassured sooner", v: ev.ruledOutYear, c: "#cfe8da" },
-    { k: "Lung cancer found sooner", v: ev.sim.cancersRoute, c: "#1f8a5c" },
+    { k: "Lung cancer on the fast CT route", v: ev.sim.cancersRoute, c: "#1f8a5c" },
   ];
   const max = Math.max(rows[0].v, 1);
   return (
@@ -352,7 +368,7 @@ function Investments({ plan, ev, update }: { plan: Plan; ev: Evaluation; update:
       <div className="mt-4 grid gap-3 rounded-2xl bg-accent-soft p-4 text-sm sm:grid-cols-4">
         <p><span className="block text-ink-faint">One-off</span><b className="text-lg text-ink">{money(ev.oneOff)}</b></p>
         <p><span className="block text-ink-faint">Per year</span><b className="text-lg text-ink">{money(ev.yearly)}</b></p>
-        <p><span className="block text-ink-faint">Whole plan ({plan.inputs.horizonYears} yrs)</span><b className="text-lg text-ink">{money(ev.total)}</b></p>
+        <p><span className="block text-ink-faint">Whole plan ({plan.inputs.horizonYears === 1 ? "12-month pilot" : `${plan.inputs.horizonYears} yrs`})</span><b className="text-lg text-ink">{money(ev.total)}</b></p>
         <p><span className="block text-ink-faint">Confirmed by real prices</span><b className="text-lg text-ink">{money(actualTotal)}</b></p>
       </div>
     </Card>
@@ -375,7 +391,7 @@ function Inputs({ plan, update }: { plan: Plan; update: (p: Plan) => void }) {
         <Field label="CT scans for the route"><NumberInput value={I.scansPerWeek} onChange={(v) => set("scansPerWeek", v)} suffix="/ wk" step={0.5} /></Field>
         <Field label="Funding a year"><NumberInput value={I.yearlyFunding} onChange={(v) => set("yearlyFunding", v)} prefix="€" step={10000} /></Field>
         <Field label="One-off budget"><NumberInput value={I.oneOffBudget} onChange={(v) => set("oneOffBudget", v)} prefix="€" step={10000} /></Field>
-        <Field label="Horizon"><NumberInput value={I.horizonYears} onChange={(v) => set("horizonYears", Math.max(1, Math.min(15, Math.round(v))))} suffix="years" min={1} /></Field>
+        <Field label="Pilot length"><NumberInput value={I.horizonYears} onChange={(v) => set("horizonYears", Math.max(1, Math.min(15, Math.round(v))))} suffix={I.horizonYears === 1 ? "year (12-month pilot)" : "years"} min={1} /></Field>
         <Field label="Spare CT slots"><NumberInput value={I.spareCtSlots} onChange={(v) => set("spareCtSlots", v)} suffix="/ wk" /></Field>
         <Field label="New CT scanners"><NumberInput value={I.newScanners} onChange={(v) => set("newScanners", Math.round(v))} /></Field>
         <Field label="Radiologist time"><NumberInput value={I.radiologistHours} onChange={(v) => set("radiologistHours", v)} suffix="h / wk" step={0.5} /></Field>

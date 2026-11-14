@@ -28,12 +28,12 @@ export function Compare() {
                 <tr className="text-left align-bottom text-ink-faint">
                   <th className="px-2 pb-3 font-semibold">Plan</th>
                   <th className="px-2 pb-3 text-right font-semibold">People scanned<br />a year</th>
-                  <th className="px-2 pb-3 text-right font-semibold">Cancers found<br />sooner a year</th>
-                  <th className="px-2 pb-3 text-right font-semibold">Days<br />sooner</th>
+                  <th className="px-2 pb-3 text-right font-semibold">On the fast<br />CT route</th>
+                  <th className="px-2 pb-3 text-right font-semibold">Diagnosis<br />gap (days)</th>
                   <th className="px-2 pb-3 text-right font-semibold">Visit → CT<br />report (days)</th>
                   <th className="px-2 pb-3 text-right font-semibold">Programme cost a year<br />(whole county)</th>
                   <th className="px-2 pb-3 text-right font-semibold">Cost per<br />person scanned</th>
-                  <th className="px-2 pb-3 text-right font-semibold">Cost per cancer<br />found sooner</th>
+                  <th className="px-2 pb-3 text-right font-semibold">Cost per cancer<br />on the fast route</th>
                   <th className="px-2 pb-3 font-semibold">Value</th>
                   <th className="px-2 pb-3 font-semibold">Actual so far</th>
                 </tr>

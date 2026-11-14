@@ -54,11 +54,11 @@ export function NewPlan() {
           {step === 0 && (
             <div className="grid gap-6 md:grid-cols-[1fr_13rem]">
               <div className="space-y-6">
-                <Field label="Which county?" hint="Ordered from the highest need (lung-cancer deaths, COPD, access to care).">
+                <Field label="Which county?" hint="Ordered by the need index in the seed. The number shown is new cases a year.">
                   <select value={inputs.slug} onChange={(e) => pickCounty(e.target.value)} className="w-full rounded-2xl border border-rule bg-paper px-3 py-2.5 text-ink">
                     {selectable.map((c) => (
                       <option key={c.slug} value={c.slug}>
-                        {c.name} · {Math.round(c.deathsPerYear)} lung-cancer deaths a year
+                        {c.name} · {Math.round(c.casesPerYearEst)} new cases a year
                       </option>
                     ))}
                   </select>
@@ -69,7 +69,7 @@ export function NewPlan() {
                 <div className="rounded-2xl bg-sand-soft p-4 text-sm leading-relaxed text-ink-soft">
                   <p>
                     <b className="text-ink">{num(ev.peopleScannedYear, 0)} people a year</b> get a chest CT within a week. About 1 in {num(2.38, 2)} of them has lung cancer, so ≈{" "}
-                    <b className="text-ink">{num(ev.sim.cancersRoute)} lung cancers</b> are found sooner — {num(ev.sim.reach * 100, 0)}% of the {Math.round(county.casesPerYearEst)} new cases a year in {county.name}.
+                    <b className="text-ink">{num(ev.sim.cancersRoute)} lung cancers</b> are on the fast CT route — {num(ev.sim.reach * 100, 0)}% of the {Math.round(county.casesPerYearEst)} new cases a year in {county.name}.
                   </p>
                   <p className="mt-2 text-ink-faint">
                     Above ≈ {num(ev.useful)} scans a week there are no more cancers to find on this route.{" "}
@@ -94,8 +94,8 @@ export function NewPlan() {
               <Field label="Start" hint="First month of the programme.">
                 <input type="month" value={inputs.start} onChange={(e) => e.target.value && set("start", e.target.value)} className="w-full rounded-2xl border border-rule bg-paper px-3 py-2.5 text-ink" />
               </Field>
-              <Field label="Plan horizon" hint="Years you judge the investment over.">
-                <NumberInput value={inputs.horizonYears} onChange={(v) => set("horizonYears", Math.max(1, Math.min(15, Math.round(v))))} suffix="years" min={1} />
+              <Field label="Pilot length" hint="1 means a 12-month pilot.">
+                <NumberInput value={inputs.horizonYears} onChange={(v) => set("horizonYears", Math.max(1, Math.min(15, Math.round(v))))} suffix={inputs.horizonYears === 1 ? "year" : "years"} min={1} />
               </Field>
             </div>
           )}
@@ -127,7 +127,7 @@ export function NewPlan() {
                   ["County", county.name],
                   ["Scans for the route", `${num(inputs.scansPerWeek)} a week`],
                   ["Funding", `${money(inputs.yearlyFunding)} a year + ${money(inputs.oneOffBudget)} once`],
-                  ["Horizon", `${inputs.horizonYears} years from ${inputs.start}`],
+                  ["Pilot length", `${inputs.horizonYears === 1 ? "12-month pilot" : `${inputs.horizonYears} years`} from ${inputs.start}`],
                   ["CT", `${inputs.spareCtSlots} spare slots/wk, ${inputs.newScanners} new scanner(s)`],
                   ["Staff", `${inputs.radiologistHours} radiologist h/wk, +${inputs.newGps} family doctors`],
                 ].map(([k, v]) => (
@@ -166,7 +166,7 @@ export function NewPlan() {
               </div>
               <div className="grid grid-cols-2 gap-4 border-t border-rule pt-4">
                 <div>
-                  <dt className="text-xs text-ink-faint">Lung cancers found sooner</dt>
+                  <dt className="text-xs text-ink-faint">On the fast CT route</dt>
                   <dd className="font-display text-2xl text-ink">{num(ev.sim.cancersRoute)}</dd>
                 </div>
                 <div>

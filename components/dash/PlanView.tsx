@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { LIMITER_TEXT, VERDICT, actuals, demoFeed, evaluate, money, num, type Evaluation } from "@/lib/engine";
-import { deletePlan, savePlan, uid, useHydrated, usePlans, type Investment, type PathwayRecord, type Plan, type PlanInputs } from "@/lib/plans";
+import { deletePlan, savePlan, uid, useHydrated, usePlans, type Investment, type Plan, type PlanInputs, type WeekReport } from "@/lib/plans";
 import { JourneyBar, Legend, LineChart, SERIES } from "./charts";
 import { Card, Field, Kpi, NumberInput, Page, Segmented, VerdictPill } from "./ui";
 
@@ -87,10 +87,10 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
         <Kpi label="Diagnosed sooner" value={`${ev.sim.savedRoute} days`} sub={`${ev.sim.daysToday} → ${ev.sim.daysToday - ev.sim.savedRoute} days for fast-route patients`} />
         <Kpi label="Lung cancers found sooner" value={num(ev.sim.cancersRoute)} sub={`a year · ${num(ev.sim.reach * 100, 0)}% of ${Math.round(ev.county.casesPerYearEst)} new cases`} />
         <Kpi
-          label="Deaths avoided"
-          value={num(ev.sim.livesYear.mid)}
-          sub={`a year, estimate · range ${num(ev.sim.livesYear.low)}–${num(ev.sim.livesYear.high)}`}
-          tip={{ title: "Why this number is small", body: `${ev.county.name} loses about ${Math.round(ev.county.deathsPerYear)} people a year to lung cancer. Finding it ${ev.sim.savedRoute} days sooner lowers each patient's risk of dying by a few percent — see “How this plan is calculated” below.` }}
+          label="Visit → CT report"
+          value={`${ev.sim.visitToCt} days`}
+          sub={`pilot endpoint ≤ ${10} days · ${ev.verdict === "meets" ? "inside the target" : "check the verdict"}`}
+          tip={{ title: "Process clock", body: "Days from the symptomatic GP visit to the CT report, if the reserved slots cover demand. Estimate, anchored on Sweden's 7-day filter budget. Not a survival figure." }}
         />
       </div>
 
@@ -137,50 +137,26 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
 function Worth({ plan, ev }: { plan: Plan; ev: Evaluation }) {
   const v = VERDICT[ev.verdict];
   const fin = (x: number) => (Number.isFinite(x) ? money(x) : "—");
-  const perCancer = ev.sim.cancersRoute > 0 ? ev.yearly / ev.sim.cancersRoute : Infinity;
   return (
-    <Card title="Is it worth it?" aside={<VerdictPill v={ev.verdict} />}>
+    <Card title="Against the pilot target" aside={<VerdictPill v={ev.verdict} />}>
       <p className="text-ink-soft">{v.text}</p>
       <p className="mt-1 text-sm text-ink-faint">
         Whole-county cost of the CT route, {money(ev.total)} over {plan.inputs.horizonYears} years ({money(ev.oneOff)} once + {money(ev.yearly)} a year).
-        {ev.gpYear > 0.05 ? " New family doctors are budgeted elsewhere, so their effect is left out here." : ""}
       </p>
       <dl className="mt-5 grid grid-cols-2 gap-x-4 gap-y-4">
         {[
-          ["per person scanned", fin(ev.perPatient)],
-          ["per cancer found sooner", fin(perCancer)],
-          ["per death avoided", fin(ev.perLife)],
-          ["per year of life gained", fin(ev.perLifeYear)],
-        ].map(([k, val]) => (
+          ["per person scanned", fin(ev.perPatient), "Estimate"],
+          ["per cancer found sooner", fin(ev.perCancer), "Estimate"],
+          ["visit → CT report", `${ev.sim.visitToCt} days`, "Estimate"],
+          ["county CT used", `${num(ev.capacityShare * 100)}%`, "Estimate"],
+        ].map(([k, val, tag]) => (
           <div key={k}>
             <dd className="font-display text-3xl text-ink">{val}</dd>
-            <dt className="text-sm text-ink-faint">{k}</dt>
+            <dt className="text-sm text-ink-faint">{k} · {tag}</dt>
           </div>
         ))}
       </dl>
-      <Yardstick value={ev.perLifeYear} />
     </Card>
-  );
-}
-
-/** log scale €1k – €1M per year of life */
-function Yardstick({ value }: { value: number }) {
-  const pos = (x: number) => Math.max(0, Math.min(100, ((Math.log10(x) - 3) / 3) * 100));
-  return (
-    <div className="mt-6">
-      <p className="mb-2 text-sm font-semibold text-ink-soft">Cost per year of life gained</p>
-      <div className="relative h-3 rounded-full" style={{ background: `linear-gradient(90deg,#cfe8da 0%,#cfe8da ${pos(35_000)}%,#f6e3b8 ${pos(35_000)}%,#f6e3b8 ${pos(100_000)}%,#f7d3c9 ${pos(100_000)}%)` }}>
-        {Number.isFinite(value) && <span className="absolute -top-1.5 h-6 w-1.5 rounded-full bg-ink" style={{ left: `calc(${pos(value)}% - 3px)` }} title={money(value)} />}
-      </div>
-      <div className="relative mt-1.5 h-4 text-xs text-ink-faint">
-        {[1_000, 10_000, 35_000, 100_000, 1_000_000].map((t) => (
-          <span key={t} className="absolute -translate-x-1/2 whitespace-nowrap" style={{ left: `${pos(t)}%` }}>
-            {money(t)}
-          </span>
-        ))}
-      </div>
-      <p className="mt-2 text-xs text-ink-faint">Green: below what the UK&apos;s NICE usually pays (£20–30k ≈ €24–36k per healthy year of life). Finland has no official threshold.</p>
-    </div>
   );
 }
 
@@ -222,7 +198,6 @@ function Funnel({ ev }: { ev: Evaluation }) {
     { k: "People scanned", v: ev.peopleScannedYear, c: "#9fd0b4" },
     { k: "Not cancer — reassured sooner", v: ev.ruledOutYear, c: "#cfe8da" },
     { k: "Lung cancer found sooner", v: ev.sim.cancersRoute, c: "#1f8a5c" },
-    { k: "Deaths avoided (estimate)", v: ev.programmeYear.mid, c: "#14603f" },
   ];
   const max = Math.max(rows[0].v, 1);
   return (
@@ -406,16 +381,11 @@ function Inputs({ plan, update }: { plan: Plan; update: (p: Plan) => void }) {
 /* ------------------------------------------------------------------ actual */
 
 function ActualView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: (p: Plan) => void }) {
-  const records: PathwayRecord[] = [...plan.pathways, ...demoFeed(plan, ev)];
+  const records: WeekReport[] = [...plan.weeks, ...demoFeed(plan, ev)];
   const a = actuals(plan, ev, records);
   const labels = a.rows.map((r) => new Date(r.month + "-01").toLocaleString("en-GB", { month: "short", year: "2-digit" }));
-  const target = ev.sim.daysToday - ev.sim.savedRoute;
-  const behind = a.recentMedian !== null && a.recentMedian > target * 1.15;
-  const [filter, setFilter] = useState<"all" | PathwayRecord["outcome"]>("cancer");
-  const latest = [...records]
-    .filter((p) => filter === "all" || p.outcome === filter)
-    .sort((x, y) => (x.gpVisit < y.gpVisit ? 1 : -1))
-    .slice(0, 12);
+  const behind = a.recentMedian !== null && a.recentMedian > 10;
+  const latest = [...records].sort((x, y) => (x.weekStart < y.weekStart ? 1 : -1)).slice(0, 12);
 
   if (!a.rows.length)
     return (
@@ -428,38 +398,34 @@ function ActualView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: 
     <div className="space-y-4">
       <div className="flex flex-wrap items-center justify-between gap-3 rounded-2xl border border-[#3d63b8]/30 bg-[#eef2fb] px-4 py-3 text-sm text-[#2c4a8c]">
         <span>
-          <b>Source: demo feed</b> — synthetic patient pathways shaped like {ev.county.name}&apos;s plan. Real numbers arrive once the county connects its patient records.
+          <b>Mock data.</b> Weekly totals shaped like {ev.county.name}&apos;s plan. A live feed would be a weekly aggregate from the county&apos;s own reporting (Lifecare, Omni360, Apotti or Esko).
         </span>
         <Link href="/dashboard/data" className="font-semibold underline">Connect a data source ↳</Link>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
-        <Kpi tone="blue" label="Patients through the route" value={a.referred} sub={`${a.cancers} cancers found · ${a.ruledOut} ruled out · ${a.open} in progress`} />
+        <Kpi tone="blue" label="Pathways started" value={a.started} sub="weekly totals, mock feed" />
         <Kpi
-          label="Days to diagnosis now"
+          label="Median visit → CT report"
           value={a.recentMedian !== null ? `${a.recentMedian} days` : "—"}
           sub={
             <span className={behind ? "text-[#b13d29]" : "text-accent"}>
-              {behind ? "Behind" : "On track"} · plan {target} · no plan {ev.sim.daysToday}
+              {behind ? "Over 10 days" : "Within 10 days"} · plan {ev.sim.visitToCt} days
             </span>
           }
-          tip={{ title: "Median, last 3 months", body: "Half of the patients diagnosed with lung cancer on the route got their diagnosis faster than this, counted from asking for a GP appointment." }}
+          tip={{ title: "Last 3 months", body: "Median of the weekly medians. Mock data. The clock is the symptomatic visit to the CT report, not survival." }}
         />
+        <Kpi label="CT scans used" value={a.scans} sub="sum of weekly reports" />
         <Kpi label="Spent so far" value={money(a.spendAct)} sub={`budgeted ${money(a.spendEst)} by now`} />
-        <Kpi
-          label="Deaths avoided so far"
-          value={`≈ ${num(a.livesAct)}`}
-          sub={`the plan expected ≈ ${num(a.livesEst)} for these ${a.cancers} patients`}
-          tip={{ title: "From the real pathways", body: "For each cancer diagnosed on the route we take the days it actually took, compare with the 83 days of the old pathway and apply the same delay–mortality link as the estimate (6% per 4 weeks). The expected figure uses the same patients at the planned speed." }}
-        />
       </div>
 
-      <Card title="Days from asking for a doctor to a diagnosis" aside={<Legend items={[{ label: "Actual (median)", color: SERIES.actual }, { label: "Plan target", color: SERIES.estimate }, { label: "No plan", color: SERIES.none, dashed: true }]} />}>
+      <p className="text-xs font-semibold uppercase tracking-wide text-ink-faint">Mock data</p>
+      <Card title="Days from the GP visit to the CT report" aside={<Legend items={[{ label: "Weekly median", color: SERIES.actual }, { label: "Plan", color: SERIES.estimate }, { label: "Endpoint", color: SERIES.none, dashed: true }]} />}>
         <LineChart
           labels={labels}
           series={[
-            { key: "none", label: "No plan", color: SERIES.none, values: a.rows.map((r) => r.baseDays), dashed: true },
-            { key: "target", label: "Plan target", color: SERIES.estimate, values: a.rows.map((r) => r.targetDays) },
+            { key: "end", label: "Endpoint", color: SERIES.none, values: a.rows.map((r) => r.endpointDays), dashed: true },
+            { key: "target", label: "Plan", color: SERIES.estimate, values: a.rows.map((r) => r.targetDays) },
             { key: "actual", label: "Actual", color: SERIES.actual, values: a.rows.map((r) => r.medianDays) },
           ]}
           format={(x) => `${Math.round(x)} d`}
@@ -467,14 +433,14 @@ function ActualView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: 
       </Card>
 
       <div className="grid gap-4 lg:grid-cols-2">
-        <Card title="Deaths avoided, cumulative" aside={<Legend items={[{ label: "Actual", color: SERIES.actual }, { label: "Estimate", color: SERIES.estimate }]} />}>
+        <Card title="CT scans used, cumulative" aside={<Legend items={[{ label: "Reported", color: SERIES.actual }, { label: "Plan", color: SERIES.estimate }]} />}>
           <LineChart
             labels={labels}
             series={[
-              { key: "est", label: "Estimate", color: SERIES.estimate, values: a.rows.map((r) => r.cumEst) },
-              { key: "act", label: "Actual", color: SERIES.actual, values: a.rows.map((r) => r.cumAct) },
+              { key: "est", label: "Plan", color: SERIES.estimate, values: a.rows.map((r) => r.cumScansEst) },
+              { key: "act", label: "Reported", color: SERIES.actual, values: a.rows.map((r) => r.cumScansAct) },
             ]}
-            format={(x) => num(x)}
+            format={(x) => num(x, 0)}
           />
         </Card>
         <Card title="Money spent, cumulative" aside={<Legend items={[{ label: "Actual", color: SERIES.actual }, { label: "Budgeted", color: SERIES.estimate }]} />}>
@@ -490,26 +456,12 @@ function ActualView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: 
         </Card>
       </div>
 
-      <Card
-        title="Patient pathways · pseudonymised, newest first"
-        aside={
-          <Segmented<"all" | PathwayRecord["outcome"]>
-            value={filter}
-            onChange={setFilter}
-            options={[
-              { value: "cancer", label: `Cancer (${a.cancers})` },
-              { value: "ruled-out", label: `Ruled out (${a.ruledOut})` },
-              { value: "open", label: `In progress (${a.open})` },
-              { value: "all", label: "All" },
-            ]}
-          />
-        }
-      >
+      <Card title="Weekly county report · newest first">
         <div className="-mx-2 overflow-x-auto">
           <table className="w-full min-w-[42rem] text-sm">
             <thead>
               <tr className="text-left text-ink-faint">
-                {["Patient", "GP visit", "CT ordered", "CT result", "Diagnosis", "Outcome", "Source"].map((h) => (
+                {["Week", "Pathways started", "Median visit → CT", "CT scans used", "Other CT wait", "Source"].map((h) => (
                   <th key={h} className="px-2 pb-2 font-semibold">{h}</th>
                 ))}
               </tr>
@@ -517,65 +469,64 @@ function ActualView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: 
             <tbody className="divide-y divide-rule">
               {latest.map((p) => (
                 <tr key={p.id}>
-                  <td className="px-2 py-2 font-mono text-xs text-ink">{p.id}</td>
-                  <td className="px-2 py-2 text-ink-soft">{p.gpVisit}</td>
-                  <td className="px-2 py-2 text-ink-soft">{p.ctOrdered ?? "—"}</td>
-                  <td className="px-2 py-2 text-ink-soft">{p.ctResult ?? "—"}</td>
-                  <td className="px-2 py-2 text-ink-soft">{p.diagnosis ?? "—"}</td>
-                  <td className="px-2 py-2">
-                    <span className={`rounded-full px-2 py-0.5 text-xs font-semibold ${p.outcome === "cancer" ? "bg-alarm-soft text-[#b13d29]" : p.outcome === "ruled-out" ? "bg-accent-soft text-accent" : "bg-sand text-ink-soft"}`}>
-                      {p.outcome === "ruled-out" ? "ruled out" : p.outcome === "open" ? "in progress" : "cancer"}
-                    </span>
-                  </td>
-                  <td className="px-2 py-2 text-ink-faint">{p.source === "manual" ? "entered by hand" : "demo feed"}</td>
+                  <td className="px-2 py-2 text-ink-soft">{p.weekStart}</td>
+                  <td className="px-2 py-2 text-ink">{p.pathwaysStarted}</td>
+                  <td className="px-2 py-2 text-ink">{p.medianDaysVisitToCt ?? "—"}</td>
+                  <td className="px-2 py-2 text-ink">{p.ctScansUsed}</td>
+                  <td className="px-2 py-2 text-ink">{p.otherCtMedianWait ?? "—"}</td>
+                  <td className="px-2 py-2 text-ink-faint">{p.source === "mock" ? "Mock data" : p.source}</td>
                 </tr>
               ))}
             </tbody>
           </table>
         </div>
-        <LogPathway onAdd={(p) => update({ ...plan, pathways: [p, ...plan.pathways] })} />
+        <LogWeek onAdd={(p) => update({ ...plan, weeks: [p, ...plan.weeks] })} />
       </Card>
     </div>
   );
 }
 
-function LogPathway({ onAdd }: { onAdd: (p: PathwayRecord) => void }) {
-  const [f, setF] = useState({ gpVisit: "", ctOrdered: "", ctResult: "", diagnosis: "", outcome: "open" as PathwayRecord["outcome"] });
-  const field = (k: "gpVisit" | "ctOrdered" | "ctResult" | "diagnosis", label: string) => (
-    <label className="text-sm">
-      <span className="block text-ink-faint">{label}</span>
-      <input type="date" value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} className="mt-1 w-full rounded-xl border border-rule px-2 py-1.5 text-ink" />
-    </label>
-  );
+function LogWeek({ onAdd }: { onAdd: (p: WeekReport) => void }) {
+  const [f, setF] = useState({ weekStart: "", pathwaysStarted: "", median: "", scans: "", other: "" });
   return (
     <details className="mt-4 rounded-2xl bg-sand-soft">
-      <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-ink">+ Log a pathway by hand (before your records are connected)</summary>
+      <summary className="cursor-pointer px-4 py-3 text-sm font-semibold text-ink">+ Add a weekly total</summary>
       <div className="grid gap-3 px-4 pb-4 sm:grid-cols-3 lg:grid-cols-6">
-        {field("gpVisit", "GP visit")}
-        {field("ctOrdered", "CT ordered")}
-        {field("ctResult", "CT result")}
-        {field("diagnosis", "Diagnosis")}
         <label className="text-sm">
-          <span className="block text-ink-faint">Outcome</span>
-          <select value={f.outcome} onChange={(e) => setF({ ...f, outcome: e.target.value as PathwayRecord["outcome"] })} className="mt-1 w-full rounded-xl border border-rule bg-paper px-2 py-1.5 text-ink">
-            <option value="open">in progress</option>
-            <option value="cancer">cancer</option>
-            <option value="ruled-out">ruled out</option>
-          </select>
+          <span className="block text-ink-faint">Week starting</span>
+          <input type="date" value={f.weekStart} onChange={(e) => setF({ ...f, weekStart: e.target.value })} className="mt-1 w-full rounded-xl border border-rule px-2 py-1.5 text-ink" />
         </label>
+        {([
+          ["pathwaysStarted", "Pathways started"],
+          ["median", "Median days"],
+          ["scans", "CT scans used"],
+          ["other", "Other CT wait"],
+        ] as const).map(([k, label]) => (
+          <label key={k} className="text-sm">
+            <span className="block text-ink-faint">{label}</span>
+            <input value={f[k]} onChange={(e) => setF({ ...f, [k]: e.target.value })} className="mt-1 w-full rounded-xl border border-rule px-2 py-1.5 text-ink" />
+          </label>
+        ))}
         <button
           type="button"
-          disabled={!f.gpVisit || (f.outcome === "cancer" && !f.diagnosis)}
+          disabled={!f.weekStart}
           onClick={() => {
-            onAdd({ id: `M-${uid().slice(0, 6).toUpperCase()}`, gpVisit: f.gpVisit, ctOrdered: f.ctOrdered || undefined, ctResult: f.ctResult || undefined, diagnosis: f.diagnosis || undefined, outcome: f.outcome, source: "manual" });
-            setF({ gpVisit: "", ctOrdered: "", ctResult: "", diagnosis: "", outcome: "open" });
+            onAdd({
+              id: `M-${uid().slice(0, 6).toUpperCase()}`,
+              weekStart: f.weekStart,
+              pathwaysStarted: Number(f.pathwaysStarted) || 0,
+              medianDaysVisitToCt: f.median === "" ? null : Number(f.median),
+              ctScansUsed: Number(f.scans) || 0,
+              otherCtMedianWait: f.other === "" ? null : Number(f.other),
+              source: "manual",
+            });
+            setF({ weekStart: "", pathwaysStarted: "", median: "", scans: "", other: "" });
           }}
           className="cta self-end bg-accent px-4 py-2 text-sm text-paper disabled:opacity-40"
         >
           Save
         </button>
       </div>
-      <p className="px-4 pb-4 text-xs text-ink-faint">Dates only — no names or personal ID numbers.</p>
     </details>
   );
 }

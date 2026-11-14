@@ -509,6 +509,15 @@
       "notes": "3-year RS improved after Danish CPP implementation (lung among cancers with significant change). Authors warn lead-time/selection bias. Evaluates whole three-legged reform, not GP-CT alone."
     },
     {
+      "id": "filha-lung-programme-2026",
+      "category": "strategy",
+      "title": "National Lung Cancer Programme 2026–2035",
+      "url": "https://www.filha.fi/en/valtakunnallinen-keuhkosyopaohjelma/",
+      "publisher": "Filha",
+      "accessed": "2026-11-14",
+      "notes": "Preprint PDF: https://www.filha.fi/wp-content/uploads/2026/10/ValtakunnallinenKeuhkosyopaohjelma_preprint.pdf . Claim used: regional variation in diagnostic speed is large; no national timetable existed; the programme publishes primary-care referral criteria and recommended time limits. Day targets are not copied into the model."
+    },
+    {
       "id": "Z43",
       "category": "context",
       "title": "Mortality due to cancer treatment delay: systematic review and meta-analysis (Hanna et al. 2020)",

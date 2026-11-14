@@ -12,7 +12,7 @@ export function Compare() {
   const ready = useHydrated();
   const rows = plans.map((p) => {
     const ev = evaluate(p);
-    const a = actuals(p, ev, [...p.pathways, ...demoFeed(p, ev)]);
+    const a = actuals(p, ev, [...p.weeks, ...demoFeed(p, ev)]);
     return { p, ev, a };
   });
 
@@ -30,17 +30,17 @@ export function Compare() {
                   <th className="px-2 pb-3 text-right font-semibold">People scanned<br />a year</th>
                   <th className="px-2 pb-3 text-right font-semibold">Cancers found<br />sooner a year</th>
                   <th className="px-2 pb-3 text-right font-semibold">Days<br />sooner</th>
-                  <th className="px-2 pb-3 text-right font-semibold">Deaths avoided<br />a year (est.)</th>
+                  <th className="px-2 pb-3 text-right font-semibold">Visit → CT<br />report (days)</th>
                   <th className="px-2 pb-3 text-right font-semibold">Programme cost a year<br />(whole county)</th>
                   <th className="px-2 pb-3 text-right font-semibold">Cost per<br />person scanned</th>
-                  <th className="px-2 pb-3 text-right font-semibold">Cost per<br />death avoided</th>
+                  <th className="px-2 pb-3 text-right font-semibold">Cost per cancer<br />found sooner</th>
                   <th className="px-2 pb-3 font-semibold">Value</th>
                   <th className="px-2 pb-3 font-semibold">Actual so far</th>
                 </tr>
               </thead>
               <tbody className="divide-y divide-rule">
                 {rows.map(({ p, ev, a }) => {
-                  const behind = a.recentMedian !== null && a.recentMedian > (ev.sim.daysToday - ev.sim.savedRoute) * 1.15;
+                  const behind = a.recentMedian !== null && a.recentMedian > 10;
                   return (
                     <tr key={p.id}>
                       <td className="px-2 py-3">
@@ -50,10 +50,10 @@ export function Compare() {
                       <td className="px-2 py-3 text-right font-semibold text-accent">{num(ev.peopleScannedYear, 0)}</td>
                       <td className="px-2 py-3 text-right text-ink">{num(ev.sim.cancersRoute)}</td>
                       <td className="px-2 py-3 text-right text-ink">{ev.sim.savedRoute}</td>
-                      <td className="px-2 py-3 text-right text-ink">{num(ev.sim.livesYear.mid)}</td>
+                      <td className="px-2 py-3 text-right text-ink">{ev.sim.visitToCt}</td>
                       <td className="px-2 py-3 text-right text-ink">{money(ev.yearly)}</td>
                       <td className="px-2 py-3 text-right text-ink">{fin(ev.perPatient)}</td>
-                      <td className="px-2 py-3 text-right text-ink">{fin(ev.perLife)}</td>
+                      <td className="px-2 py-3 text-right text-ink">{fin(ev.perCancer)}</td>
                       <td className="px-2 py-3"><VerdictPill v={ev.verdict} /></td>
                       <td className="px-2 py-3">
                         {a.recentMedian === null ? (
@@ -72,7 +72,7 @@ export function Compare() {
           </div>
         )}
         <p className="mt-4 text-xs leading-relaxed text-ink-faint">
-          Costs are for the whole county programme, not per patient, unless the column says “per”. “Cost per death avoided” uses the plan horizon’s total cost and counts only the CT route. “Actual so far” is the median days to diagnosis over the last three months, from the plan’s data feed.
+          Costs are for the whole county programme. “Actual so far” is the median days from the GP visit to the CT report over the last three months of the weekly mock feed.
         </p>
       </Card>
     </Page>

@@ -15,9 +15,9 @@ const SOURCES: Source[] = [
   {
     name: "The county's own patient record system",
     owner: "Wellbeing-services county (data controller)",
-    gives: "Every step of each patient's pathway: GP visit, CT order, CT result, referral, diagnosis code (C34). This is the feed the Actual view needs.",
-    access: "Lifecare (≈ 61% of organisations), Omni360, Apotti (built on Epic) or Esko. Read via the system's reporting database or its FHIR API; Liwe receives pseudonymised dates and codes only.",
-    lag: "Daily",
+    gives: "A weekly aggregate: pathways started, median days from the GP visit to the CT report, CT scans used, and the median wait for other CT. No patient rows.",
+    access: "Produced by the county's own reporting in Lifecare, Omni360, Apotti or Esko. Liwe stores the weekly totals only.",
+    lag: "Weekly",
     role: "primary",
     status: "demo",
     links: [
@@ -51,8 +51,8 @@ const SOURCES: Source[] = [
   {
     name: "Finnish Cancer Registry",
     owner: "Cancer Society of Finland / THL",
-    gives: "Confirmed diagnoses, stage and survival — the final check of whether earlier diagnosis saved lives, and a control group of counties without the plan.",
-    access: "Aggregated statistics openly; record-level data via a Findata permit.",
+    gives: "Published incidence and survival. A later formal evaluation could compare counties, but that record-level work would happen under a Findata permit, not inside Liwe.",
+    access: "Aggregated statistics openly. Record-level linkage only in a later evaluation, under a Findata permit.",
     lag: "1–2 years",
     role: "outcome",
     status: "not-connected",
@@ -61,7 +61,7 @@ const SOURCES: Source[] = [
   {
     name: "Findata",
     owner: "Social and Health Data Permit Authority",
-    gives: "One permit for data from several controllers (Kanta, THL registers, Cancer Registry) — needed to compare counties.",
+    gives: "The permit route for a later formal evaluation that needs record-level data. Liwe itself does not apply for or hold that permit.",
     access: "Permit under the Secondary Use Act (552/2019), delivered in Findata's secure environment.",
     lag: "Months to get a permit",
     role: "outcome",
@@ -71,13 +71,11 @@ const SOURCES: Source[] = [
 ];
 
 const FIELDS = [
-  ["pathway_id", "Pseudonym, rotates per county", "—"],
-  ["gp_visit_date", "First visit with lung symptoms", "Encounter.period.start"],
-  ["ct_ordered_date", "Chest CT ordered (THL code GD1AD)", "ServiceRequest.authoredOn"],
-  ["ct_result_date", "Radiologist's report signed", "DiagnosticReport.issued"],
-  ["diagnosis_date", "Lung cancer confirmed (ICD-10 C34)", "Condition.recordedDate"],
-  ["outcome", "cancer · ruled out · in progress", "Condition / DiagnosticReport.conclusion"],
-  ["stage", "TNM stage at diagnosis, if recorded", "Condition.stage"],
+  ["week_start", "Monday of the reporting week", "—"],
+  ["pathways_started", "Count of pathways opened that week", "—"],
+  ["median_days_visit_to_ct", "Median days, symptomatic visit to CT report", "—"],
+  ["ct_scans_used", "Chest CTs used by the route", "—"],
+  ["other_ct_median_wait", "Median wait for other non-urgent CT", "—"],
 ];
 
 const ROLE = { primary: "Live pathway data", context: "Context & baseline", outcome: "Outcomes & comparison" };
@@ -126,17 +124,17 @@ export function DataSources() {
             <ol className="space-y-3 text-sm leading-relaxed text-ink-soft">
               <li><b className="text-ink">1. The county&apos;s own records first.</b> The county is the data controller and can use its own data to manage its services — confirm with its data protection officer. Fastest path to live numbers.</li>
               <li><b className="text-ink">2. THL statistics</b> for the GP-wait baseline.</li>
-              <li><b className="text-ink">3. A Findata permit</b> for the Cancer Registry, to compare with counties that did nothing and to confirm survival.</li>
+              <li><b className="text-ink">3. Findata only later,</b> if a formal evaluation needs record-level Cancer Registry data. That work is outside Liwe.</li>
             </ol>
           </Card>
-          <Card title="What Liwe needs per patient">
-            <p className="mb-3 text-sm text-ink-soft">Dates and codes only — no names, no personal ID numbers.</p>
+          <Card title="What a weekly report contains">
+            <p className="mb-3 text-sm text-ink-soft">County totals for one week. No names, no personal ID numbers.</p>
             <ul className="divide-y divide-rule text-sm">
-              {FIELDS.map(([f, d, fhir]) => (
+              {FIELDS.map(([f, d]) => (
                 <li key={f} className="py-2">
                   <code className="text-xs text-ink">{f}</code>
                   <p className="text-ink-soft">{d}</p>
-                  <p className="text-xs text-ink-faint">FHIR: {fhir}</p>
+                  <p className="text-xs text-ink-faint">County weekly report</p>
                 </li>
               ))}
             </ul>

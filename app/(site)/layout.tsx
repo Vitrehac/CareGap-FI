@@ -27,8 +27,7 @@ export default function SiteLayout({ children }: Readonly<{ children: React.Reac
         <div className="mx-auto flex max-w-5xl flex-col gap-2 px-6 py-6 sm:flex-row sm:items-start sm:justify-between">
           <p className="max-w-3xl text-xs leading-relaxed text-ink-faint">
             Prototype, not a medical device. Plans services for populations; does not assess, diagnose or triage any
-            individual. Patient pathways shown in the dashboard are synthetic demo data until a county connects its own
-            records.
+            individual. Charts on the demo feed are mock weekly totals, not patient records.
           </p>
           <p className="label shrink-0 text-ink-faint">Liwe · Junction 2026 · NoTokens</p>
         </div>

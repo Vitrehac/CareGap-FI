@@ -13,7 +13,7 @@ const figtree = Figtree({
 export const metadata: Metadata = {
   title: "Liwe",
   description:
-    "Plan, fund and track faster lung-cancer diagnosis in Finnish wellbeing-services counties — see how many lives an investment saves, and whether it actually does.",
+    "Plan, fund and measure a lung-cancer pathway change in a Finnish wellbeing-services county.",
 };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {

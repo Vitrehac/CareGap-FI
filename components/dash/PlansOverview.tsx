@@ -11,7 +11,7 @@ export function PlansOverview() {
   const evs = plans.map((p) => ({ p, ev: evaluate(p) }));
   const people = evs.reduce((a, x) => a + x.ev.peopleScannedYear, 0);
   const cancers = evs.reduce((a, x) => a + x.ev.sim.cancersRoute, 0);
-  const lives = evs.reduce((a, x) => a + x.ev.sim.livesYear.mid, 0);
+  const meeting = evs.filter((x) => x.ev.verdict === "meets").length;
   const yearly = evs.reduce((a, x) => a + x.ev.yearly, 0);
 
   return (
@@ -31,7 +31,7 @@ export function PlansOverview() {
           <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
             <Kpi tone="accent" label="People get a CT answer sooner" value={num(people, 0)} sub={`a year, across ${plans.length} plan${plans.length === 1 ? "" : "s"}`} />
             <Kpi label="Lung cancers found sooner" value={num(cancers, 0)} sub="a year" />
-            <Kpi label="Deaths avoided" value={num(lives)} sub="a year, estimate — see each plan for the working" />
+            <Kpi label="Plans on the endpoint" value={String(meeting)} sub="median visit → CT report within 10 days, inside capacity" />
             <Kpi label="Running cost" value={money(yearly)} sub="a year, all plans together" />
           </div>
 
@@ -56,8 +56,8 @@ export function PlansOverview() {
                       <p className="text-xs text-ink-faint">cancers found sooner</p>
                     </div>
                     <div>
-                      <p className="font-display text-3xl text-ink">{num(ev.sim.livesYear.mid)}</p>
-                      <p className="text-xs text-ink-faint">deaths avoided / yr</p>
+                      <p className="font-display text-3xl text-ink">{ev.sim.visitToCt}</p>
+                      <p className="text-xs text-ink-faint">days visit → CT</p>
                     </div>
                   </div>
                   <div className="mt-5 space-y-1.5">

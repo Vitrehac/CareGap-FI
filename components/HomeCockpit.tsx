@@ -19,12 +19,12 @@ const STEPS = [
   {
     n: "2",
     t: "Decide",
-    d: "See lives saved, how much sooner cancer is found and the cost per life — and whether the investment is worth it.",
+    d: "See what it costs, how many days it saves and whether it meets the pilot target.",
   },
   {
     n: "3",
     t: "Track",
-    d: "Once it runs, patient pathways flow in from the county’s records. Compare what happens with the plan and with doing nothing.",
+    d: "Once it runs, weekly pathway reports flow in from the county’s own reporting. Compare what happens with the plan and with doing nothing.",
   },
 ];
 
@@ -38,11 +38,10 @@ export function HomeCockpit() {
         <div className="relative max-w-2xl">
           <p className="label inline-flex rounded-full bg-accent-soft px-3 py-1.5 text-accent">For wellbeing-services counties in Finland</p>
           <h1 className="font-display mt-6 text-[clamp(2.6rem,6vw,4.75rem)] text-ink">
-            Every week sooner is a <span className="text-accent">life saved.</span>
+            Finland set lung-cancer pathway targets in 2026. <span className="text-accent">Liwe helps a county plan, fund and measure a change against them.</span>
           </h1>
           <p className="mt-6 max-w-xl text-xl leading-snug text-ink-soft">
-            Liwe helps a county plan, fund and track faster lung-cancer diagnosis — and shows, in euros per life saved,
-            whether it pays off.
+            See what it costs, how many days it saves and whether it meets the pilot target.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link href="/dashboard" className="cta bg-accent px-6 py-3.5 text-paper">
@@ -60,9 +59,7 @@ export function HomeCockpit() {
         <div>
           <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.8rem)] text-ink">The problem</h2>
           <p className="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">
-            Finland has the lowest lung-cancer survival in the Nordics. A big reason is time: it takes about{" "}
-            <b className="text-ink">83 days</b> from asking for a doctor to a diagnosis, because a family doctor can’t
-            order the chest CT — a specialist has to.
+            In Satakunta in 2021–22, one study measured about 14 days from the first GP visit to referral and 55 days from referral to diagnosis. A family doctor usually cannot order the chest CT. Nobody has published whether Satakunta’s direct-CT change worked.
           </p>
         </div>
         <div>

@@ -23,14 +23,15 @@ export type Investment = {
   note?: string;
 };
 
-export type PathwayRecord = {
+/** One row of the county's weekly aggregate report. No patient identifiers. */
+export type WeekReport = {
   id: string;
-  gpVisit: string; // ISO date
-  ctOrdered?: string;
-  ctResult?: string;
-  diagnosis?: string;
-  outcome: "cancer" | "ruled-out" | "open";
-  source: "manual" | "feed";
+  weekStart: string;
+  pathwaysStarted: number;
+  medianDaysVisitToCt: number | null;
+  ctScansUsed: number;
+  otherCtMedianWait: number | null;
+  source: "mock" | "manual" | "county";
 };
 
 export type PlanInputs = {
@@ -62,10 +63,10 @@ export type Plan = {
   inputs: PlanInputs;
   costs: { ctEuro: number; scannerEuro: number; slotsPerScanner: number };
   investments: Investment[];
-  pathways: PathwayRecord[];
+  weeks: WeekReport[];
 };
 
-const KEY = "liwe.plans.v2";
+const KEY = "liwe.plans.v3";
 const listeners = new Set<() => void>();
 let cacheRaw: string | null | undefined;
 let cache: Plan[] = [];
@@ -178,7 +179,7 @@ function seed(): Plan[] {
     inputs: { ...defaultInputs(slug), ...over },
     costs: { ...DEFAULT_COSTS },
     investments: [],
-    pathways: [],
+    weeks: [],
   });
   return [
     mk("kainuu", "Kainuu · direct CT pilot", { start: "2026-01", scansPerWeek: 2, yearlyFunding: 60_000, radiologistHours: 2, spareCtSlots: 5 }),

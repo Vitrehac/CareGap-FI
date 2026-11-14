@@ -69,18 +69,18 @@ export function Liwi({ className = "", happy = false }: { className?: string; ha
 
 type Msg = { from: "liwi" | "you"; text: string };
 
-const SUGGESTIONS = ["How do you count deaths avoided?", "Where does the data come from?", "How do I make a plan?", "Is it worth the money?"];
+const SUGGESTIONS = ["What does the endpoint mean?", "Where does the data come from?", "How do I make a plan?", "What does it cost?"];
 
 const PLAYBOOK: { keys: string[]; answer: string }[] = [
   {
-    keys: ["death", "live", "save", "count", "calculat", "small", "number"],
+    keys: ["endpoint", "day", "count", "calculat", "number", "target"],
     answer:
-      "I start from the county's lung-cancer deaths (Statistics Finland, 2021–24). Your scans a week tell me how many people get a fast CT; about 1 in 2.4 of them has cancer. Those patients are diagnosed about a month sooner, and every 4 weeks of delay adds roughly 6% to the risk of dying (Hanna et al., BMJ 2020). Open a plan and scroll to “How this plan is calculated” to see every step with its source.",
+      "The pilot target is a median of 10 days or less from the symptomatic GP visit to the CT report. I also show cost per person scanned, cost per cancer found sooner, and what share of the county's chest CT the route would use. I do not estimate deaths avoided. Open a plan and scroll to “How this plan is calculated”.",
   },
   {
     keys: ["data", "source", "where", "kanta", "record", "connect"],
     answer:
-      "Estimates come from public data: Statistics Finland, NORDCAN, Finnish studies on waiting times and the Tyks price list. Real results would come from the county's own patient record system (Lifecare, Omni360, Apotti or Esko) — see “Data sources” in the menu. Until it's connected, the Actual view runs on a clearly marked demo feed.",
+      "Estimates come from public data: Statistics Finland, NORDCAN, Finnish studies on waiting times and the Tyks price list. A live Actual view would take a weekly aggregate from the county's own reporting (Lifecare, Omni360, Apotti or Esko). Until then the charts are mock data.",
   },
   {
     keys: ["plan", "create", "new", "start", "how do i"],
@@ -89,11 +89,11 @@ const PLAYBOOK: { keys: string[]; answer: string }[] = [
   {
     keys: ["worth", "money", "cost", "price", "euro", "€", "budget"],
     answer:
-      "Each plan shows its cost per person scanned, per cancer found sooner, per death avoided and per year of life. If a year of life costs less than about €35k (what the UK's NICE usually pays) I call it “worth it”. Enter real supplier prices in the Investments table and everything recalculates.",
+      "Each plan shows cost per person scanned and cost per cancer found sooner. The badge says whether the visit-to-CT clock is within 10 days and inside capacity. Enter real supplier prices in the Investments table and the costs recalculate.",
   },
   {
     keys: ["actual", "track", "real", "estimate"],
-    answer: "Flip a plan from Estimate to Actual to compare what really happens with the plan and with doing nothing: days to diagnosis by month, patients through the route, money spent.",
+    answer: "Flip a plan from Estimate to Actual. The charts are mock weekly totals: pathways started, median days to the CT report, scans used, and spend.",
   },
   {
     keys: ["scan", "ct", "slot", "radiolog"],
@@ -106,7 +106,7 @@ const PLAYBOOK: { keys: string[]; answer: string }[] = [
 function reply(q: string) {
   const t = q.toLowerCase();
   const hit = PLAYBOOK.find((p) => p.keys.some((k) => t.includes(k)));
-  return hit?.answer ?? "I'm still a demo, so I only know the basics for now. Try asking how deaths are counted, where the data comes from, or how to make a plan.";
+  return hit?.answer ?? "I'm still a demo, so I only know the basics for now. Try asking about the 10-day endpoint, where the data comes from, or how to make a plan.";
 }
 
 export function Mascot() {

@@ -21,7 +21,7 @@ export function NewPlan() {
   const pickCounty = (slug: string) => setInputs((i) => ({ ...i, slug, scansPerWeek: suggestedScans(slug) }));
 
   const draft: Plan = useMemo(
-    () => ({ id: "draft", name: name || `${county.name} · lung track`, createdAt: "", status: "draft", inputs, costs: { ...DEFAULT_COSTS }, investments: [], pathways: [] }),
+    () => ({ id: "draft", name: name || `${county.name} · lung track`, createdAt: "", status: "draft", inputs, costs: { ...DEFAULT_COSTS }, investments: [], weeks: [] }),
     [inputs, name, county.name],
   );
   const ev = evaluate(draft);
@@ -170,8 +170,8 @@ export function NewPlan() {
                   <dd className="font-display text-2xl text-ink">{num(ev.sim.cancersRoute)}</dd>
                 </div>
                 <div>
-                  <dt className="text-xs text-ink-faint">Deaths avoided (estimate)</dt>
-                  <dd className="font-display text-2xl text-ink">{num(ev.sim.livesYear.mid)}</dd>
+                  <dt className="text-xs text-ink-faint">Visit → CT report</dt>
+                  <dd className="font-display text-2xl text-ink">{ev.sim.visitToCt} d</dd>
                 </div>
                 <div>
                   <dt className="text-xs text-ink-faint">Running cost</dt>

@@ -8,7 +8,7 @@ import type { County } from "@/lib/types";
 // ---------- inputs ----------
 export const INTENSITY = [
   { id: "narrow", label: "Narrow", hint: "Only high-risk people with clear warning signs", factor: 0.7, reach: 0.4 },
-  { id: "satakunta", label: "Satakunta-style", hint: "Long-term heavy smokers with symptoms — what Satakunta does", factor: 1, reach: 0.6 },
+  { id: "satakunta", label: "Satakunta-style", hint: "High-risk patients with symptoms (criteria set by the county)", factor: 1, reach: 0.6 },
   { id: "broad", label: "Broader", hint: "Anyone with lung symptoms the GP is worried about", factor: 1.35, reach: 0.8 },
 ] as const;
 export type IntensityId = (typeof INTENSITY)[number]["id"];

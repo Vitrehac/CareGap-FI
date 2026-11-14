@@ -120,4 +120,4 @@ Do not delete research scripts or raw extracts; they back the seed. Ignore them 
 
 ## License
 
-No `LICENSE` file in the repo yet. Treat as proprietary until the team adds one.
+[MIT](LICENSE). Copyright 2026 Team NoTokens.

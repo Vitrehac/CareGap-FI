@@ -22,7 +22,7 @@ export const HookMap: React.FC<P> = ({ seg }) => {
     {
       y: CITY.uppsala[1], from: CITY.uppsala, leader: prog(t, b.swLeader, 0.45), days: sw,
       color: swDone > 0 ? c.accent : c.inkFaint, done: swDone, labelOpacity: prog(t, b.swLeader, 0.4),
-      label: 'CT answer · day limits set',
+      label: 'CT answer within days',
     },
     {
       y: CITY.kajaani[1], from: CITY.kajaani, leader: prog(t, b.kjLeader, 0.45),
@@ -43,7 +43,7 @@ export const MapCallback: React.FC<P> = ({ seg }) => {
   const newIn = prog(t, b.reset + b.resetDur, 0.3);
   const kjDays = grow > 0 ? 7 * grow : 55 * (1 - shrink);
   const bars: BarState[] = [
-    { y: CITY.uppsala[1], from: CITY.uppsala, leader: 1, days: 7, color: c.accent, done: 1, labelOpacity: 1, label: 'CT answer · day limits set' },
+    { y: CITY.uppsala[1], from: CITY.uppsala, leader: 1, days: 7, color: c.accent, done: 1, labelOpacity: 1, label: 'CT answer within days' },
     {
       y: CITY.kajaani[1], from: CITY.kajaani, leader: 1, days: kjDays, color: grow > 0 ? c.accent : c.alarm, labelOpacity: 1,
       label: (

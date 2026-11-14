@@ -25,7 +25,7 @@ const contextPaths = CONTEXT.map((f) => path(f) ?? '');
 const pt = (lon: number, lat: number) => projection([lon, lat]) as [number, number];
 
 export const CITY = {
-  stockholm: pt(18.07, 59.33),
+  uppsala: pt(17.64, 59.86),
   helsinki: pt(24.94, 60.17),
   kajaani: pt(27.73, 64.23),
 };
@@ -100,8 +100,8 @@ export const NordicMap: React.FC<{ pulse: number; bars: BarState[]; guide7: numb
     </svg>
       <Dot p={CITY.helsinki} color={c.inkFaint} r={7} />
       <CityLabel p={CITY.helsinki} size={32} color={c.inkFaint} dy={-30}>Helsinki</CityLabel>
-      <Dot p={CITY.stockholm} color={c.accent} pulse={pulse} />
-      <CityLabel p={CITY.stockholm}>Stockholm</CityLabel>
+      <Dot p={CITY.uppsala} color={c.accent} pulse={pulse} />
+      <CityLabel p={CITY.uppsala}>Uppsala</CityLabel>
       <Dot p={CITY.kajaani} color={c.alarm} pulse={pulse} />
       <CityLabel p={CITY.kajaani}>Kajaani · Kainuu</CityLabel>
       {bars.map((b, i) => <Bar key={i} s={b} />)}

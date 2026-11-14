@@ -12,7 +12,7 @@ import { AppShot } from './AppShot';
 type P = { seg: Seg };
 const counter = (t: number, start: number, length: number, to: number, from = 0) => from + (to - from) * prog(t, start, length, easeInOut);
 
-// ── Map: Stockholm vs Kajaani on one day scale (follows the spoken hook) ──
+// ── Map: Uppsala vs Kajaani on one day scale (follows the spoken hook) ──
 export const HookMap: React.FC<P> = ({ seg }) => {
   const t = useT();
   const b = seg.beats;
@@ -20,9 +20,9 @@ export const HookMap: React.FC<P> = ({ seg }) => {
   const swDone = prog(t, b.swGrow + b.swGrowDur, 0.35);
   const bars: BarState[] = [
     {
-      y: CITY.stockholm[1], from: CITY.stockholm, leader: prog(t, b.swLeader, 0.45), days: sw,
+      y: CITY.uppsala[1], from: CITY.uppsala, leader: prog(t, b.swLeader, 0.45), days: sw,
       color: swDone > 0 ? c.accent : c.inkFaint, done: swDone, labelOpacity: prog(t, b.swLeader, 0.4),
-      label: 'CT answer · target ≤ 7 days',
+      label: 'CT answer · day limits set',
     },
     {
       y: CITY.kajaani[1], from: CITY.kajaani, leader: prog(t, b.kjLeader, 0.45),
@@ -43,13 +43,13 @@ export const MapCallback: React.FC<P> = ({ seg }) => {
   const newIn = prog(t, b.reset + b.resetDur, 0.3);
   const kjDays = grow > 0 ? 7 * grow : 55 * (1 - shrink);
   const bars: BarState[] = [
-    { y: CITY.stockholm[1], from: CITY.stockholm, leader: 1, days: 7, color: c.accent, done: 1, labelOpacity: 1, label: 'CT answer · target ≤ 7 days' },
+    { y: CITY.uppsala[1], from: CITY.uppsala, leader: 1, days: 7, color: c.accent, done: 1, labelOpacity: 1, label: 'CT answer · day limits set' },
     {
       y: CITY.kajaani[1], from: CITY.kajaani, leader: 1, days: kjDays, color: grow > 0 ? c.accent : c.alarm, labelOpacity: 1,
       label: (
         <div style={{ position: 'relative' }}>
           <div style={{ opacity: 1 - oldOut }}>Referral → diagnosis<br />~55 days (one study)</div>
-          <div style={{ position: 'absolute', left: 0, bottom: 0, opacity: newIn }}>Liwe plan · ~7 days to CT report<br />(estimate)</div>
+          <div style={{ position: 'absolute', left: 0, bottom: 0, opacity: newIn }}>Liwe plan · day limits set<br />(estimate)</div>
         </div>
       ),
     },
@@ -122,7 +122,7 @@ export const App_CTReportCost: React.FC<P> = ({ seg }) => {
   return (
     <AppShot views={[{ src: 'plan', at: 0, cam: [{ t: 0, x: 900, y: 700, z: 1.3 }, { t: 1.0, x: 662, y: 804, z: 2.3 }] }]}
       marks={[{ rect: [771, 722, 260, 80], from: b.ct + 0.2, to: b.cost - 0.3 }, { rect: [488, 722, 260, 80], from: b.cost + 0.2 }]}>
-      <Callout from={b.ct} to={b.cost - 0.1} position="bottom-right" value={<span style={{ color: c.accent }}>~7 days</span>} caption="public visit → CT report · estimate" />
+      <Callout from={b.ct} to={b.cost - 0.1} position="bottom-right" value={<span style={{ color: c.accent }}>day limits set</span>} caption="public visit → CT report · estimate" />
       <Callout from={b.cost + 0.15} to={seg.duration} position="bottom-right" value="€165" caption="per person scanned" />
     </AppShot>
   );

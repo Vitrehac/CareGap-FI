@@ -2,16 +2,17 @@
 
 import { counties } from "@/lib/data";
 import type { County } from "@/lib/types";
-
-const CAPACITY_CEILING = 8;
+import { DEFAULT_SHARE_LIMIT, capacityShare, slotsFor } from "@/components/pilot/model";
 
 type Props = {
   selected: string;
   onSelect: (slug: string) => void;
   className?: string;
+  /** shade counties whose pilot demand would exceed the CT-share limit */
+  flagCapacity?: boolean;
 };
 
-export function CountyMap({ selected, onSelect, className = "" }: Props) {
+export function CountyMap({ selected, onSelect, className = "", flagCapacity = true }: Props) {
   const selectable = counties.filter((c) => !c.tooSmall);
 
   return (
@@ -24,7 +25,7 @@ export function CountyMap({ selected, onSelect, className = "" }: Props) {
       >
         {selectable.map((c) => {
           const active = c.slug === selected;
-          const blocked = c.ctPerWeekEst > CAPACITY_CEILING;
+          const blocked = flagCapacity && capacityShare(slotsFor(c, "satakunta"), c) > DEFAULT_SHARE_LIMIT;
           return (
             <path
               key={c.slug}
@@ -32,7 +33,7 @@ export function CountyMap({ selected, onSelect, className = "" }: Props) {
               tabIndex={0}
               role="button"
               aria-pressed={active}
-              aria-label={`${c.name}, about ${c.ctPerWeekEst.toFixed(1)} extra CT scans per week${blocked ? ", over the safe limit" : ""}`}
+              aria-label={`${c.name}${blocked ? ", pilot demand over 5 percent of estimated county chest CT" : ""}`}
               onClick={() => onSelect(c.slug)}
               onKeyDown={(e) => {
                 if (e.key === "Enter" || e.key === " ") {
@@ -58,17 +59,17 @@ export function CountyMap({ selected, onSelect, className = "" }: Props) {
           <span className="inline-block h-2.5 w-2.5 rounded-sm bg-accent" />
           Your county
         </span>
-        <span className="inline-flex items-center gap-1.5">
-          <span className="inline-block h-2.5 w-2.5 rounded-sm bg-[#f3c4b8]" />
-          Over the safe limit (8 extra scans a week)
-        </span>
+        {flagCapacity && (
+          <span className="inline-flex items-center gap-1.5">
+            <span className="inline-block h-2.5 w-2.5 rounded-sm bg-[#f3c4b8]" />
+            Over 5% of estimated county chest CT (Estimate)
+          </span>
+        )}
       </div>
     </div>
   );
 }
 
-export function capacityBlocked(county: County, ceiling = CAPACITY_CEILING) {
-  return county.ctPerWeekEst > ceiling;
+export function capacityBlocked(county: County, limit = DEFAULT_SHARE_LIMIT) {
+  return capacityShare(slotsFor(county, "satakunta"), county) > limit;
 }
-
-export { CAPACITY_CEILING };

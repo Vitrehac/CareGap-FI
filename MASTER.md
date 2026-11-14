@@ -1,4 +1,4 @@
-# CareGap FI — MASTER (living file)
+# Liwe — MASTER (living file)
 
 **Update this file whenever something important changes.**  
 Team: NoTokens · Junction 2026 · AstraZeneca “Equal Care Across Finland”  
@@ -11,7 +11,7 @@ Last updated: **2026-11-14 ~12:30 EET**
 
 ## 0. One-liner
 
-**CareGap FI** packages a **measured county experiment**: Satakunta-style direct primary-care chest CT + process clocks + capacity stop-rule — not AI diagnosis, not “lives saved.”
+**Liwe** packages a **measured county experiment**: Satakunta-style direct primary-care chest CT + process clocks + capacity stop-rule — not AI diagnosis, not “lives saved.”
 
 Tagline: *Measure the CT handoff first.*  
 Hero line: *A ready-made pilot for one wellbeing services county.*
@@ -99,7 +99,7 @@ Legal: prototype, **not a medical device**. Population planning / education only
 ## 4. Pitch assets (copy-paste)
 
 ### 5-sentence pitch
-Finnish men survive lung cancer at **17.9%** over five years against Sweden’s **31.3%** — and peers let primary care into the CT filter step while Finnish health-centre doctors usually still need a specialist gate. Satakunta already opened direct CT from primary care, but that change was never properly measured, so nobody can honestly say “copy this nationwide.” CareGap FI packages the next county as a **12‑month experiment**: size a few CT slots a week (Kainuu-scale is about **2.4**), pick a comparator, pre-register days-to-CT-report, and stop if other radiology waits blow up. Doctors shouldn’t get a new form — clocks should ride systems they already use; the weekend demo is the brief and the rules, not a live EHR hookup. We are not promising stage shift or lives saved this year — we are offering a **realistic, capacity-checked way to learn whether easier CT access is worth scaling**.
+Finnish men survive lung cancer at **17.9%** over five years against Sweden’s **31.3%** — and peers let primary care into the CT filter step while Finnish health-centre doctors usually still need a specialist gate. Satakunta already opened direct CT from primary care, but that change was never properly measured, so nobody can honestly say “copy this nationwide.” Liwe packages the next county as a **12‑month experiment**: size a few CT slots a week (Kainuu-scale is about **2.4**), pick a comparator, pre-register days-to-CT-report, and stop if other radiology waits blow up. Doctors shouldn’t get a new form — clocks should ride systems they already use; the weekend demo is the brief and the rules, not a live EHR hookup. We are not promising stage shift or lives saved this year — we are offering a **realistic, capacity-checked way to learn whether easier CT access is worth scaling**.
 
 ### Mentor questions (AZ)
 1. Who owns the CT order rule (HVA / hospital / national)?  
@@ -159,7 +159,7 @@ Index: [docs/MORTALITY_CHARTS.md](docs/MORTALITY_CHARTS.md)
 County rates = both sexes, all ages. Sex/age = country level only.
 
 ### Cold brief
-- `docs/CareGap-FI-brief.pdf` (+ `.md` + `generate_brief_pdf.py`)
+- `docs/Liwe-FI-brief.pdf` (+ `.md` + `generate_brief_pdf.py`)
 
 ---
 
@@ -192,7 +192,7 @@ County rates = both sexes, all ages. Sex/age = country level only.
 ## 9. Changelog (append only)
 
 ### 2026-11-14
-- Locked CareGap FI brand; cold PDF; interactive then clarity+brand overhaul of `/` `/pilot`.  
+- Locked Liwe brand; cold PDF; interactive then clarity+brand overhaul of `/` `/pilot`.  
 - Verification: stage-I mash-up scrubbed; causal CT weakened; clocks phrasing fixed.  
 - Register compare + mortality charts + gate funnel research.  
 - Mentor chat: experiment framing OK; quote pending; avoid overclaim.  

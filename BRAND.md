@@ -1,9 +1,9 @@
-# Brand: CareGap FI
+# Brand: Liwe
 
 **Locked:** 2026-11-14 · Junction 2026 · team NoTokens  
-**Collision check:** Sitra ran an archived 2016–2018 Finnish “Care Gap” care-deficiency project; caregap.io is a US lab-ordering API. Neither is a Nordic pathway-planning product. **CareGap FI** stays; the `FI` suffix and pathway-clock meaning keep us distinct.
+**Collision check:** Sitra ran an archived 2016–2018 Finnish “Care Gap” care-deficiency project; Liwe.io is a US lab-ordering API. Neither is a Nordic pathway-planning product. **Liwe** stays; the `FI` suffix and pathway-clock meaning keep us distinct.
 
-Do not use older working names (CareTwin FI) in UI, PDF, or pitch materials unless quoting history.
+Do not use older working names (Liwe) in UI, PDF, or pitch materials unless quoting history.
 
 ---
 
@@ -11,19 +11,19 @@ Do not use older working names (CareTwin FI) in UI, PDF, or pitch materials unle
 
 | # | Name | Rationale | Notes |
 |---|---|---|---|
-| 1 | **CareGap FI** | Names the survivorship / access gap and the Finnish county frame. Already owned in repo, metadata, package. | **Chosen** |
+| 1 | **Liwe** | Names the survivorship / access gap and the Finnish county frame. Already owned in repo, metadata, package. | **Chosen** |
 | 2 | ClockGap FI | Leads with missing pathway clocks vs peers. | Strong for measurement story; weaker for CT handoff. |
 | 3 | FilterCT FI | Echoes SE/NO filterfunktion language mentors know. | Too intervention-narrow; sounds like a device. |
 | 4 | PathwayPilot FI | Clear “county experiment” category. | Generic; easy to confuse with any pilot tooling. |
 | 5 | ReferralBlind FI | Names the unmeasured GP→CT step. | Punchy but hostile tone for county buyers. |
 
-**Recommendation:** Keep **CareGap FI**.
+**Recommendation:** Keep **Liwe**.
 
 ---
 
 ## Positioning
 
-For wellbeing-services planners and county pathway leads who must decide whether to copy a Satakunta-style primary-care CT route this year, **CareGap FI** is the county-experiment cockpit that packages the CT handoff with a pre-registered process endpoint, a comparator county, and a capacity stop rule, unlike survival dashboards that restate flat regional outcomes or pilots that scale without clocks.
+For wellbeing-services planners and county pathway leads who must decide whether to copy a Satakunta-style primary-care CT route this year, **Liwe** is the county-experiment cockpit that packages the CT handoff with a pre-registered process endpoint, a comparator county, and a capacity stop rule, unlike survival dashboards that restate flat regional outcomes or pilots that scale without clocks.
 
 ---
 
@@ -41,7 +41,7 @@ County pilot configurator for Finland’s missing primary-care CT clock.
 
 1. **The survival gap is real.** NORDCAN places Finnish lung-cancer five-year relative survival last or near-last in the Nordics.
 2. **The actionable system feature is referral.** Finnish health centres generally cannot send patients straight to CT; SE/DK/NO pathways build that filter step in.
-3. **Do not scale without clocks.** Satakunta is unevaluated local practice. CareGap FI sells a measured county experiment (process endpoint + comparator + stop rule), not a stage-shift promise.
+3. **Do not scale without clocks.** Satakunta is unevaluated local practice. Liwe sells a measured county experiment (process endpoint + comparator + stop rule), not a stage-shift promise.
 
 ---
 
@@ -76,7 +76,7 @@ seamless, revolutionary, unlock, empower, leverage, AI diagnosis, lives saved, s
 
 | Surface | Line |
 |---|---|
-| Hero | CareGap FI. County pilot configurator for Finland’s missing primary-care CT clock. |
+| Hero | Liwe. County pilot configurator for Finland’s missing primary-care CT clock. |
 | Primary CTA | Configure a 12-month experiment |
 | Empty state | Pick a county to size weekly CT demand and attach a process clock. |
 | Helper under estimate | This is an Estimate from incidence × pathway assumptions. |
@@ -96,6 +96,6 @@ seamless, revolutionary, unlock, empower, leverage, AI diagnosis, lives saved, s
 
 ## Logo (mini guidelines)
 
-Mark file: [`public/caregap-mark.svg`](public/caregap-mark.svg). Wordmark preview: [`public/caregap-wordmark.svg`](public/caregap-wordmark.svg).
+Mark file: [`public/liwe-mark.svg`](public/liwe-mark.svg). The wordmark is the text “liwe” in the header.
 
-The mark is an open clock arc with a single gap tick (the missing pathway clock), used next to the **CareGap FI** wordmark. Keep clear space of at least half the mark height. Ship in one-colour ink or Baltic accent (`#1E4D8C`) on paper; gap tick may use alarm red (`#A61C1C`). No glow, gradients, teal, or purple fills. Below 24 px, use the mark alone; from 28 px up, pair with the wordmark.
+The mark is an open clock arc with a single gap tick (the missing pathway clock), used next to the **Liwe** wordmark. Keep clear space of at least half the mark height. Ship in one-colour ink or Baltic accent (`#1E4D8C`) on paper; gap tick may use alarm red (`#A61C1C`). No glow, gradients, teal, or purple fills. Below 24 px, use the mark alone; from 28 px up, pair with the wordmark.

@@ -1,4 +1,4 @@
-# Differentiation — why CareTwin FI isn’t the AI-default
+# Differentiation — why Liwe isn’t the AI-default
 
 Written Sat 14 Nov ~00:30 after reverse-engineering what other Junction teams will ship when they paste the AstraZeneca brief into ChatGPT/Claude/Cursor.
 
@@ -53,7 +53,7 @@ One optional citation-bound brief writer. The innovation is **governance tooling
 
 ## Positioning one-liner
 
-> CareTwin FI is the install wizard for Finland’s missing national lung pathway: copy Satakunta where capacity allows, refuse where it doesn’t, and ship the measurement layer because outcome evidence is weak and a mature clinical quality register with pathway clocks still doesn’t exist.
+> Liwe is the install wizard for Finland’s missing national lung pathway: copy Satakunta where capacity allows, refuse where it doesn’t, and ship the measurement layer because outcome evidence is weak and a mature clinical quality register with pathway clocks still doesn’t exist.
 
 ---
 

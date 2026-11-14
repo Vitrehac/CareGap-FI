@@ -9,7 +9,7 @@ import { ASSUMED, LIMITER_TEXT, evaluate, money, num } from "@/lib/engine";
 import { DEFAULT_COSTS, defaultInputs, savePlan, suggestedScans, uid, type Plan, type PlanInputs } from "@/lib/plans";
 import { Card, Field, NumberInput, Page, VerdictPill } from "./ui";
 
-const STEPS = ["County & ambition", "Money", "People & capacity", "Review"];
+const STEPS = ["County & scans", "Money", "People & capacity", "Review"];
 
 export function NewPlan() {
   const router = useRouter();
@@ -79,7 +79,7 @@ export function NewPlan() {
                   </p>
                 </div>
               </div>
-              <CountyMap selected={inputs.slug} onSelect={pickCounty} />
+              <CountyMap selected={inputs.slug} onSelect={pickCounty} flagCapacity={false} />
             </div>
           )}
 

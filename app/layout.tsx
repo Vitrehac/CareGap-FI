@@ -11,7 +11,7 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "Liwe: catch lung cancer sooner",
+  title: "Liwe",
   description:
     "Plan, fund and track faster lung-cancer diagnosis in Finnish wellbeing-services counties — see how many lives an investment saves, and whether it actually does.",
 };

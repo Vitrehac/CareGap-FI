@@ -1,4 +1,4 @@
-# Sources — CareTwin FI
+# Sources — Liwe
 
 Master citation list for the demo. Machine-readable twin: [`data/sources.json`](data/sources.json).  
 **Rule:** every on-screen number must map to an `id` below (or be tagged Estimate / Mock with assumptions file).

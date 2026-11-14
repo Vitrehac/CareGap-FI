@@ -1,4 +1,4 @@
-# Hackathon: CareGap FI (NoTokens)
+# Hackathon: Liwe (NoTokens)
 
 Start: Fri 13 Nov 2026 evening (EET) · Submit: Sun 15 Nov 2026 10:00 EET  
 Deliverables: live demo ☑ · public repo ☑ · 2:00 pitch video ☑ · PDF deck ☑  
@@ -16,7 +16,7 @@ Roles:
 - [x] 2. Market/legal check: lite; MDR/AI Act/Findata kill patient-triage (LEGAL.md)
 - [x] 3. MVP scope: MVP.md locked at 85–90 bar (aha / stop rule / failure preset / evidence dial)
 - [ ] 4. Business model: lite (who pays: counties / FICAN planning; not required for challenge win)
-- [x] 5. Brand: BRAND.md (CareGap FI kept) + logo + DESIGN.md + cold brief PDF
+- [x] 5. Brand: BRAND.md (Liwe kept) + logo + DESIGN.md + cold brief PDF
 - [x] 6. UI direction: DESIGN.md locked (clinical Nordic planning tool)
 - [x] 7. Build: happy path `/` → `/pilot` → `/sources` (DEMO.md 45–60s path; organised beta)
 - [ ] 8. Polish + feature freeze (Sat ~20:00)

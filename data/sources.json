@@ -1,6 +1,6 @@
 {
   "meta": {
-    "title": "CareGap FI — provenance vault",
+    "title": "Liwe — provenance vault",
     "compiled": "2026-11-14",
     "rule": "Every UI number must reference an id here, or be Estimate/Unknown. Do not invent URLs or statistics.",
     "humanReadable": "SOURCES.md"
@@ -40,7 +40,7 @@
       "url": "https://nordcan.iarc.fr/",
       "publisher": "IARC / NORDCAN",
       "accessed": "2026-11-13",
-      "notes": "Paste specific indicator extractions into data files with year/sex before quoting numbers."
+      "notes": "5-year relative survival, lung, group ALL, extract year code 2022, men and women, FI/SE/DK/NO/IS, with 95% CI. Copied into raw/nordcan_survival_lung.csv on 2026-11-14 from raw/nordcan.csv. The csv year field is 2022; this repo's older notes call that cohort 2020-2024, which is not a column in the file."
     },
     {
       "id": "acta-oncol-nordic-lc-2025",
@@ -507,6 +507,24 @@
       "publisher": "BMC Cancer",
       "accessed": "2026-11-14",
       "notes": "3-year RS improved after Danish CPP implementation (lung among cancers with significant change). Authors warn lead-time/selection bias. Evaluates whole three-legged reform, not GP-CT alone."
+    },
+    {
+      "id": "Z43",
+      "category": "context",
+      "title": "Mortality due to cancer treatment delay: systematic review and meta-analysis (Hanna et al. 2020)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7610021/",
+      "publisher": "BMJ",
+      "accessed": "2026-11-14",
+      "notes": "Context, not used in the model. Do not convert delay into deaths avoided."
+    },
+    {
+      "id": "Z20",
+      "category": "context",
+      "title": "Finnish Cancer Registry annual report 2022",
+      "url": "https://www.sttinfo.fi/files/69820264/70275300/98389/fi",
+      "publisher": "Finnish Cancer Registry",
+      "accessed": "2026-11-14",
+      "notes": "Context, not used in the model. Years-of-life-lost figure is not an input."
     }
   ],
   "pendingUrlConfirmation": [

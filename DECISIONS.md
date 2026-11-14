@@ -1,8 +1,8 @@
-# Decisions — NoTokens / CareTwin FI
+# Decisions — NoTokens / Liwe
 
 ## Product lock (2026-11-13; thesis scrubbed 2026-11-14 per `VERIFICATION.md`)
 
-**We build:** CareTwin FI — a Goal 3 *pathway + Satakunta rollout* decision cockpit for wellbeing services counties / FICAN.  
+**We build:** Liwe — a Goal 3 *pathway + Satakunta rollout* decision cockpit for wellbeing services counties / FICAN.  
 **Quality bar:** 85–90 = Pathway Deployer wedge (see DIFFERENTIATION.md): install Satakunta package + capacity stop rule + Evidence Void (no fake national clocks) + Monday brief. Aha-map is optional garnish, not the core.  
 **We do not build:** patient–doctor network, individual cancer prediction, treatment-queue triage, or hero choropleth dashboards.
 
@@ -32,7 +32,7 @@
 
 ## Name
 
-**CareGap FI** locked 2026-11-14 (see `BRAND.md`). Former working name CareTwin FI retired for pitch surfaces.
+**Liwe** locked 2026-11-14 (see `BRAND.md`). Former working name Liwe retired for pitch surfaces.
 
 ## Stack
 

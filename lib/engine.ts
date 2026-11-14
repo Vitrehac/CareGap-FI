@@ -3,6 +3,16 @@
 // Every step of the calculation is also returned as `steps`, with its source, so the UI can show its working.
 import { getCounty, counties, national } from "@/lib/data";
 import { FACTS, MODEL_SOURCES, type Stage } from "@/components/pilot/model";
+
+// Outcome assumptions live here, not in the process model (components/pilot/model.ts measures times only).
+const OUTCOME = {
+  hrPer4Weeks: { low: 1.03, mid: 1.06, high: 1.08 }, // Hanna 2020 BMJ (Z43): surgery 1.06–1.08; lung surgery 1.06
+  yearsLostPerPatient: 11.6, // Finnish Cancer Registry 2022 (Z20)
+};
+const OUTCOME_SOURCES = [
+  { id: "Z43", title: "Hanna et al. 2020, Mortality due to cancer treatment delay, BMJ", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7610021/" },
+  { id: "Z20", title: "Finnish Cancer Registry annual report 2022", url: "https://www.sttinfo.fi/files/69820264/70275300/98389/fi" },
+];
 import type { Investment, PathwayRecord, Plan } from "@/lib/plans";
 
 export const TODAY = "2026-11-14";
@@ -21,7 +31,7 @@ export const ASSUMED = {
 };
 
 export const CT_RESULT_DAYS = FACTS.ctResultSweden; // reserved slots → answer within a week (Sweden's target)
-const WORKUP = Math.round(FACTS.referralToDiagnosis * FACTS.workupShare);
+const WORKUP = Math.round(FACTS.referralToDiagnosis * FACTS.workupShare.mid);
 const PER_CANCER = national.pathwaysPerConfirmedCancer; // people scanned to find one cancer
 
 export type Limiter = "covered" | "scanners" | "radiologists" | "funding";
@@ -68,7 +78,7 @@ export function syncInvestments(plan: Plan, scansPerWeek: number): Investment[] 
 
 const cost = (i: Investment) => i.actual ?? i.estimate;
 const cut = (hr: number, days: number) => 1 - Math.pow(hr, -Math.max(0, days) / 28);
-const src = (id: string) => MODEL_SOURCES.find((s) => s.id === id);
+const src = (id: string): { title: string; url: string } | undefined => MODEL_SOURCES.find((s) => s.id === id) ?? OUTCOME_SOURCES.find((s) => s.id === id);
 
 export type Step = { label: string; value: string; how: string; source?: { title: string; url: string } };
 
@@ -122,11 +132,11 @@ export function evaluate(plan: Plan) {
   const deathsRoute = cancersRoute * deathRisk;
   const deathsOthers = county.deathsPerYear - deathsRoute;
   const livesAt = (hr: number) => deathsRoute * cut(hr, savedRoute) + deathsOthers * cut(hr, savedOthers);
-  const H_ = FACTS.hrPer4Weeks;
+  const H_ = OUTCOME.hrPer4Weeks;
   const livesYear = { low: livesAt(H_.low), mid: livesAt(H_.mid), high: livesAt(H_.high) };
   const programmeYear = { low: deathsRoute * cut(H_.low, savedRouteProgramme), mid: deathsRoute * cut(H_.mid, savedRouteProgramme), high: deathsRoute * cut(H_.high, savedRouteProgramme) };
   const gpYear = livesYear.mid - programmeYear.mid;
-  const L = FACTS.yearsLostPerPatient;
+  const L = OUTCOME.yearsLostPerPatient;
 
   // ---- money
   const investments = syncInvestments(plan, scans);
@@ -156,7 +166,7 @@ export function evaluate(plan: Plan) {
     { label: "People scanned a year", value: num(peopleScannedYear, 0), how: `${num(scans)} scans a week × 52${scans < wanted ? ` (you asked for ${num(wanted)}; ${LIMITER_TEXT[limiter].toLowerCase()})` : ""}` },
     { label: "Lung cancers found on the fast route", value: num(cancersRoute), how: `${num(effective * 52, 0)} people ÷ ${num(PER_CANCER, 2)}${scans > useful ? ` — capped: only ≈ ${pct(ASSUMED.maxRouteShare)} of cancers start with a GP visit, so scans above ${num(useful)} a week find no extra cancers` : ""} = ${pct(reach)} of the county's cancers` },
     { label: "Days to diagnosis today", value: `${daysToday} days`, how: `${FACTS.gpWaitToday} days to see a GP + ${FACTS.gpToReferral} days GP → referral + ${FACTS.referralToDiagnosis} days referral → diagnosis`, source: src("Z13") },
-    { label: "Days on the fast route", value: `${daysRoute} days`, how: `${gpWait} days to see a GP + ${CT_RESULT_DAYS} days CT result (Sweden's target) + ${WORKUP} days specialist work-up (half of today's 55 — our assumption)`, source: src("Z41") },
+    { label: "Days on the fast route", value: `${daysRoute} days`, how: `${gpWait} days to see a GP + ${CT_RESULT_DAYS} days CT result (Sweden's target) + ${WORKUP} days specialist work-up (half of today's 55; unknown, plausible range ${Math.round(FACTS.referralToDiagnosis * FACTS.workupShare.low)}–${Math.round(FACTS.referralToDiagnosis * FACTS.workupShare.high)} — the pilot measures it)`, source: src("Z41") },
     { label: "Lower risk of dying", value: pct(cut(H_.mid, savedRouteProgramme)), how: `every 4 weeks of delay raises the risk of death by ≈ 6% (range 3–8%) → 1 − 1.06^(−${savedRouteProgramme} ÷ 28)`, source: src("Z43") },
     { label: "Of the fast-route patients, deaths expected today", value: num(deathsRoute), how: `${num(cancersRoute)} cancers × ${pct(deathRisk)} (deaths ÷ new cases in ${county.name})` },
     { label: "Deaths avoided a year (the CT route)", value: num(programmeYear.mid), how: `${num(deathsRoute)} × ${pct(cut(H_.mid, savedRouteProgramme))} · range ${num(programmeYear.low)}–${num(programmeYear.high)}` },
@@ -262,7 +272,7 @@ export function demoFeed(plan: Plan, ev: Evaluation): PathwayRecord[] {
       const ctOrdered = addDays(visit, r() * 2);
       const ctResult = addDays(ctOrdered, ev.sim.wait * drag * (0.7 + r() * 0.6));
       const isCancer = r() < cancerShare;
-      const workup = Math.round(FACTS.referralToDiagnosis * FACTS.workupShare);
+      const workup = WORKUP;
       const diagnosis = isCancer ? addDays(ctResult, workup * drag * (0.7 + r() * 0.6)) : undefined;
       const open = (diagnosis ?? ctResult) > TODAY;
       out.push({
@@ -283,7 +293,7 @@ export function demoFeed(plan: Plan, ev: Evaluation): PathwayRecord[] {
 export function actuals(plan: Plan, ev: Evaluation, records: PathwayRecord[]) {
   const months = monthsSince(plan.inputs.start);
   const deathRisk = ev.county.deathsPerYear / ev.county.casesPerYearEst;
-  const cutMid = (days: number) => cut(FACTS.hrPer4Weeks.mid, days);
+  const cutMid = (days: number) => cut(OUTCOME.hrPer4Weeks.mid, days);
   const baseDays = ev.sim.daysToday;
   let cumEst = 0;
   let cumAct = 0;

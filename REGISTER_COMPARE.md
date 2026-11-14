@@ -3,9 +3,9 @@
 **Compiled:** 2026-11-14  
 **Method:** Official authority pages and published PDFs (plus local `data/sources.json`). No invented stats.
 
-## What this means for the CareGap pitch
+## What this means for the Liwe pitch
 
-Finland **does** publish cancer registration outcomes (incidence, mortality, survival) and now a **quality-registry pilot** for lung (stage completeness, curative-intent share, regional treatment mixes). The CareGap measurement gap is narrower and sharper: peers publish **cancer-specific pathway clocks** (days from pathway start / remiss to first treatment, by modality and region/hospital, against explicit targets). Finland’s published tables still do **not** let a wellbeing-services county manager read “days from GP referral to CT report” or “% of lung pathways within X days to treatment start.” Missing clocks ≠ missing register.
+Finland **does** publish cancer registration outcomes (incidence, mortality, survival) and now a **quality-registry pilot** for lung (stage completeness, curative-intent share, regional treatment mixes). The Liwe measurement gap is narrower and sharper: peers publish **cancer-specific pathway clocks** (days from pathway start / remiss to first treatment, by modality and region/hospital, against explicit targets). Finland’s published tables still do **not** let a wellbeing-services county manager read “days from GP referral to CT report” or “% of lung pathways within X days to treatment start.” Missing clocks ≠ missing register.
 
 ---
 

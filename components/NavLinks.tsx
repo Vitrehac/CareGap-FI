@@ -5,8 +5,7 @@ import { usePathname } from "next/navigation";
 import { Glitch } from "@/components/mithril/Effects";
 
 const NAV = [
-  { href: "/", label: "Gap" },
-  { href: "/pilot", label: "Scenario" },
+  { href: "/", label: "About" },
   { href: "/sources", label: "Sources" },
 ];
 

@@ -72,7 +72,7 @@ export const DOWNLOADS: Download[] = [
     owner: "Statistics Finland (WFS)",
     url: "https://geo.stat.fi/geoserver/tilastointialueet/wfs",
     contents: "County polygons (GeoJSON).",
-    usedFor: "The county map on /pilot.",
+    usedFor: "The county map in the plan builder.",
   },
   {
     file: "lit_values.csv",

@@ -22,6 +22,8 @@ export type Config = {
   intensityId: IntensityId;
   addedScans: number;
   fastGp: boolean;
+  /** overrides fastGp: days to see a GP in this scenario */
+  gpWaitDays?: number;
 };
 
 export const DEFAULT_CONFIG: Omit<Config, "slug"> = {
@@ -75,7 +77,7 @@ export function simulate(county: County, cfg: Config) {
   const it = intensityOf(cfg.intensityId);
   const demand = slotsFor(county, cfg.intensityId, cfg.directCt);
   const wait = cfg.directCt ? ctWait(demand, cfg.addedScans) : 0;
-  const gpWait = cfg.fastGp ? FACTS.gpWaitNordic : FACTS.gpWaitToday;
+  const gpWait = cfg.gpWaitDays ?? (cfg.fastGp ? FACTS.gpWaitNordic : FACTS.gpWaitToday);
   const workup = Math.round(FACTS.referralToDiagnosis * FACTS.workupShare);
 
   const today: Stage[] = [
@@ -184,6 +186,9 @@ export const MODEL_SOURCES = [
   { id: "Z2", what: "Lung-cancer deaths per county per year, 2021–2024", title: "Statistics Finland, causes of death", url: "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ksyyt/" },
   { id: "Z52", what: "5-year survival: Finland 17.9%, Sweden 31.3% (men)", title: "NORDCAN 2.0", url: "https://nordcan.iarc.fr/" },
   { id: "Z41", what: "Sweden: 7 days from referral to the chest-scan answer", title: "Ledtider standardiserat vårdförlopp lungcancer (Sweden)", url: "https://vardgivare.regionkalmar.se/globalassets/vard-och-behandling/cancersjukdomar/ledtider_svf_20180123-uppdaterad.pdf" },
+  { id: "TYKS", what: "A chest CT (GD1AD) costs €132–198 in a Finnish public hospital price list — scanner, staff and the radiologist's report included", title: "Tyks imaging price list 2022 (Varha / Turku University Hospital)", url: "https://www.tyks.fi/sites/default/files/2022-10/T11%20Kuvantamisen%20toimialueen%20hinnasto%202022.pdf" },
+  { id: "THL", what: "A 7-day GP guarantee needs 1,100–1,800 more health-centre doctors nationally", title: "THL 2023, Hoitotakuun tiukentamisen takia tarvitaan 1 100–1 800 uutta lääkäriä", url: "https://thl.fi/fi/-/hoitotakuun-tiukentamisen-takia-tarvitaan-1100-1800-uutta-laakaria-thl-korjaa-aiempaa-laskelmaansa" },
+  { id: "HE", what: "Government bill for the 7-day guarantee: 672 doctors and 476 nurses more, €160 million a year", title: "Government bill on the 7-day care guarantee, as reported by Suomenmaa", url: "https://www.suomenmaa.fi/uutiset/seitseman-paivan-hoitotakuu-on-sinansa-hyva-hanke-mutta-mista-saadaan-672-laakaria-ja-476-sairaanhoitajaa-eduskunnassa-ihmeteltiin/" },
   { id: "STUK", what: "Finland did 35,058 chest CT scans in 2024 (≈ 674 a week)", title: "STUK radiological examinations 2024", url: "https://stuk.fi/avoin-data" },
 ] as const;
 
@@ -191,7 +196,91 @@ export const ASSUMPTIONS = [
   "Who qualifies decides how many of the county’s lung cancers come through the new route: narrow 40%, Satakunta-style 60%, broader 80%.",
   "With a direct CT, half of today’s 55 days from referral to diagnosis still remains (specialist tests after a suspicious scan). The other half — waiting for the specialist to order the CT — disappears.",
   "If the county adds fewer scans than the route needs, patients queue: the CT result slips from 7 days up to 42 days with no added scans.",
+  "Costs: a reserved CT slot is priced at a Finnish public hospital's all-in price for a chest CT (€132–198). Many of these patients would have had a CT later anyway, so this overstates the true extra cost.",
+  "Staff time per scan (15 min radiologist, 20 min radiographer) and 3 hours of GP training are our estimates, not measured values.",
+  "Faster GP: the national 7-day-guarantee estimate (672–1,800 doctors, €160 million a year for the low end) is scaled by the county's share of the population.",
   "Lives: the delay–mortality link measured for treatment (Hanna 2020) is applied to the diagnosis delay. We show a cautious (1.03), central (1.06) and optimistic (1.08) version.",
 ];
 
 export { CAPACITY_CEILING };
+
+// ---------- action plan: what you would have to do, in people and euros ----------
+const FI_POP = counties.reduce((a, c) => a + c.population, 0);
+
+export const COSTS = {
+  ctEuro: { low: 132, high: 198 }, // per chest CT, all-in hospital price (TYKS)
+  radiologistMinPerCt: 15, // ASSUMPTION: reading and reporting one chest CT
+  radiographerMinPerCt: 20, // ASSUMPTION: positioning and scanning one patient
+  gpDoctorsFi: { low: 672, high: 1800 }, // 7-day GP guarantee, whole Finland (HE bill low, THL high)
+  gpNursesFi: 476, // HE bill
+  gpEuroFi: 160_000_000, // HE bill, per year
+  trainingHoursPerGp: 3, // ASSUMPTION: one session on the referral criteria and how to read the result
+};
+
+export type Action = {
+  what: string;
+  how: string;
+  people?: string;
+  euroYear?: { low: number; high: number };
+  oneOff?: string;
+  sources: string[];
+  warn?: boolean;
+};
+
+export function actionPlan(county: County, cfg: Config) {
+  const s = simulate(county, cfg);
+  const share = county.population / FI_POP;
+  const actions: Action[] = [];
+
+  if (cfg.directCt) {
+    actions.push({
+      what: "Give family doctors the right to order chest CT",
+      how: `The county's radiology and lung clinics write one-page referral criteria (who qualifies: ${intensityOf(cfg.intensityId).hint.replace(/^./, (ch) => ch.toLowerCase())}), and the result goes straight back to the GP with a fast-track to the lung clinic if it is suspicious.`,
+      people: `≈ ${COSTS.trainingHoursPerGp} hours of training per family doctor, once`,
+      oneOff: "Low cost: a protocol and a training session, no new machine",
+      sources: ["Z13"],
+    });
+    const scansYear = cfg.addedScans * 52;
+    if (cfg.addedScans > 0) {
+      const hoursWeek = (cfg.addedScans * (COSTS.radiologistMinPerCt + COSTS.radiographerMinPerCt)) / 60;
+      actions.push({
+        what: `Reserve ${cfg.addedScans} chest CT slots a week for this route`,
+        how:
+          cfg.addedScans <= CAPACITY_CEILING
+            ? `That is about ${Math.ceil(cfg.addedScans / 5)} a working day — it fits on the county's existing scanner with an extra hour or two. No new scanner needed.`
+            : `More than ${CAPACITY_CEILING} a week is beyond what one scanner absorbs easily — plan an extra evening shift or buy time from a private imaging centre.`,
+        people: `≈ ${(hoursWeek).toFixed(1).replace(/\.0$/, "")} staff hours a week (radiologist ${COSTS.radiologistMinPerCt} min + radiographer ${COSTS.radiographerMinPerCt} min per scan)`,
+        euroYear: { low: scansYear * COSTS.ctEuro.low, high: scansYear * COSTS.ctEuro.high },
+        sources: ["TYKS"],
+        warn: cfg.addedScans > CAPACITY_CEILING,
+      });
+    }
+    if (cfg.addedScans < s.demand) {
+      const need = Math.ceil(s.demand);
+      actions.push({
+        what: `Add ${need - cfg.addedScans} more slots a week (to ${need})`,
+        how: `The route needs ≈ ${s.demand.toFixed(1)} scans a week. With fewer, patients queue and the CT result takes ${s.wait} days instead of ${FACTS.ctResultSweden}.`,
+        euroYear: { low: (need - cfg.addedScans) * 52 * COSTS.ctEuro.low, high: (need - cfg.addedScans) * 52 * COSTS.ctEuro.high },
+        sources: ["TYKS", "Z41"],
+        warn: true,
+      });
+    }
+  }
+
+  if (cfg.fastGp) {
+    actions.push({
+      what: "Hire family doctors and nurses so anyone is seen within 7 days",
+      how: `Finland's estimate for a 7-day GP guarantee, scaled to ${county.name} (${(share * 100).toFixed(1)}% of Finland's population). It speeds up care for every patient, not only lung cancer — so only part of this cost belongs to this plan.`,
+      people: `≈ ${Math.round(COSTS.gpDoctorsFi.low * share)}–${Math.round(COSTS.gpDoctorsFi.high * share)} more doctors and ≈ ${Math.round(COSTS.gpNursesFi * share)} more nurses`,
+      euroYear: { low: COSTS.gpEuroFi * share, high: COSTS.gpEuroFi * share * (COSTS.gpDoctorsFi.high / COSTS.gpDoctorsFi.low) },
+      sources: ["HE", "THL", "Z12"],
+    });
+  }
+
+  const ctOnly = actions.filter((a) => !a.what.startsWith("Hire") && !a.what.startsWith("Add ") && a.euroYear);
+  const euroCt = ctOnly.reduce((a, x) => ({ low: a.low + x.euroYear!.low, high: a.high + x.euroYear!.high }), { low: 0, high: 0 });
+  const euroAll = actions
+    .filter((a) => !a.what.startsWith("Add "))
+    .reduce((a, x) => (x.euroYear ? { low: a.low + x.euroYear.low, high: a.high + x.euroYear.high } : a), { low: 0, high: 0 });
+  return { sim: s, actions, euroCt, euroAll, share };
+}

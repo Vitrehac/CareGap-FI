@@ -1,7 +1,6 @@
 // Plain-language explainers for every number and unit. Written for people who know nothing about
 // cancer care. Comparisons use only figures we hold (Finnish data, Nordic benchmarks).
 import type { ReactNode } from "react";
-import { CAPACITY_CEILING } from "@/components/CountyMap";
 import { FACTS, NATIONAL_CT_WEEK, peopleRange } from "./model";
 
 const n0 = (v: number) => Math.round(v).toLocaleString("en-GB");
@@ -16,8 +15,7 @@ export const explain = {
     title: "Wait for a GP",
     body: (
       <>
-        Days from asking for an appointment to actually seeing a family doctor. Finland: about {FACTS.gpWaitToday} days; other
-        Nordic countries: under {FACTS.gpWaitNordic}. In this scenario: <B>{days} days</B>.
+        Days from asking for an appointment to seeing a family doctor. A Helsinki news piece puts Finland at about {FACTS.gpWaitToday} days and the other Nordics under {FACTS.gpWaitNordic} (Z12). In this scenario: <B>{days} days</B>.
       </>
     ),
   }),
@@ -63,28 +61,7 @@ export const explain = {
     title: "Diagnosed sooner",
     body: (
       <>
-        From the moment a person with lung symptoms asks for a doctor to the moment they know it is cancer. Today about{" "}
-        {today} days; with your changes {scen}. <B>{saved} days sooner</B> = treatment can start {Math.round(saved / 7)} weeks
-        earlier, while the tumour is smaller.
-      </>
-    ),
-  }),
-  lives: (low: number, mid: number, high: number, county: string): Tip => ({
-    title: "Deaths avoided a year",
-    body: (
-      <>
-        Our estimate of how many people in {county} each year would <B>not</B> die of lung cancer because they were diagnosed
-        sooner. Range {n1(low)}–{n1(high)}, most likely ≈ {n1(mid)}. Based on Hanna 2020 (BMJ): every 4 weeks of delay raises
-        the risk of death by about 6%. It is a model, not a promise.
-      </>
-    ),
-  }),
-  lifeYears: (mid: number): Tip => ({
-    title: "Years of life gained",
-    body: (
-      <>
-        Each lung-cancer death in Finland takes on average {FACTS.yearsLostPerPatient} years of life (Finnish Cancer Registry).
-        Deaths avoided × {FACTS.yearsLostPerPatient} ≈ <B>{n0(mid)} years</B> of life a year.
+        Days from the first symptomatic primary-care visit to a CT report, in this model. Today about {today} days; in the pilot about {scen}. <B>{saved} days sooner</B> on the central assumption.
       </>
     ),
   }),
@@ -136,17 +113,11 @@ export const explain = {
         <>Direct CT is off, so there is no extra work.</>
       ),
   }),
-  safeLimit: (): Tip => ({
-    title: `Rule of thumb · ${CAPACITY_CEILING} a week`,
-    body: <>Our planning assumption: one county can usually free up to {CAPACITY_CEILING} extra scans a week without new machines.</>,
-  }),
-  national: (lives: number, years: number): Tip => ({
-    title: "If all of Finland did it",
+  national: (counties: number): Tip => ({
+    title: "Every county, same rules",
     body: (
       <>
-        The same choices run in all 22 wellbeing-services counties, each covering its own CT demand the way you did. About{" "}
-        <B>{n0(lives)} deaths avoided a year</B> and {n0(years)} years of life — out of ≈ 2,300 lung-cancer deaths a year in
-        Finland.
+        The same eligibility and scan reservation, run separately in {counties} wellbeing-services counties. Ranked by how many extra scans a week the route needs. Smaller demand is an easier first pilot.
       </>
     ),
   }),

@@ -14,9 +14,9 @@ const figtree = Figtree({
 });
 
 export const metadata: Metadata = {
-  title: "Liwe: catch lung cancer sooner",
+  title: "Liwe",
   description:
-    "Change how lung cancer is found in a Finnish county and see how many weeks and lives it saves — every number sourced.",
+    "A 12-month county pilot for direct chest CT from primary care. Process times only.",
 };
 
 export default function RootLayout({
@@ -51,7 +51,7 @@ export default function RootLayout({
               Sourced, Estimate, or Unknown.
             </p>
             <p className="label shrink-0 text-ink-faint">
-              Liwe · catch lung cancer sooner
+              Liwe · prototype, not a medical device
             </p>
           </div>
         </footer>

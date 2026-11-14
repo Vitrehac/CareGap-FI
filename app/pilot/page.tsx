@@ -4,7 +4,7 @@ import { PilotWizard } from "@/components/pilot/PilotWizard";
 export const metadata = {
   title: "Scenario: Liwe",
   description:
-    "Pick a county, choose how to change the lung-cancer pathway, and see how many days and lives it saves.",
+    "Pick a county and design a 12-month direct-CT pilot. Process times only.",
 };
 
 export default function PilotPage() {

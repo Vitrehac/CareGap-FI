@@ -507,6 +507,24 @@
       "publisher": "BMC Cancer",
       "accessed": "2026-11-14",
       "notes": "3-year RS improved after Danish CPP implementation (lung among cancers with significant change). Authors warn lead-time/selection bias. Evaluates whole three-legged reform, not GP-CT alone."
+    },
+    {
+      "id": "Z43",
+      "category": "context",
+      "title": "Mortality due to cancer treatment delay: systematic review and meta-analysis (Hanna et al. 2020)",
+      "url": "https://pmc.ncbi.nlm.nih.gov/articles/PMC7610021/",
+      "publisher": "BMJ",
+      "accessed": "2026-11-14",
+      "notes": "Context, not used in the model. Do not convert delay into deaths avoided."
+    },
+    {
+      "id": "Z20",
+      "category": "context",
+      "title": "Finnish Cancer Registry annual report 2022",
+      "url": "https://www.sttinfo.fi/files/69820264/70275300/98389/fi",
+      "publisher": "Finnish Cancer Registry",
+      "accessed": "2026-11-14",
+      "notes": "Context, not used in the model. Years-of-life-lost figure is not an input."
     }
   ],
   "pendingUrlConfirmation": [

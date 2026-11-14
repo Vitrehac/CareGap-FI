@@ -31,11 +31,10 @@ export function HomeCockpit() {
             Wellbeing services · lung-cancer pathway
           </p>
           <Decode as="h1" className="font-display mt-6 block max-w-xl text-[clamp(2.6rem,6vw,4.75rem)] text-ink">
-            Every week sooner is a <span className="text-accent">life saved.</span>
+            Measure the CT handoff <span className="text-accent">before you copy it.</span>
           </Decode>
           <p className="mt-6 max-w-xl text-xl leading-snug text-ink-soft sm:text-2xl">
-            Change how lung cancer is found in one Finnish county and see how many
-            weeks — and lives — it saves.
+            Satakunta let health centres order chest CT. Nobody has published whether the wait got shorter. Design a 12-month measurement, not a survival claim.
           </p>
           <People className="mt-8 w-full max-w-sm lg:hidden" />
           <div className="mt-10">

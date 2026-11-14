@@ -1,7 +1,7 @@
 // Scenario model: what happens to lung-cancer diagnosis in a county when you change the pathway.
 // Today vs. your scenario, computed from Finnish data with every assumption named.
-// Sources (team data sheet ids): Z12, Z13, Z43, Z20, Z2, Z52, Z41, Z39, STUK 2024.
-import { CAPACITY_CEILING } from "@/components/CountyMap";
+// Sources (team data sheet ids): Z12, Z13, Z2, Z52, Z41, Z39, STUK 2024.
+// Process times only. No survival or mortality model.
 import { comparatorFor, counties, national } from "@/lib/data";
 import type { County } from "@/lib/types";
 
@@ -39,8 +39,6 @@ export const FACTS = {
   referralToDiagnosis: 55, // referral → diagnosis (Z13)
   ctResultSweden: national.swedenReferralToCtResultDays, // SVF budget, referral → imaging answer (Z41)
   workupShare: 0.5, // ASSUMPTION: half of the 55 days is work-up that still happens after a direct CT
-  hrPer4Weeks: { low: 1.03, mid: 1.06, high: 1.08 }, // Hanna 2020 BMJ (Z43): surgery 1.06–1.08; lung surgery 1.06
-  yearsLostPerPatient: 11.6, // Finnish Cancer Registry 2022 (Z20)
   ruledOutShare: national.dkRuledOutShare, // Danish fast-track: cancer ruled out (Z39)
 };
 
@@ -101,19 +99,6 @@ export function simulate(county: County, cfg: Config) {
   const reach = cfg.directCt ? it.reach : 0;
   const savedRoute = daysToday - daysScenario;
   const savedOthers = FACTS.gpWaitToday - gpWait;
-  const deathsRoute = county.deathsPerYear * reach;
-  const deathsOthers = county.deathsPerYear * (1 - reach);
-
-  const lives = (hr: number) => {
-    const cut = (days: number) => 1 - Math.pow(hr, -days / 28);
-    return deathsRoute * cut(savedRoute) + deathsOthers * cut(savedOthers);
-  };
-  const livesYear = {
-    low: lives(FACTS.hrPer4Weeks.low),
-    mid: lives(FACTS.hrPer4Weeks.mid),
-    high: lives(FACTS.hrPer4Weeks.high),
-  };
-
   return {
     county,
     comparator: comparatorFor(county),
@@ -129,12 +114,7 @@ export function simulate(county: County, cfg: Config) {
     peopleScanned: pathwaysFor(county, cfg.intensityId, cfg.directCt),
     cancersRoute: county.casesPerYearEst * reach,
     cancersAll: county.casesPerYearEst,
-    livesYear,
-    lifeYears: {
-      low: livesYear.low * FACTS.yearsLostPerPatient,
-      mid: livesYear.mid * FACTS.yearsLostPerPatient,
-      high: livesYear.high * FACTS.yearsLostPerPatient,
-    },
+    peopleReached: Math.round(county.casesPerYearEst * reach),
     coping: !cfg.directCt
       ? ("none" as const)
       : cfg.addedScans >= demand
@@ -179,9 +159,7 @@ export function peopleRange(v: number) {
 export const MODEL_SOURCES = [
   { id: "Z12", what: "Waiting 14 days to see a GP in Finland; under 7 in other Nordic countries", title: "Miksi Suomessa keuhkosyöpään kuollaan aiemmin kuin Pohjoismaissa? (University of Helsinki)", url: "https://www.helsinki.fi/fi/uutiset/terveys/miksi-suomessa-keuhkosyopaan-kuollaan-aiemmin-kuin-pohjoismaissa" },
   { id: "Z13", what: "14 days from first GP visit to referral, 55 days from referral to diagnosis (Satakunta 2021–22)", title: "Keuhkosyövän diagnostinen viive Satakunnassa (University of Turku, 2025)", url: "https://www.utupub.fi/handle/10024/180618" },
-  { id: "Z43", what: "Each 4 weeks of delay raises the risk of death by 6–8% (cancer surgery); lung surgery 1.06", title: "Hanna et al. 2020, Mortality due to cancer treatment delay, BMJ", url: "https://pmc.ncbi.nlm.nih.gov/articles/PMC7610021/" },
-  { id: "Z20", what: "11.6 years of life lost per lung-cancer patient", title: "Finnish Cancer Registry annual report 2022", url: "https://www.sttinfo.fi/files/69820264/70275300/98389/fi" },
-  { id: "Z2", what: "Lung-cancer deaths per county per year, 2021–2024", title: "Statistics Finland, causes of death", url: "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ksyyt/" },
+  { id: "Z2", what: "Lung-cancer deaths per county per year, 2021–2024, used only to size scan demand", title: "Statistics Finland, causes of death", url: "https://pxdata.stat.fi/PxWeb/pxweb/fi/StatFin/StatFin__ksyyt/" },
   { id: "Z52", what: "5-year survival: Finland 17.9%, Sweden 31.3% (men)", title: "NORDCAN 2.0", url: "https://nordcan.iarc.fr/" },
   { id: "Z41", what: "Sweden: 7 days from referral to the chest-scan answer", title: "Ledtider standardiserat vårdförlopp lungcancer (Sweden)", url: "https://vardgivare.regionkalmar.se/globalassets/vard-och-behandling/cancersjukdomar/ledtider_svf_20180123-uppdaterad.pdf" },
   { id: "STUK", what: "Finland did 35,058 chest CT scans in 2024 (≈ 674 a week)", title: "STUK radiological examinations 2024", url: "https://stuk.fi/avoin-data" },
@@ -191,7 +169,4 @@ export const ASSUMPTIONS = [
   "Who qualifies decides how many of the county’s lung cancers come through the new route: narrow 40%, Satakunta-style 60%, broader 80%.",
   "With a direct CT, half of today’s 55 days from referral to diagnosis still remains (specialist tests after a suspicious scan). The other half — waiting for the specialist to order the CT — disappears.",
   "If the county adds fewer scans than the route needs, patients queue: the CT result slips from 7 days up to 42 days with no added scans.",
-  "Lives: the delay–mortality link measured for treatment (Hanna 2020) is applied to the diagnosis delay. We show a cautious (1.03), central (1.06) and optimistic (1.08) version.",
 ];
-
-export { CAPACITY_CEILING };

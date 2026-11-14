@@ -176,9 +176,9 @@ export function PilotWizard() {
           <div>
             <div className="mb-12 grid gap-4 sm:grid-cols-3">
               {[
-                ["The problem", `In Finland it takes about ${FACTS.gpWaitToday + FACTS.gpToReferral + FACTS.referralToDiagnosis} days from asking for a doctor to a lung-cancer diagnosis. The family doctor can’t order the key scan (CT) — the patient waits for a specialist first.`],
-                ["What you can change", "Let family doctors order the CT directly, decide who qualifies, add scanner time, and shorten the wait for a GP."],
-                ["What you’ll see", "How many days sooner people are diagnosed, how many it helps, the estimated lives saved — and whether the hospital can cope. Every number links to its source."],
+                ["The problem", `In Satakunta in 2021–22, one study measured about ${FACTS.gpToReferral} days from the first GP visit to referral and ${FACTS.referralToDiagnosis} days from referral to diagnosis. The family doctor usually cannot order the CT.`],
+                ["What you can change", "Let family doctors order the CT directly, decide who qualifies, and reserve scanner time."],
+                ["What you’ll see", "Days from the GP visit to the CT report, people reached a year, and CT slots a week. Every number is tagged."],
               ].map(([t, d]) => (
                 <div key={t} className="rounded-2xl bg-paper-raised p-5 ring-1 ring-rule">
                   <p className="label text-accent">{t}</p>

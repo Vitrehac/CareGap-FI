@@ -1,54 +1,106 @@
-"use client";
-
 import Link from "next/link";
-import { Tag } from "@/components/Provenance";
-import { DEFAULT_COUNTY } from "@/lib/data";
+import { People } from "@/components/People";
+import { Tip } from "@/components/mithril/Tip";
 
-const FIGURES = [
+const NORDIC_MEN = [
+  { country: "Sweden", value: 31.3 },
+  { country: "Norway", value: 30.8 },
+  { country: "Iceland", value: 29.0 },
+  { country: "Denmark", value: 28.1 },
+  { country: "Finland", value: 17.9 },
+];
+
+const STEPS = [
   {
-    k: "17.9% vs 31.3%",
-    d: "5-year relative survival, men, lung. Finland and Sweden. NORDCAN extract year code 2022.",
-    tag: "sourced" as const,
+    n: "1",
+    t: "Plan",
+    d: "Pick a county, how far you want to go, your budget, scanners and staff. Liwe works out what that buys.",
   },
   {
-    k: "X-ray yes, CT no",
-    d: "Finnish primary care generally cannot order chest CT. Acta Oncologica 2025 and JTO 2024.",
-    tag: "sourced" as const,
+    n: "2",
+    t: "Decide",
+    d: "See lives saved, how much sooner cancer is found and the cost per life — and whether the investment is worth it.",
   },
   {
-    k: "≤ 10 days",
-    d: "Pilot endpoint: median days from the symptomatic visit to the CT report. Anchored on Sweden’s SVF filter budget.",
-    tag: "estimate" as const,
+    n: "3",
+    t: "Track",
+    d: "Once it runs, patient pathways flow in from the county’s records. Compare what happens with the plan and with doing nothing.",
   },
 ];
 
 export function HomeCockpit() {
   return (
-    <section className="flex min-h-[calc(100dvh-7.5rem)] flex-col justify-center py-16">
-      <p className="label text-accent">Liwe</p>
-      <h1 className="font-display mt-4 max-w-3xl text-[clamp(2.4rem,5.5vw,4.2rem)] text-ink">
-        Satakunta changed who can order the CT. Nobody measured it.
-      </h1>
-      <ul className="mt-10 grid gap-4 sm:grid-cols-3">
-        {FIGURES.map((f) => (
-          <li key={f.k} className="rounded-2xl bg-paper-raised p-5 ring-1 ring-rule">
-            <p className="font-display text-3xl text-ink">{f.k}</p>
-            <p className="mt-3 text-sm leading-relaxed text-ink-soft">{f.d}</p>
-            <div className="mt-3">
-              <Tag kind={f.tag} />
-            </div>
-          </li>
-        ))}
-      </ul>
-      <div className="mt-10">
-        <Link
-          href={`/pilot?county=${DEFAULT_COUNTY}#county`}
-          className="cta inline-flex items-center gap-3 bg-accent px-6 py-3.5 font-mono text-[0.78rem] tracking-[0.1em] text-paper uppercase"
-        >
-          <span className="cta-dot" />
-          Design a 12-month pilot
+    <div>
+      <section className="relative flex min-h-[calc(100dvh-4.5rem)] flex-col justify-center border-b border-rule py-16">
+        <div className="pointer-events-none absolute inset-y-0 right-[-1rem] hidden w-[44%] items-center lg:flex" aria-hidden>
+          <People className="w-full" />
+        </div>
+        <div className="relative max-w-2xl">
+          <p className="label inline-flex rounded-full bg-accent-soft px-3 py-1.5 text-accent">For wellbeing-services counties in Finland</p>
+          <h1 className="font-display mt-6 text-[clamp(2.6rem,6vw,4.75rem)] text-ink">
+            Every week sooner is a <span className="text-accent">life saved.</span>
+          </h1>
+          <p className="mt-6 max-w-xl text-xl leading-snug text-ink-soft">
+            Liwe helps a county plan, fund and track faster lung-cancer diagnosis — and shows, in euros per life saved,
+            whether it pays off.
+          </p>
+          <div className="mt-10 flex flex-wrap gap-3">
+            <Link href="/dashboard" className="cta bg-accent px-6 py-3.5 text-paper">
+              Open the dashboard
+            </Link>
+            <Link href="/sources" className="hack border border-rule px-6 py-3.5 text-ink-soft">
+              Where the numbers come from
+            </Link>
+          </div>
+          <People className="mt-10 w-full max-w-sm lg:hidden" />
+        </div>
+      </section>
+
+      <section className="grid gap-10 border-b border-rule py-16 lg:grid-cols-2">
+        <div>
+          <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.8rem)] text-ink">The problem</h2>
+          <p className="mt-4 max-w-md text-lg leading-relaxed text-ink-soft">
+            Finland has the lowest lung-cancer survival in the Nordics. A big reason is time: it takes about{" "}
+            <b className="text-ink">83 days</b> from asking for a doctor to a diagnosis, because a family doctor can’t
+            order the chest CT — a specialist has to.
+          </p>
+        </div>
+        <div>
+          <p className="text-sm text-ink-soft">
+            <Tip align="left" title="5-year relative survival" body="Out of 100 men diagnosed with lung cancer (2020–2024), how many are alive 5 years later, after removing deaths from other causes. Source: NORDCAN.">
+              Men alive 5 years after a lung-cancer diagnosis, per 100
+            </Tip>
+          </p>
+          <ul className="mt-4 space-y-2.5">
+            {NORDIC_MEN.map((c) => {
+              const fi = c.country === "Finland";
+              return (
+                <li key={c.country} className="grid grid-cols-[5.5rem_1fr_2.5rem] items-center gap-3">
+                  <span className={`text-sm ${fi ? "font-semibold text-ink" : "text-ink-soft"}`}>{c.country}</span>
+                  <span className="h-3.5 rounded-r-[4px]" style={{ width: `${(c.value / 32) * 100}%`, background: fi ? "#d4553f" : "#b7d6c4" }} />
+                  <span className={`text-right text-sm ${fi ? "font-semibold text-ink" : "text-ink-soft"}`}>{c.value.toFixed(1)}</span>
+                </li>
+              );
+            })}
+          </ul>
+        </div>
+      </section>
+
+      <section className="py-16">
+        <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.8rem)] text-ink">How Liwe works</h2>
+        <ol className="mt-8 grid gap-4 sm:grid-cols-3">
+          {STEPS.map((s) => (
+            <li key={s.n} className="rounded-3xl border border-rule bg-paper p-6">
+              <span className="grid h-9 w-9 place-items-center rounded-full bg-accent-soft font-semibold text-accent">{s.n}</span>
+              <p className="font-display mt-4 text-2xl text-ink">{s.t}</p>
+              <p className="mt-2 leading-relaxed text-ink-soft">{s.d}</p>
+            </li>
+          ))}
+        </ol>
+        <Link href="/dashboard/new" className="cta mt-10 inline-block bg-accent px-6 py-3.5 text-paper">
+          Create a plan
         </Link>
-      </div>
-    </section>
+      </section>
+    </div>
   );
 }

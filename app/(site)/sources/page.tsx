@@ -156,16 +156,16 @@ export default function SourcesPage() {
 
       <div className="mt-12 flex flex-wrap gap-3 border-t border-rule pt-8">
         <Link
-          href="/pilot"
+          href="/dashboard"
           className="hack label border border-rule bg-paper/60 px-5 py-3 text-ink-soft"
         >
-          Back to the experiment
+          Open the dashboard
         </Link>
         <Link
           href="/"
           className="hack label border border-rule bg-paper/60 px-5 py-3 text-ink-soft"
         >
-          Back to the gap
+          Back to the start
         </Link>
       </div>
     </div>

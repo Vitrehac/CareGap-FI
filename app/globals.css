@@ -204,7 +204,57 @@ body {
   animation: stop-trip 0.7s ease-out both;
 }
 
+/* Liwi the mascot: hops, wanders a little along the bottom edge, squashes on landing */
+.liwi-hop {
+  transform-origin: 50% 100%;
+  animation: liwi-hop 2.6s cubic-bezier(0.3, 0, 0.3, 1) infinite;
+}
+.liwi-hop:hover {
+  animation-duration: 0.9s;
+}
+@keyframes liwi-hop {
+  0%, 52%, 100% { transform: translateY(0) scale(1, 1); }
+  58% { transform: translateY(0) scale(1.1, 0.88); }
+  70% { transform: translateY(-26px) scale(0.94, 1.07); }
+  80% { transform: translateY(-30px) scale(0.97, 1.03) rotate(-4deg); }
+  90% { transform: translateY(0) scale(1.09, 0.9); }
+  95% { transform: translateY(-4px) scale(0.98, 1.02); }
+}
+.liwi-shadow {
+  animation: liwi-shadow 2.6s cubic-bezier(0.3, 0, 0.3, 1) infinite;
+}
+@keyframes liwi-shadow {
+  0%, 52%, 100% { transform: translateX(-50%) scale(1); opacity: 1; }
+  80% { transform: translateX(-50%) scale(0.6); opacity: 0.5; }
+}
+.liwi-wander {
+  animation: liwi-wander 22s ease-in-out infinite;
+}
+@keyframes liwi-wander {
+  0%, 30% { transform: translateX(0); }
+  45%, 70% { transform: translateX(-5.5rem); }
+  85%, 100% { transform: translateX(0); }
+}
+.liwi-pop {
+  animation: liwi-pop 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+@keyframes liwi-pop {
+  from { opacity: 0; transform: translateY(6px) scale(0.9); }
+  to { opacity: 1; transform: none; }
+}
+.liwi-dot {
+  animation: liwi-dot 0.9s ease-in-out infinite;
+}
+@keyframes liwi-dot {
+  0%, 100% { transform: translateY(0); opacity: 0.4; }
+  40% { transform: translateY(-3px); opacity: 1; }
+}
+
 @media (prefers-reduced-motion: reduce) {
+  .liwi-hop,
+  .liwi-shadow,
+  .liwi-wander,
+  .liwi-dot,
   .motion-bar,
   .motion-brief,
   .motion-stop-trip,

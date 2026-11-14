@@ -1,0 +1,23 @@
+{
+  "_help": "All times in seconds. Change a duration or beat, run `npm run render`; the 1 s gaps and the CSV are recomputed. fps is the single frame-rate switch (25 or 30).",
+  "fps": 25,
+  "gap": 1,
+  "segments": [
+    { "name": "HookMap", "type": "fullscreen", "script": "1-3", "duration": 22, "key": 16,
+      "beats": { "pulse": 0.2, "title": 0.6, "swLeader": 3.0, "swGrow": 3.5, "swGrowDur": 2.0, "kjLeader": 8.0, "kjGrow": 8.5, "kjGrowDur": 6.0 } },
+    { "name": "LowerThird_P1", "type": "overlay", "script": "4", "duration": 4, "key": 2 },
+    { "name": "Callout_Survival", "type": "overlay", "script": "4", "duration": 3, "key": 1.5 },
+    { "name": "LogoReveal", "type": "overlay", "script": "7", "duration": 2, "key": 1.2 },
+    { "name": "LowerThird_P2", "type": "overlay", "script": "7", "duration": 4, "key": 2 },
+    { "name": "Callout_Diagnosis", "type": "overlay", "script": "9", "duration": 3, "key": 1.5 },
+    { "name": "Callout_CTReport", "type": "overlay", "script": "9", "duration": 3, "key": 1.5 },
+    { "name": "Callout_Cost", "type": "overlay", "script": "9", "duration": 3, "key": 1.5 },
+    { "name": "Callout_BudgetCut", "type": "overlay", "script": "10", "duration": 3, "key": 1.5 },
+    { "name": "MapCallback", "type": "fullscreen", "script": "13", "duration": 5, "key": 4.2,
+      "beats": { "reset": 0.4, "resetDur": 0.5, "grow": 1.1, "growDur": 1.6 } },
+    { "name": "LowerThird_P3", "type": "overlay", "script": "14", "duration": 4, "key": 2 },
+    { "name": "GoalCard", "type": "overlay", "script": "14", "duration": 4, "key": 2 },
+    { "name": "Tagline", "type": "overlay", "script": "16", "duration": 3, "key": 1.5 },
+    { "name": "EndCard", "type": "fullscreen", "script": "17", "duration": 4, "key": 3 }
+  ]
+}

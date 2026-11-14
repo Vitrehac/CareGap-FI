@@ -1,0 +1,10 @@
+{
+  "_help": "Names and links shown on screen. Replace the [Name] placeholders.",
+  "p1": { "name": "[Name]", "role": "Business" },
+  "p2": { "name": "[Name]", "role": "Tech" },
+  "p3": { "name": "Vojtěch Halák", "role": "Product & Media" },
+  "liveUrl": "LIVE_URL",
+  "repoUrl": "github.com/Vitrehac/Liwe",
+  "event": "Junction 2026 · Equal Care Across Finland",
+  "calloutPosition": "top-right"
+}

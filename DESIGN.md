@@ -1,11 +1,11 @@
-# Design: CareGap FI
+# Design: Liwe
 
 **Direction locked:** 2026-11-14 (clarity + brand pass)  
 **Aesthetic:** Baltic planning instrument. A wellbeing-services brief you would print for Monday — cool form paper, midnight ink, one signal blue, one alarm red. Not teal SaaS, not purple glow, not cream+terracotta, not broadsheet density.
 
 **Source of truth for tokens:** `app/globals.css`
 
-> **2026-11-14 · Skin swap (branch `mithril-skin`):** the visual layer now uses the Mithril look — dark ctOS/Palantir instrument (ink `#050506`, paper text `#ececec`, accent cyan `#39c5e8`, alarm `#ff2e88`), Inter Tight + IBM Plex Mono, hairline grid, scanlines, ASCII art layer (live ASCII CareGap mark in the hero, ambient ASCII field), decode/glitch micro-interactions. **Everything else below still holds:** story spine, one job per section, brand-first hero (no map/bars/toggles above the fold), provenance tags, printable brief (print flips the tokens back to the light palette in this file). Tokens keep their names in `app/globals.css`, so components did not change semantics. Mithril pieces live in `components/mithril/`.
+> **2026-11-14 · Skin swap (branch `mithril-skin`):** the visual layer now uses the Mithril look — dark ctOS/Palantir instrument (ink `#050506`, paper text `#ececec`, accent cyan `#39c5e8`, alarm `#ff2e88`), Inter Tight + IBM Plex Mono, hairline grid, scanlines, ASCII art layer (live ASCII Liwe mark in the hero, ambient ASCII field), decode/glitch micro-interactions. **Everything else below still holds:** story spine, one job per section, brand-first hero (no map/bars/toggles above the fold), provenance tags, printable brief (print flips the tokens back to the light palette in this file). Tokens keep their names in `app/globals.css`, so components did not change semantics. Mithril pieces live in `components/mithril/`.
 
 
 ---
@@ -70,8 +70,8 @@ No scroll parallax, no hover glow stacks, no per-card entrance spam.
 
 ## Logo usage
 
-Mark: `public/caregap-mark.svg` — open clock ring with a missing arc (the unmeasured handoff) and a single alarm gap tick.  
-Wordmark: `public/caregap-wordmark.svg` — CareGap + FI in Newsreader weights.
+Mark: `public/Liwe-mark.svg` — open clock ring with a missing arc (the unmeasured handoff) and a single alarm gap tick.  
+Wordmark: `public/Liwe-wordmark.svg` — Liwe + FI in Newsreader weights.
 
 Clear space ≥ 0.5× mark height. One-colour ink or Baltic accent on paper. No glow, gradients, or teal fills. Below 24 px: mark alone.
 

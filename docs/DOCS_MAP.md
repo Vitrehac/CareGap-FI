@@ -1,4 +1,4 @@
-# Docs map (CareGap FI)
+# Docs map (Liwe)
 
 Canonical vs ignore for judges and new contributors. Nothing here authorises deleting research assets.
 
@@ -10,7 +10,7 @@ Canonical vs ignore for judges and new contributors. Nothing here authorises del
 | [../README.md](../README.md) | Single entry point: proof table, quickstart, limits |
 | [../DEMO.md](../DEMO.md) | Exact 45–60s click path |
 | [../BRAND.md](../BRAND.md) | Name, voice, claims to repeat / avoid |
-| [CareGap-FI-brief.pdf](CareGap-FI-brief.pdf) | Cold planning brief for mentors / handout |
+| [Liwe-FI-brief.pdf](Liwe-FI-brief.pdf) | Cold planning brief for mentors / handout |
 
 ## Evidence (pitch-safe facts)
 
@@ -34,14 +34,14 @@ Canonical vs ignore for judges and new contributors. Nothing here authorises del
 
 | File | Notes |
 |---|---|
-| [../IDEA.md](../IDEA.md) | Early problem framing (pre-CareGap naming) |
+| [../IDEA.md](../IDEA.md) | Early problem framing (pre-Liwe naming) |
 | [../LEGAL.md](../LEGAL.md) | MDR / AI Act posture (summary also in README Safety) |
 | [../DIFFERENTIATION.md](../DIFFERENTIATION.md) | Why not another dashboard / chatbot |
 | [../DATA_SHEET.md](../DATA_SHEET.md) | Google Sheet → product mapping |
 | [../ROADMAP.md](../ROADMAP.md) | Hour-by-hour hackathon schedule |
 | [../HACKATHON.md](../HACKATHON.md) | Phase checklist |
 | [../AGENTS.md](../AGENTS.md) | Next.js agent tooling note |
-| [CareGap-FI-brief.md](CareGap-FI-brief.md) | Markdown source for the PDF |
+| [Liwe-FI-brief.md](Liwe-FI-brief.md) | Markdown source for the PDF |
 | [generate_brief_pdf.py](generate_brief_pdf.py) | PDF build script |
 
 ## Keep, but not judge-facing
@@ -54,4 +54,4 @@ Canonical vs ignore for judges and new contributors. Nothing here authorises del
 
 ## Cruft note
 
-Older filenames still say CareTwin FI in places (`MVP.md`, `LEGAL.md`, `IDEA.md`, …). Brand lock is **CareGap FI** ([BRAND.md](../BRAND.md)). Prefer README + DEMO + BRAND for anything public-facing. Do not mass-delete duplicates; use this map instead.
+Older filenames still say Liwe in places (`MVP.md`, `LEGAL.md`, `IDEA.md`, …). Brand lock is **Liwe** ([BRAND.md](../BRAND.md)). Prefer README + DEMO + BRAND for anything public-facing. Do not mass-delete duplicates; use this map instead.

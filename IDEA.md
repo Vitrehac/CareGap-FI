@@ -1,4 +1,4 @@
-# Idea — CareTwin FI
+# Idea — Liwe
 
 **Problem:** Finland has the lowest Nordic 5-year cancer survival for key poor-prognosis cancers (esp. lung). County maps look “equal,” but patients lose time at the **primary-care imaging gate**, and language/education gaps drive unequal early detection.
 

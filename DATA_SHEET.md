@@ -1,4 +1,4 @@
-# Google Sheet → CareTwin mapping
+# Google Sheet → Liwe mapping
 
 **Sheet:** [Rakovina plic ve Finsku — data a profil rizika](https://docs.google.com/spreadsheets/d/1ta7d4isTyBSuIla1tEsTvw-cU_-8wj4PkBRAHjoBizk/edit?gid=713623530#gid=713623530)  
 **Updated:** 2026-11-13 · Machine-oriented lung data vault (risk model + regional facts)
@@ -21,7 +21,7 @@ README · model_spec · model_test_cases · model_constants · risk_factor_weigh
 
 ---
 
-## What feeds CareTwin (Pathway Deployer)
+## What feeds Liwe (Pathway Deployer)
 
 | Sheet tab | Product use |
 |---|---|

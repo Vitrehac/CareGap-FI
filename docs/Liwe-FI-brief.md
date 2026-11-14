@@ -1,4 +1,4 @@
-# CareGap FI
+# Liwe
 
 **A ready-made pilot for one wellbeing services county**
 
@@ -8,7 +8,7 @@ Junction 2026 · team NoTokens · cold-reader brief (2 pages)
 
 ## What this is
 
-CareGap FI is a planning prototype that helps a Finnish wellbeing services county (*hyvinvointialue*) decide whether to run a measured experiment: let primary care refer selected patients straight to chest CT, and publish the pathway clock that Finland still does not report nationally.
+Liwe is a planning prototype that helps a Finnish wellbeing services county (*hyvinvointialue*) decide whether to run a measured experiment: let primary care refer selected patients straight to chest CT, and publish the pathway clock that Finland still does not report nationally.
 
 It is not an AI diagnosis tool, not a patient chatbot, and not a medical device.
 

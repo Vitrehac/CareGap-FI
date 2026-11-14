@@ -1,4 +1,4 @@
-# Demo: CareGap FI (happy path)
+# Demo: Liwe (happy path)
 
 **Length:** ~45–60 seconds. **Voice:** county experiment you configure, not a stats poster.  
 **Seed:** `data/counties.json` + `data/sources.json` only.  
@@ -11,7 +11,7 @@ There’s a CT handoff gap → pick a county → configure a 12-month experiment
 ## Click path (record this)
 
 1. **Open `/`** (0–10 s)
-   - First viewport only: **CareGap FI** + *Measure the CT handoff first.* + one plain line (*County pilot configurator for Finland’s missing primary-care CT clock.*)
+   - First viewport only: **Liwe** + *Measure the CT handoff first.* + one plain line (*County pilot configurator for Finland’s missing primary-care CT clock.*)
    - Point at sticky progress: **Gap → County → Experiment → Brief**
    - Optional 3 s scroll: survival bars (FI 17.9 vs SE 31.3) — one beat, then back up.
    - **Click Configure a 12-month experiment** (lands on `/pilot` with Kainuu).

@@ -1,4 +1,4 @@
-# CareGap FI
+# Liwe
 
 [![Built at Junction 2026](https://img.shields.io/badge/Built%20at-Junction%202026-1F6F66?style=flat-square)](https://hackjunction.com/) [![Next.js](https://img.shields.io/badge/Next.js-16-black?style=flat-square&logo=nextdotjs)](https://nextjs.org/) [![TypeScript](https://img.shields.io/badge/TypeScript-5-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://www.typescriptlang.org/) [![React](https://img.shields.io/badge/React-19-61DAFB?style=flat-square&logo=react&logoColor=black)](https://react.dev/) [![Live demo](https://img.shields.io/badge/Live%20demo-pending%20deploy-lightgrey?style=flat-square)](#quickstart)
 
@@ -6,7 +6,7 @@
 
 Working software on `/`, `/pilot`, and `/sources` (seeded JSON, no auth). See [DEMO.md](DEMO.md).
 
-> **Live:** *deploy URL TBD* · **Demo path:** [DEMO.md](DEMO.md) · **Cold brief:** [docs/CareGap-FI-brief.pdf](docs/CareGap-FI-brief.pdf)
+> **Live:** *deploy URL TBD* · **Demo path:** [DEMO.md](DEMO.md) · **Cold brief:** [docs/Liwe-FI-brief.pdf](docs/Liwe-FI-brief.pdf)
 
 | Ready now | What is implemented | Proof |
 |---|---|---|
@@ -64,7 +64,7 @@ Layout for a quick scan: `app/` holds `/`, `/pilot`, `/sources`; `components/` h
 | Capacity-blocked demo case | Helsinki over ceiling in `PilotWorkbench` | Working |
 | Provenance vault | `/sources` + `data/sources.json` | Working |
 | Evidence dial (Sourced / Estimate / Unknown) | `Provenance` tags | Working |
-| Cold planning brief PDF | `docs/CareGap-FI-brief.pdf` | Working (static) |
+| Cold planning brief PDF | `docs/Liwe-FI-brief.pdf` | Working (static) |
 | FI/EN toggle, print brief, optional LLM rephrase | not built | Roadmap |
 | Live EHR / auth / Findata / patient triage | Explicit won’t-have | Out of scope |
 
@@ -107,7 +107,7 @@ Full index: [docs/DOCS_MAP.md](docs/DOCS_MAP.md). Short version:
 
 | For judges | Files |
 |---|---|
-| **Start here** | This README · [DEMO.md](DEMO.md) · [BRAND.md](BRAND.md) · [docs/CareGap-FI-brief.pdf](docs/CareGap-FI-brief.pdf) |
+| **Start here** | This README · [DEMO.md](DEMO.md) · [BRAND.md](BRAND.md) · [docs/Liwe-FI-brief.pdf](docs/Liwe-FI-brief.pdf) |
 | **Evidence** | [FINDING.md](FINDING.md) · [VERIFICATION.md](VERIFICATION.md) · [REGISTER_COMPARE.md](REGISTER_COMPARE.md) · [SOURCES.md](SOURCES.md) · [data/sources.json](data/sources.json) |
 | **Product** | [MVP.md](MVP.md) · [DECISIONS.md](DECISIONS.md) · [DESIGN.md](DESIGN.md) |
 | **Optional / internal** | IDEA, LEGAL, DIFFERENTIATION, DATA_SHEET, ROADMAP, HACKATHON, AGENTS, brief Markdown source, `scripts/`, `raw/` |

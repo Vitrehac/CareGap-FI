@@ -1,4 +1,4 @@
-# MVP — CareTwin FI (85–90 bar)
+# MVP — Liwe (85–90 bar)
 
 **One-sentence MVP:** In under 90 seconds, a FICAN / wellbeing services county pathway lead sees that equal counties ≠ equal chances, locates the primary-care→CT bottleneck, runs a Satakunta rollout under capacity limits (including a blocked failure case), and leaves with a Monday-morning action brief that has a stop rule — every number tagged Sourced / Estimate / Unknown.
 

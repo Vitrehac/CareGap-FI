@@ -1,4 +1,4 @@
-# Roadmap — CareTwin FI
+# Roadmap — Liwe
 
 **Now:** Sat 14 Nov ~01:30 · **Freeze:** Sat ~20:00 · **Record only:** Sun morning · **Submit:** Sun 15 Nov 10:00 sharp  
 **Bar:** 85–90 (aha + stop rule + capacity-blocked + evidence dial + Monday brief)

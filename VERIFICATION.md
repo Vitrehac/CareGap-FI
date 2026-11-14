@@ -1,7 +1,7 @@
 # Adversarial verification — Finnish lung cancer / primary-care CT thesis
 
 **Date:** 2026-11-14  
-**Scope:** Stress-test of the CareTwin / Equal Care Across Finland problem framing.  
+**Scope:** Stress-test of the Liwe / Equal Care Across Finland problem framing.  
 **Method:** Primary sources preferred (peer-reviewed papers, national authority pathway documents, registry reports). Secondary sources labelled as such. Nothing unverified is stated as fact.
 
 ---

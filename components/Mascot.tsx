@@ -138,6 +138,7 @@ export function Mascot() {
   const ask = async (q: string) => {
     const question = q.trim();
     if (!question) return;
+    const history = msgs.slice(-8).map((m) => ({ from: m.from, text: m.text }));
     setMsgs((m) => [...m, { from: "you", text: question }]);
     setText("");
     setTyping(true);
@@ -146,7 +147,7 @@ export function Mascot() {
       const res = await fetch("/api/liwi", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ question }),
+        body: JSON.stringify({ question, history }),
       });
       const data = (await res.json()) as { answer?: string };
       if (res.ok && data.answer) answer = data.answer;

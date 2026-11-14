@@ -23,11 +23,12 @@ export type Investment = {
   note?: string;
 };
 
-/** One row of the county's weekly aggregate report. No patient identifiers. */
+/** Weekly aggregate for the public health-centre door only. No patient rows, no occupational or private route. */
 export type WeekReport = {
   id: string;
   weekStart: string;
   pathwaysStarted: number;
+  /** Median days, public health-centre visit to CT report. */
   medianDaysVisitToCt: number | null;
   ctScansUsed: number;
   otherCtMedianWait: number | null;

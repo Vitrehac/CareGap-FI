@@ -69,9 +69,14 @@ export function Liwi({ className = "", happy = false }: { className?: string; ha
 
 type Msg = { from: "liwi" | "you"; text: string };
 
-const SUGGESTIONS = ["What does the endpoint mean?", "Where does the data come from?", "How do I make a plan?", "What does it cost?"];
+const SUGGESTIONS = ["Why does the first door matter?", "What does the endpoint mean?", "Where does the data come from?", "How do I make a plan?"];
 
 const PLAYBOOK: { keys: string[]; answer: string }[] = [
+  {
+    keys: ["door", "occupational", "public health", "first door"],
+    answer:
+      "At a public health centre a chest CT usually waits for a specialist referral; a GP referral is enough in occupational or private care. Acta Oncologica 2025 found only one Finnish respondent with CT access from primary care, the lowest in the Nordics. A lymphoma study, not lung cancer, saw 76 versus 127 days from symptoms to treatment (Kuitunen et al. 2026, n=160). Nobody publishes that gap for lung cancer.",
+  },
   {
     keys: ["endpoint", "day", "count", "calculat", "number", "target"],
     answer:

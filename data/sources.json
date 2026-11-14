@@ -49,7 +49,7 @@
       "url": "https://doi.org/10.2340/1651-226x.2025.42778",
       "publisher": "Acta Oncologica",
       "accessed": "2026-11-13",
-      "notes": "Survey study; cites Leskelä 17% among staged university-hospital NSCLC (28% coverage) and Gouliaev DK/NO registry stage I >25%; authors state causal link remains hypothetical; MSD co-author. Do not treat FI ~17% stage I as a national Acta/registry comparison."
+      "notes": "Equity evidence for the CT door, not an endorsement of Liwe. Only one Finnish respondent reported CT as available in primary care, the lowest in the Nordics. Health centres can order a chest X-ray. Do not treat the paper's stage comparison as a national registry fact."
     },
     {
       "id": "jtho-lung-finland-2024",
@@ -507,6 +507,15 @@
       "publisher": "BMC Cancer",
       "accessed": "2026-11-14",
       "notes": "3-year RS improved after Danish CPP implementation (lung among cancers with significant change). Authors warn lead-time/selection bias. Evaluates whole three-legged reform, not GP-CT alone."
+    },
+    {
+      "id": "kuitunen-lymphoma-door-2026",
+      "category": "equity",
+      "title": "Socioeconomic status and access to treatment in diffuse large B-cell lymphoma",
+      "url": "https://doi.org/10.1002/cam4.71920",
+      "publisher": "Cancer Medicine",
+      "accessed": "2026-11-14",
+      "notes": "Equity evidence, lymphoma, not lung cancer. Not an endorsement of Liwe. Median symptoms-to-treatment 76 days after private or occupational first contact vs 127 days after a public primary-care appointment (n=160, hospitals in Finland, Oct 2014–Mar 2020)."
     },
     {
       "id": "filha-lung-programme-2026",

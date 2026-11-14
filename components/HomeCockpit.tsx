@@ -38,10 +38,10 @@ export function HomeCockpit() {
         <div className="relative max-w-2xl">
           <p className="label inline-flex rounded-full bg-accent-soft px-3 py-1.5 text-accent">For wellbeing-services counties in Finland</p>
           <h1 className="font-display mt-6 text-[clamp(2.6rem,6vw,4.75rem)] text-ink">
-            Finland set lung-cancer pathway targets in 2026. <span className="text-accent">Liwe helps a county plan, fund and measure a change against them.</span>
+            Same symptoms, different door, different wait.
           </h1>
           <p className="mt-6 max-w-xl text-xl leading-snug text-ink-soft">
-            See what it costs, how many days it saves and whether it meets the pilot target.
+            Finland&apos;s 2026 lung pathway targets apply to every door. Liwe helps a county close the gap at the public one, and measure it.
           </p>
           <div className="mt-10 flex flex-wrap gap-3">
             <Link href="/dashboard" className="cta bg-accent px-6 py-3.5 text-paper">
@@ -81,6 +81,28 @@ export function HomeCockpit() {
             })}
           </ul>
         </div>
+      </section>
+
+      <section className="border-b border-rule py-16">
+        <h2 className="font-display text-[clamp(1.9rem,3.4vw,2.8rem)] text-ink">Two doors</h2>
+        <p className="mt-3 max-w-2xl text-ink-soft">The public door hasn&apos;t caught up. This is about the rule at the health centre, not about private care being unfair.</p>
+        <div className="mt-8 grid gap-4 sm:grid-cols-2">
+          <article className="rounded-3xl border border-rule bg-paper p-6">
+            <p className="label text-ink-faint">Door A · occupational or private care</p>
+            <p className="mt-3 text-lg text-ink">A GP referral is enough for a chest CT.</p>
+          </article>
+          <article className="rounded-3xl border border-rule bg-paper p-6">
+            <p className="label text-accent">Door B · public health centre</p>
+            <p className="mt-3 text-lg text-ink">CT usually only after referral to specialist care. Health centres can order a chest X-ray, not a CT.</p>
+            <p className="mt-3 text-sm leading-relaxed text-ink-soft">
+              Acta Oncologica 2025: only one Finnish respondent reported CT access from primary care, the lowest in the Nordics. Sourced.
+            </p>
+          </article>
+        </div>
+        <p className="mt-6 max-w-2xl text-sm leading-relaxed text-ink-faint">
+          Lymphoma, not lung cancer. In one Finnish study the median from symptoms to treatment was 76 days after a private or occupational first contact and 127 days after a public primary-care appointment (Kuitunen et al. 2026, Cancer Medicine, n=160, 2014–2020). Sourced.
+        </p>
+        <p className="mt-3 font-semibold text-ink">Nobody publishes this gap for lung cancer.</p>
       </section>
 
       <section className="py-16">

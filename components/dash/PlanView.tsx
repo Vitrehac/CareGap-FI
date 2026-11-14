@@ -87,12 +87,25 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
         <Kpi label="Diagnosed sooner" value={`${ev.sim.savedRoute} days`} sub={`${ev.sim.daysToday} → ${ev.sim.daysToday - ev.sim.savedRoute} days for fast-route patients`} />
         <Kpi label="Lung cancers found sooner" value={num(ev.sim.cancersRoute)} sub={`a year · ${num(ev.sim.reach * 100, 0)}% of ${Math.round(ev.county.casesPerYearEst)} new cases`} />
         <Kpi
-          label="Visit → CT report"
+          label="Public visit → CT report"
           value={`${ev.sim.visitToCt} days`}
           sub={`pilot endpoint ≤ ${10} days · ${ev.verdict === "meets" ? "inside the target" : "check the verdict"}`}
-          tip={{ title: "Process clock", body: "Days from the symptomatic GP visit to the CT report, if the reserved slots cover demand. Estimate, anchored on Sweden's 7-day filter budget. Not a survival figure." }}
+          tip={{ title: "Public door", body: "Days from the public health-centre visit to the CT report, if the reserved slots cover demand. Estimate, anchored on Sweden's 7-day filter budget. Not a survival figure." }}
         />
       </div>
+
+      <Card title="Endpoints">
+        <ol className="space-y-4 text-sm leading-relaxed text-ink-soft">
+          <li>
+            <b className="text-ink">Primary · live.</b> Median days from the public health-centre visit to the CT report, target ≤ 10. This is what the weekly mock feed shows. Estimate target, anchored on Sweden&apos;s SVF filter budget.
+          </li>
+          <li>
+            <span className="rounded-full bg-sand px-2 py-0.5 text-xs font-semibold text-ink-soft">Retrospective · Findata permit · Mock</span>
+            <span className="mt-2 block">At 12 months: the gap in days to the CT report between a public first contact and an occupational or private first contact. That comparison needs Kanta-linked data under a Findata permit. It is not a live weekly metric.</span>
+          </li>
+        </ol>
+        <p className="mt-4 text-xs text-ink-faint">Aggregate reporting only. Any record linkage happens in a later Findata-permitted evaluation, not in Liwe.</p>
+      </Card>
 
       <div className="grid gap-4 lg:grid-cols-[1fr_1fr]">
         <Worth plan={plan} ev={ev} />
@@ -406,7 +419,7 @@ function ActualView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update: 
       <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
         <Kpi tone="blue" label="Pathways started" value={a.started} sub="weekly totals, mock feed" />
         <Kpi
-          label="Median visit → CT report"
+          label="Public visit → CT report"
           value={a.recentMedian !== null ? `${a.recentMedian} days` : "—"}
           sub={
             <span className={behind ? "text-[#b13d29]" : "text-accent"}>

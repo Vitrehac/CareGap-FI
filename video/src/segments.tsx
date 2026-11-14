@@ -1,4 +1,5 @@
 // One component per segment. Each receives its own Seg (duration + beats from timings.json).
+// Copy and data values live here; they are the sourced figures from the brief, nothing else.
 import React from 'react';
 import { AbsoluteFill } from 'remotion';
 import props from '../props.json';
@@ -6,15 +7,15 @@ import type { Seg } from './timeline';
 import { c, safe, easeInOut, ease } from './tokens';
 import { Card, Mark, Wordmark, inOut, prog, text, useT } from './ui';
 import { CITY, NordicMap, type BarState } from './NordicMap';
+import { AppShot } from './AppShot';
 
 type P = { seg: Seg };
 const counter = (t: number, start: number, length: number, to: number, from = 0) => from + (to - from) * prog(t, start, length, easeInOut);
 
-// ── 1) HookMap ─────────────────────────────────────────────
+// ── Map: Stockholm vs Kajaani on one day scale (follows the spoken hook) ──
 export const HookMap: React.FC<P> = ({ seg }) => {
   const t = useT();
   const b = seg.beats;
-  const title = prog(t, b.title, 0.45);
   const sw = counter(t, b.swGrow, b.swGrowDur, 7);
   const swDone = prog(t, b.swGrow + b.swGrowDur, 0.35);
   const bars: BarState[] = [
@@ -29,18 +30,9 @@ export const HookMap: React.FC<P> = ({ seg }) => {
       label: <>Referral → diagnosis<br />~55 days (one study)</>,
     },
   ];
-  return (
-    <NordicMap pulse={prog(t, b.pulse, 1.1, ease)} bars={bars} guide7={swDone}>
-      <div style={{ position: 'absolute', left: safe.x, top: safe.y, opacity: title, translate: `0 ${(1 - title) * 16}px` }}>
-        <Card style={{ padding: '36px 44px' }}>
-          <div style={{ ...text(80, 700), lineHeight: 1.08 }}>Same cough.<br />Different wait.</div>
-        </Card>
-      </div>
-    </NordicMap>
-  );
+  return <NordicMap pulse={prog(t, b.pulse, 1.1, ease)} bars={bars} guide7={swDone} />;
 };
 
-// ── 10) MapCallback ────────────────────────────────────────
 export const MapCallback: React.FC<P> = ({ seg }) => {
   const t = useT();
   const b = seg.beats;
@@ -65,7 +57,7 @@ export const MapCallback: React.FC<P> = ({ seg }) => {
   return <NordicMap pulse={0} bars={bars} guide7={1} />;
 };
 
-// ── overlays ───────────────────────────────────────────────
+// ── callouts ───────────────────────────────────────────────
 type Corner = 'top-right' | 'top-left' | 'bottom-left' | 'bottom-right';
 const place = (corner: Corner): React.CSSProperties => ({
   position: 'absolute',
@@ -73,75 +65,98 @@ const place = (corner: Corner): React.CSSProperties => ({
   ...(corner.includes('right') ? { right: safe.x } : { left: safe.x }),
 });
 
-/** Number callout. Default top-right so it never covers the app UI you punch into. */
-const Callout: React.FC<P & { value: React.ReactNode; caption: string; position?: Corner }> = ({ seg, value, caption, position = props.calloutPosition as Corner }) => {
+/** Number callout card. `from`/`to` in seconds within the segment; `strong` = the alarm style with the firmer entrance. */
+const Callout: React.FC<{ value: React.ReactNode; caption: string; from: number; to: number; position?: Corner; strong?: boolean }> = ({ value, caption, from, to, position = props.calloutPosition as Corner, strong }) => {
   const t = useT();
-  const { p, o } = inOut(t, seg.duration);
+  const { p, o } = inOut(t, to, from, strong ? 0.5 : undefined);
+  if (o <= 0) return null;
+  const rule = prog(t, from + 0.15, 0.4);
   return (
-    <AbsoluteFill>
-      <div style={{ ...place(position), opacity: o, translate: `0 ${(1 - p) * 16}px` }}>
-        <Card>
-          <div style={text(96, 700)}>{value}</div>
+    <div style={{ ...place(position), opacity: o, translate: strong ? `${(1 - p) * 64}px 0` : `0 ${(1 - p) * 16}px` }}>
+      <Card tone={strong ? 'alarm' : 'default'} style={strong ? { display: 'flex', gap: 28, paddingLeft: 28 } : { border: `2px solid ${c.inkFaint}` }}>
+        {strong && <div style={{ width: 8, borderRadius: 4, background: c.alarm, scale: `1 ${rule}`, transformOrigin: 'top' }} />}
+        <div>
+          <div style={text(96, 700, strong ? c.alarm : c.ink)}>{value}</div>
           <div style={{ ...text(32, 500, c.inkSoft), marginTop: 10 }}>{caption}</div>
-        </Card>
-      </div>
-    </AbsoluteFill>
+        </div>
+      </Card>
+    </div>
   );
 };
 
 export const Callout_Survival: React.FC<P> = ({ seg }) => (
-  <Callout seg={seg} value={<><span style={{ color: c.alarm }}>17.9</span> vs 31.3</>} caption="5-year survival, men · NORDCAN" />
+  <AbsoluteFill><Callout from={0} to={seg.duration} value={<><span style={{ color: c.alarm }}>17.9</span> vs 31.3</>} caption="5-year survival, men · NORDCAN" /></AbsoluteFill>
 );
-export const Callout_Diagnosis: React.FC<P> = ({ seg }) => (
-  <Callout seg={seg} value={<>83 → <span style={{ color: c.accent }}>49</span> days</>} caption="time to diagnosis · estimate" />
-);
-export const Callout_CTReport: React.FC<P> = ({ seg }) => (
-  <Callout seg={seg} value={<span style={{ color: c.accent }}>~7 days</span>} caption="public visit → CT report · estimate" />
-);
-export const Callout_Cost: React.FC<P> = ({ seg }) => <Callout seg={seg} value="€165" caption="per person scanned" />;
 
-/** The only callout with a stronger entrance: slides in from the right while its alarm rule wipes down. */
-export const Callout_BudgetCut: React.FC<P> = ({ seg }) => {
-  const t = useT();
-  const { p, o } = inOut(t, seg.duration, 0, 0.5);
-  const rule = prog(t, 0.15, 0.4);
+// ── the software (real app captures) ───────────────────────
+/** Pick a county on the map, set scans a week. */
+export const App_NewPlan: React.FC<P> = ({ seg }) => {
+  const b = seg.beats;
+  const cam = [{ t: 0, x: 960, y: 540, z: 1 }, { t: 0.5, x: 960, y: 540, z: 1 }, { t: 1.5, x: 1000, y: 506, z: 1.4 }];
   return (
-    <AbsoluteFill>
-      <div style={{ ...place(props.calloutPosition as Corner), opacity: o, translate: `${(1 - p) * 64}px 0` }}>
-        <Card tone="alarm" style={{ display: 'flex', gap: 28, paddingLeft: 28 }}>
-          <div style={{ width: 8, borderRadius: 4, background: c.alarm, scale: `1 ${rule}`, transformOrigin: 'top' }} />
-          <div>
-            <div style={text(96, 700, c.alarm)}>22 days <span style={{ color: c.ink }}>&gt; 10-day target</span></div>
-            <div style={{ ...text(32, 500, c.inkSoft), marginTop: 10 }}>funding cut</div>
-          </div>
-        </Card>
-      </div>
-    </AbsoluteFill>
+    <AppShot
+      views={[{ src: 'new_a', at: 0, cam }, { src: 'new_b', at: b.county, cam }, { src: 'new_c', at: b.scans, cam }]}
+      pointer={[
+        { t: 0, x: 1250, y: 760 }, { t: b.county - 0.5, x: 900, y: 283 }, { t: b.county - 0.25, x: 900, y: 283, click: true },
+        { t: b.scans - 0.5, x: 580, y: 409 }, { t: b.scans - 0.25, x: 580, y: 409, click: true }, { t: seg.duration, x: 700, y: 470 },
+      ]}
+      marks={[{ rect: [1085, 195, 215, 420], from: b.county + 0.2 }]}
+    />
   );
 };
 
-/** Lower third: name + role, lower-left, slides in from the left. */
-const LowerThird: React.FC<P & { who: { name: string; role: string } }> = ({ seg, who }) => {
-  const t = useT();
-  const { p, o } = inOut(t, seg.duration);
+/** Time to diagnosis on the fast route. */
+export const App_Diagnosis: React.FC<P> = ({ seg }) => {
+  const b = seg.beats;
   return (
-    <AbsoluteFill>
-      <div style={{ ...place('bottom-left'), opacity: o, translate: `${(p - 1) * 32}px 0` }}>
-        <Card style={{ display: 'flex', gap: 24, padding: '24px 40px 24px 26px' }}>
-          <div style={{ width: 8, borderRadius: 4, background: c.accent }} />
-          <div>
-            <div style={text(52, 700)}>{who.name}</div>
-            <div style={{ ...text(32, 500, c.inkSoft), marginTop: 6 }}>{who.role}</div>
-          </div>
-        </Card>
-      </div>
-    </AbsoluteFill>
+    <AppShot views={[{ src: 'plan', at: 0, cam: [{ t: 0, x: 900, y: 1000, z: 1.25 }, { t: 1.4, x: 680, y: 1118, z: 2.4 }] }]}
+      marks={[{ rect: [490, 1032, 562, 68], from: b.callout + 0.5 }]}>
+      <Callout from={b.callout} to={seg.duration} position="bottom-left" value={<>83 → <span style={{ color: c.accent }}>49</span> days</>} caption="time to diagnosis · estimate" />
+    </AppShot>
   );
 };
-export const LowerThird_P1: React.FC<P> = ({ seg }) => <LowerThird seg={seg} who={props.p1} />;
-export const LowerThird_P2: React.FC<P> = ({ seg }) => <LowerThird seg={seg} who={props.p2} />;
-export const LowerThird_P3: React.FC<P> = ({ seg }) => <LowerThird seg={seg} who={props.p3} />;
 
+/** Visit → CT report, then cost per person, on the pilot-target card. */
+export const App_CTReportCost: React.FC<P> = ({ seg }) => {
+  const b = seg.beats;
+  return (
+    <AppShot views={[{ src: 'plan', at: 0, cam: [{ t: 0, x: 900, y: 700, z: 1.3 }, { t: 1.0, x: 662, y: 804, z: 2.3 }] }]}
+      marks={[{ rect: [771, 722, 260, 80], from: b.ct + 0.2, to: b.cost - 0.3 }, { rect: [488, 722, 260, 80], from: b.cost + 0.2 }]}>
+      <Callout from={b.ct} to={b.cost - 0.1} position="bottom-right" value={<span style={{ color: c.accent }}>~7 days</span>} caption="public visit → CT report · estimate" />
+      <Callout from={b.cost + 0.15} to={seg.duration} position="bottom-right" value="€165" caption="per person scanned" />
+    </AppShot>
+  );
+};
+
+/** Cut the yearly funding in the plan inputs: the CT report slips to 22 days. */
+export const App_BudgetCut: React.FC<P> = ({ seg }) => {
+  const b = seg.beats;
+  const inputs = [{ t: 0, x: 1000, y: 2560, z: 1.6 }];
+  return (
+    <AppShot
+      views={[
+        { src: 'cut_a', at: 0, cam: inputs },
+        { src: 'cut_b', at: b.type, cam: inputs },
+        { src: 'cut_b', at: b.reveal, cam: [{ t: b.reveal, x: 1080, y: 760, z: 1.6 }] },
+      ]}
+      pointer={[{ t: 0, x: 1350, y: 2700 }, { t: b.type - 0.6, x: 900, y: 2534 }, { t: b.type - 0.35, x: 900, y: 2534, click: true }, { t: b.reveal, x: 940, y: 2560 }]}
+      marks={[
+        { rect: [818, 2511, 239, 46], from: b.type + 0.1, to: b.reveal - 0.1, tone: 'alarm', view: 1 },
+        { rect: [771, 722, 260, 80], from: b.alert, tone: 'alarm', view: 2 },
+        { rect: [1104, 732, 556, 32], from: b.alert + 0.3, tone: 'alarm', view: 2 },
+      ]}>
+      <Callout strong from={b.alert} to={seg.duration} position="bottom-right" value={<>22 days <span style={{ color: c.ink }}>&gt; 10-day target</span></>} caption="funding cut" />
+    </AppShot>
+  );
+};
+
+/** Weekly tracking against the plan (demo feed). */
+export const App_Tracking: React.FC<P> = () => (
+  <AppShot views={[{ src: 'actual', at: 0, cam: [{ t: 0, x: 960, y: 540, z: 1 }, { t: 0.6, x: 960, y: 540, z: 1 }, { t: 1.8, x: 1080, y: 470, z: 1.45 }] }]}
+    marks={[{ rect: [780, 188, 292, 134], from: 2.2 }]} />
+);
+
+// ── brand overlays ─────────────────────────────────────────
 /** Logo: mask wipe left to right + scale 96→100% + fade, lower-left. */
 export const LogoReveal: React.FC<P> = ({ seg }) => {
   const t = useT();
@@ -190,14 +205,12 @@ export const Tagline: React.FC<P> = ({ seg }) => {
   );
 };
 
-// ── 14) EndCard ────────────────────────────────────────────
 export const EndCard: React.FC<P> = () => {
   const t = useT();
   const step = (d: number) => {
     const p = prog(t, d, 0.4);
     return { opacity: p, translate: `0 ${(1 - p) * 14}px` };
   };
-  const names = [props.p1.name, props.p2.name, props.p3.name].join(' · ');
   return (
     <AbsoluteFill style={{ background: c.sandSoft, alignItems: 'center', justifyContent: 'center' }}>
       <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
@@ -209,14 +222,12 @@ export const EndCard: React.FC<P> = () => {
         </div>
         <div style={{ width: 120, height: 2, background: c.rule, margin: '44px 0 36px', ...step(0.65) }} />
         <div style={{ ...text(32, 500, c.inkSoft), ...step(0.75) }}>{props.event}</div>
-        <div style={{ ...text(32, 500, c.inkFaint), marginTop: 14, ...step(0.85) }}>{names}</div>
       </div>
     </AbsoluteFill>
   );
 };
 
 export const registry: Record<string, React.FC<P>> = {
-  HookMap, LowerThird_P1, Callout_Survival, LogoReveal, LowerThird_P2, Callout_Diagnosis, Callout_CTReport,
-  Callout_Cost, Callout_BudgetCut, MapCallback, LowerThird_P3, GoalCard, Tagline, EndCard,
+  HookMap, Callout_Survival, LogoReveal, App_NewPlan, App_Diagnosis, App_CTReportCost, App_BudgetCut, App_Tracking,
+  MapCallback, GoalCard, Tagline, EndCard,
 };
-

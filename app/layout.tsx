@@ -1,56 +1,38 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { Newsreader, Schibsted_Grotesk } from "next/font/google";
+import { Figtree } from "next/font/google";
 import { NavLinks } from "@/components/NavLinks";
 import { StoryProgress } from "@/components/StoryProgress";
+import { Mark } from "@/components/mithril/Mark";
 import "./globals.css";
 
-const schibsted = Schibsted_Grotesk({
-  subsets: ["latin"],
-  weight: ["400", "500", "600", "700"],
-  variable: "--font-schibsted",
-  display: "swap",
-});
-
-const newsreader = Newsreader({
-  subsets: ["latin"],
-  weight: ["500", "600", "700"],
-  variable: "--font-newsreader",
+// One friendly, highly readable typeface for everything
+const figtree = Figtree({
+  subsets: ["latin", "latin-ext"],
+  variable: "--font-figtree",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: "CareGap FI: measure the CT handoff first",
+  title: "Liwe: catch lung cancer sooner",
   description:
-    "County pilot configurator for Finland’s missing primary-care CT clock: pick a county, configure a 12-month experiment, get a pilot brief.",
+    "Change how lung cancer is found in a Finnish county and see how many weeks and lives it saves — every number sourced.",
 };
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${schibsted.variable} ${newsreader.variable}`}>
+    <html lang="en" className={figtree.variable}>
       <body className="flex min-h-screen flex-col font-sans">
-        <header className="sticky top-0 z-20 border-b border-rule bg-paper/95 backdrop-blur-sm">
-          <div className="mx-auto flex max-w-5xl items-center gap-5 px-6 py-3">
-            <Link
-              href="/"
-              className="flex items-center gap-2.5 text-sm font-semibold tracking-tight text-ink"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img
-                src="/caregap-mark.svg"
-                alt=""
-                width={28}
-                height={28}
-                className="h-7 w-7"
-              />
-              <span className="font-display text-base tracking-[-0.02em]">
-                CareGap<span className="text-accent"> FI</span>
-              </span>
+        <header className="sticky top-0 z-20 border-b border-rule bg-[#faf6f0]/85 backdrop-blur-md">
+          <div className="mx-auto flex max-w-5xl items-center gap-6 px-6 py-3.5">
+            <Link href="/" className="flex items-center gap-2 text-ink" aria-label="liwe home">
+              <Mark className="h-8 w-8" />
+              <span className="text-[1.6rem] font-[750] leading-none tracking-[-0.035em]">liwe</span>
             </Link>
             <NavLinks />
-            <span className="ml-auto hidden text-xs text-ink-faint sm:block">
+            <span className="label ml-auto hidden text-ink-faint sm:block">
               Junction 2026 · NoTokens
             </span>
           </div>
@@ -59,7 +41,7 @@ export default function RootLayout({
 
         <main className="flex-1">{children}</main>
 
-        <footer className="border-t border-rule bg-paper-raised/80">
+        <footer className="border-t border-rule bg-[#f6efe5]">
           <div className="mx-auto flex max-w-5xl flex-col gap-2 px-6 py-6 sm:flex-row sm:items-start sm:justify-between">
             <p className="max-w-3xl text-xs leading-relaxed text-ink-faint">
               Prototype, not a medical device. Aggregate public data only. No
@@ -68,8 +50,8 @@ export default function RootLayout({
               treatment or medicine recommendations. Every figure is labelled
               Sourced, Estimate, or Unknown.
             </p>
-            <p className="shrink-0 text-xs text-ink-faint">
-              CareGap FI · measure the CT handoff first
+            <p className="label shrink-0 text-ink-faint">
+              Liwe · catch lung cancer sooner
             </p>
           </div>
         </footer>

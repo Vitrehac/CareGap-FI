@@ -15,13 +15,13 @@ const STEPS = [
   {
     id: "experiment",
     href: "/pilot#configure",
-    label: "Experiment",
+    label: "Scenario",
     hash: "configure",
   },
   {
     id: "brief",
     href: "/pilot#brief",
-    label: "Brief",
+    label: "Result",
     hash: "brief",
   },
 ] as const;
@@ -75,14 +75,16 @@ export function StoryProgress() {
   }, [pathname]);
 
   const active = stepIndex(pathname, hash);
+  // /pilot runs its own step-by-step wizard with a stepper that shows the answers
+  if (pathname.startsWith("/pilot")) return null;
 
   return (
-    <div className="border-t border-rule/70 bg-paper-raised/70">
+    <div className="border-t border-rule/70 bg-paper/60">
       <nav
         aria-label="You are here"
         className="mx-auto flex max-w-5xl items-center gap-1 px-6 py-2 sm:gap-2"
       >
-        <span className="mr-1 hidden text-[11px] font-medium text-ink-faint sm:inline">
+        <span className="label mr-1 hidden text-ink-faint sm:inline">
           You are here
         </span>
         {STEPS.map((step, i) => {
@@ -91,14 +93,14 @@ export function StoryProgress() {
           return (
             <span key={step.id} className="flex items-center gap-1 sm:gap-2">
               {i > 0 && (
-                <span aria-hidden className="text-rule select-none">
-                  →
+                <span aria-hidden className="text-ink-faint/50 select-none">
+                  /
                 </span>
               )}
               <Link
                 href={step.href}
                 aria-current={isActive ? "step" : undefined}
-                className={`rounded px-2 py-1 text-[11px] font-medium tracking-wide transition-colors sm:text-xs ${
+                className={`label px-2 py-1 transition-colors ${
                   isActive
                     ? "bg-accent-soft text-accent"
                     : isDone

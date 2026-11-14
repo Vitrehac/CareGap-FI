@@ -15,7 +15,7 @@ const LABELS: Record<Provenance, string> = {
 export function Tag({ kind }: { kind: Provenance }) {
   return (
     <span
-      className={`inline-block shrink-0 rounded border px-1.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider ${STYLES[kind]}`}
+      className={`inline-block shrink-0 border px-1.5 py-0.5 font-mono text-[10px] uppercase tracking-wider ${STYLES[kind]}`}
     >
       {LABELS[kind]}
     </span>
@@ -43,7 +43,7 @@ export function Figure({
     <div className="flex flex-col gap-1.5">
       <div className="flex items-start gap-2">
         <span
-          className={`nums text-4xl leading-none font-semibold tracking-tight ${
+          className={`font-display text-4xl leading-none ${
             tone === "alarm" ? "text-alarm" : "text-ink"
           }`}
         >

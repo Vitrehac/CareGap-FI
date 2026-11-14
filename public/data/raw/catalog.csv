@@ -1,0 +1,22 @@
+catalog_id,name,owner,url,data_content,access,ingested,ingested_as,reason_if_not,source_id
+C01,Sotkanet indicator bank,THL,https://sotkanet.fi/sotkanet/fi/index,Regional health and welfare indicators,open_api,1,fact_sotkanet,,Z69
+C02,StatFin causes of death,Statistics Finland,https://stat.fi/fi/tilasto/ksyyt,Cancer deaths,open_api,1,fact_statfin_deaths,,Z69
+C03,NORDCAN 2.0,IARC / ANCR,https://nordcan.iarc.who.int/en,"Nordic incidence, mortality, survival",open_api,1,fact_nordcan,,Z69
+C04,"Kela open data, medicine reimbursement rights",Kela,https://tietotarjotin.fi/tilastodata/2242438/avoin-data,"Reimbursement rights by county, age, sex",open_download,1,fact_kela_reimbursement,Only lung-relevant codes kept,Z69
+C05,Paavo open data by postal code,Statistics Finland,https://pxdata.stat.fi/PxWeb/pxweb/en/Postinumeroalueittainen_avoin_tieto/,"Population, income, education, housing, jobs",open_api,1,fact_paavo_municipal|fact_paavo_postal,,Z51
+C06,NOCCA,Finnish Cancer Registry,https://astra.cancer.fi/NOCCA/,Cancer by occupation,open_download,1,fact_nocca_occupation,,Z3
+C07,Finnish Cancer Registry statistics app,Finnish Cancer Registry,https://syoparekisteri.fi/tilastot/,"Incidence, survival, prevalence, screening by region",web_app_only,0,,Shiny app without public API; NORDCAN covers national level,Z69
+C08,Finnish Cancer Registry,Finnish Cancer Registry,https://syoparekisteri.fi/,"Research, screening, reports",web,0,,Reports only,Z69
+C09,Findata,Findata,https://findata.fi/,Individual-level social and health data,permit_required,0,,Permit and fee needed,Z69
+C10,THL data and statistics,THL,https://thl.fi/data-ja-tilastot,Statistical reports incl. specialist care waiting times,web,0,,Blocked from this environment (HTTP 403),Z69
+C11,Kela and Fimea Finnish medicine statistics 2025,Kela / Fimea,https://www.julkari.fi/items/3dfdc48f-2d1a-416e-9795-eca4d3df72ad,Medicine consumption and reimbursement,pdf,0,,National totals only; county data in C04,Z69
+C12,Kela reimbursement rights dataset,Kela,https://vip.avoindata.fi/data/fi/dataset/voimassa-olleet-alkaneet-ja-paattyneet-laakekorvausoikeudet,Same as C04,open_download,1,fact_kela_reimbursement,Duplicate of C04,Z69
+C13,FICAN cancer quality registers,FICAN,https://fican.fi/toiminta/arviointi-ja-seuranta/syopien-laaturekisterit/,Clinical quality registers,permit_required,0,,No public data,Z69
+C14,iCAN Flagship,University of Helsinki,https://ican.fi/flagship-project/,"Tumour molecular profiling, biobank data",permit_required,0,,Research access only,Z69
+C15,FinRegistry,THL / University of Helsinki,https://www.finregistry.fi/finnish-registry-data,Linked registry data,permit_required,0,,Research access only,Z69
+C16,Fingenious and FINBB biobanks,FINBB,https://site.fingenious.fi/,Samples and data from 9 biobanks,permit_required,0,,Research access only,Z69
+C17,STUK radon map and measurements,STUK,https://stuk.fi/,Radon measurements,web,0,,Municipal radon already in Sotkanet 3579-3582,Z68
+C18,Filha national lung cancer programme 2026-2035,Filha,https://www.filha.fi/,Programme targets,pdf,0,,Values used in lit_values,Z19
+C19,EU Cancer Plan and Cancer Mission,European Commission,https://commission.europa.eu/topics/public-health/european-health-union/cancer-plan-europe_fi,Policy,web,0,,No Finland-specific data,Z69
+C20,Lääketeollisuus statements on cancer strategy,Pharma Industry Finland,https://www.laaketeollisuus.fi/,Position papers,web,0,,"Opinion, no data",Z69
+C21,THL cancer care access monitoring (Ohjaus 21/2016),THL,http://urn.fi/URN:ISBN:978-952-302-782-4,Interval definitions for Goal 3 indicator,pdf,0,,Definitions only; targets in goal3_targets,Z67

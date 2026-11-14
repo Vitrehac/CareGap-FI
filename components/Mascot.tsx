@@ -135,15 +135,26 @@ export function Mascot() {
     list.current?.scrollTo({ top: list.current.scrollHeight, behavior: "smooth" });
   }, [msgs, typing]);
 
-  const ask = (q: string) => {
-    if (!q.trim()) return;
-    setMsgs((m) => [...m, { from: "you", text: q.trim() }]);
+  const ask = async (q: string) => {
+    const question = q.trim();
+    if (!question) return;
+    setMsgs((m) => [...m, { from: "you", text: question }]);
     setText("");
     setTyping(true);
-    setTimeout(() => {
-      setTyping(false);
-      setMsgs((m) => [...m, { from: "liwi", text: reply(q) }]);
-    }, 700);
+    let answer = reply(question);
+    try {
+      const res = await fetch("/api/liwi", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ question }),
+      });
+      const data = (await res.json()) as { answer?: string };
+      if (res.ok && data.answer) answer = data.answer;
+    } catch {
+      /* keep the short local answer */
+    }
+    setTyping(false);
+    setMsgs((m) => [...m, { from: "liwi", text: answer }]);
   };
 
   return (
@@ -154,7 +165,7 @@ export function Mascot() {
             <Liwi className="h-10 w-10" happy />
             <div className="min-w-0 flex-1">
               <p className="font-semibold text-ink">Liwi</p>
-              <p className="text-xs text-ink-faint">Liwe helper · demo answers</p>
+              <p className="text-xs text-ink-faint">Liwe helper</p>
             </div>
             <button type="button" onClick={() => setOpen(false)} className="grid h-8 w-8 place-items-center rounded-full text-ink-soft hover:bg-paper" aria-label="Close chat">
               ✕

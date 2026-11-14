@@ -46,7 +46,9 @@ export const MapCallback: React.FC<P> = ({ seg }) => {
   const b = seg.beats;
   const shrink = prog(t, b.reset, b.resetDur, easeInOut);
   const grow = prog(t, b.grow, b.growDur, easeInOut);
-  const swap = prog(t, b.reset + b.resetDur * 0.5, 0.4);
+  // sequential swap: old label out (0.2 s), then new label in (0.3 s); never both at once
+  const oldOut = prog(t, b.reset, 0.2);
+  const newIn = prog(t, b.reset + b.resetDur, 0.3);
   const kjDays = grow > 0 ? 7 * grow : 55 * (1 - shrink);
   const bars: BarState[] = [
     { y: CITY.stockholm[1], from: CITY.stockholm, leader: 1, days: 7, color: c.accent, done: 1, labelOpacity: 1, label: 'CT answer · target ≤ 7 days' },
@@ -54,8 +56,8 @@ export const MapCallback: React.FC<P> = ({ seg }) => {
       y: CITY.kajaani[1], from: CITY.kajaani, leader: 1, days: kjDays, color: grow > 0 ? c.accent : c.alarm, labelOpacity: 1,
       label: (
         <div style={{ position: 'relative' }}>
-          <div style={{ opacity: 1 - swap }}>Referral → diagnosis<br />~55 days (one study)</div>
-          <div style={{ position: 'absolute', left: 0, bottom: 0, opacity: swap }}>Liwe plan · ~7 days to CT report<br />(estimate)</div>
+          <div style={{ opacity: 1 - oldOut }}>Referral → diagnosis<br />~55 days (one study)</div>
+          <div style={{ position: 'absolute', left: 0, bottom: 0, opacity: newIn }}>Liwe plan · ~7 days to CT report<br />(estimate)</div>
         </div>
       ),
     },

@@ -22,6 +22,10 @@ export type Config = {
   intensityId: IntensityId;
   addedScans: number;
   fastGp: boolean;
+  /** fraction of estimated county thorax CT. Estimate/Mock. */
+  shareLimit: number;
+  /** days. Mock. */
+  stopDays: number;
 };
 
 export const DEFAULT_CONFIG: Omit<Config, "slug"> = {
@@ -29,16 +33,19 @@ export const DEFAULT_CONFIG: Omit<Config, "slug"> = {
   intensityId: "satakunta",
   addedScans: 5,
   fastGp: false,
+  shareLimit: 0.05,
+  stopDays: 7,
 };
 
 // ---------- Finnish facts the model stands on ----------
 export const FACTS = {
-  gpWaitToday: 14, // days to see a GP, Finland (Z12); other Nordics under 7
-  gpWaitNordic: 7,
-  gpToReferral: 14, // first GP visit → referral (Z13, Satakunta 2021–22)
-  referralToDiagnosis: 55, // referral → diagnosis (Z13)
+  gpWaitToday: 14, // Z12 news summary, not a national register. Tag: Sourced (single reported figure)
+  gpWaitNordic: 7, // Z12, other Nordics, same news piece
+  gpToReferral: 14, // Z13 Satakunta 2021–22 only. Tag: Sourced (single regional study)
+  referralToDiagnosis: 55, // Z13 Satakunta 2021–22 only. Tag: Sourced (single regional study)
   ctResultSweden: national.swedenReferralToCtResultDays, // SVF budget, referral → imaging answer (Z41)
-  workupShare: 0.5, // ASSUMPTION: half of the 55 days is work-up that still happens after a direct CT
+  // Estimate: share of the Satakunta 55 days that remains as specialist work-up after a direct CT.
+  workupShare: { low: 0.25, mid: 0.5, high: 0.75 },
   ruledOutShare: national.dkRuledOutShare, // Danish fast-track: cancer ruled out (Z39)
 };
 
@@ -47,6 +54,23 @@ export const selectable = counties
   .sort((a, b) => (a.needRank ?? 99) - (b.needRank ?? 99));
 
 export const NATIONAL_CT_WEEK = national.thoraxCt2024 / 52;
+/** Estimate/Mock. Block the announcement when pilot demand exceeds this share of estimated county thorax CT. */
+export const DEFAULT_SHARE_LIMIT = 0.05;
+/** Mock. Pause intake if other non-urgent CT median wait rises by more than this many days for 4 weeks. */
+export const DEFAULT_STOP_DAYS = 7;
+
+const POP = selectable.reduce((a, c) => a + c.population, 0);
+
+/** Estimate: national STUK 2024 thorax CT, split by county population. */
+export function countyCtWeek(c: County) {
+  if (!c.population || !POP) return 0;
+  return (NATIONAL_CT_WEEK * c.population) / POP;
+}
+
+export function capacityShare(demand: number, c: County) {
+  const base = countyCtWeek(c);
+  return base > 0 ? demand / base : 0;
+}
 
 export function intensityOf(id: IntensityId) {
   return INTENSITY.find((i) => i.id === id) ?? INTENSITY[1];
@@ -74,7 +98,8 @@ export function simulate(county: County, cfg: Config) {
   const demand = slotsFor(county, cfg.intensityId, cfg.directCt);
   const wait = cfg.directCt ? ctWait(demand, cfg.addedScans) : 0;
   const gpWait = cfg.fastGp ? FACTS.gpWaitNordic : FACTS.gpWaitToday;
-  const workup = Math.round(FACTS.referralToDiagnosis * FACTS.workupShare);
+  const workupDays = (share: number) => Math.round(FACTS.referralToDiagnosis * share);
+  const workup = workupDays(FACTS.workupShare.mid);
 
   const today: Stage[] = [
     { key: "gp", label: "Wait for a GP", days: FACTS.gpWaitToday, tip: "gpWait" },
@@ -94,6 +119,18 @@ export function simulate(county: County, cfg: Config) {
       ];
   const daysToday = today.reduce((a, s) => a + s.days, 0);
   const daysScenario = scenario.reduce((a, s) => a + s.days, 0);
+  // Less remaining work-up means more days removed from the old path.
+  const savedAt = (share: number) => {
+    if (!cfg.directCt) return Math.max(0, FACTS.gpWaitToday - gpWait);
+    const spec = workupDays(share);
+    const scenarioDays = gpWait + wait + spec;
+    return daysToday - scenarioDays;
+  };
+  const savedDays = {
+    low: savedAt(FACTS.workupShare.high),
+    mid: savedAt(FACTS.workupShare.mid),
+    high: savedAt(FACTS.workupShare.low),
+  };
 
   // who is reached: patients on the new route get the full saving; everyone else only the faster GP
   const reach = cfg.directCt ? it.reach : 0;
@@ -107,6 +144,7 @@ export function simulate(county: County, cfg: Config) {
     daysToday,
     daysScenario,
     savedRoute,
+    savedDays,
     savedOthers,
     reach,
     demand,
@@ -120,6 +158,11 @@ export function simulate(county: County, cfg: Config) {
       : cfg.addedScans >= demand
         ? ("ok" as const)
         : ("queue" as const),
+    countyCtWeek: countyCtWeek(county),
+    capacityShare: capacityShare(demand, county),
+    shareLimit: cfg.shareLimit,
+    blocked: cfg.directCt && capacityShare(demand, county) > cfg.shareLimit,
+    stopDays: cfg.stopDays,
     nationalShare: (demand / NATIONAL_CT_WEEK) * 100,
   };
 }
@@ -139,7 +182,6 @@ export function simulateAll(cfg: Config) {
 }
 
 // ---------- reference values for explainers ----------
-const POP = selectable.reduce((a, c) => a + c.population, 0);
 const weighted = (k: "lcMortality" | "copdPer100k" | "per100") =>
   selectable.reduce((a, c) => a + c[k] * c.population, 0) / POP;
 export const FI_AVG = {
@@ -167,6 +209,6 @@ export const MODEL_SOURCES = [
 
 export const ASSUMPTIONS = [
   "Who qualifies decides how many of the county’s lung cancers come through the new route: narrow 40%, Satakunta-style 60%, broader 80%.",
-  "With a direct CT, half of today’s 55 days from referral to diagnosis still remains (specialist tests after a suspicious scan). The other half — waiting for the specialist to order the CT — disappears.",
+  "We don't know how much of the specialist work-up remains after a direct CT. The model tries 25%, 50% and 75% of the Satakunta 55 days (Estimate). The pilot measures it.",
   "If the county adds fewer scans than the route needs, patients queue: the CT result slips from 7 days up to 42 days with no added scans.",
 ];

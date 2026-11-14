@@ -23,8 +23,7 @@ export const explain = {
     title: "GP visits → referral",
     body: (
       <>
-        Today the GP usually can’t order a lung CT. It often takes more than one visit (and a normal X-ray) before they send the
-        patient to a hospital specialist. Measured in Satakunta: <B>{FACTS.gpToReferral} days</B>.
+        In Satakunta (2021–22, one University of Turku study, Z13) the first GP visit to referral took about <B>{FACTS.gpToReferral} days</B>. Sourced (single regional study). Not a national figure.
       </>
     ),
   }),
@@ -32,8 +31,7 @@ export const explain = {
     title: "Specialist, CT, diagnosis",
     body: (
       <>
-        After the referral the patient waits for the specialist, who then orders the CT and further tests until cancer is
-        confirmed. Measured in Satakunta: <B>{FACTS.referralToDiagnosis} days</B>.
+        In Satakunta (2021–22, the same study, Z13) referral to diagnosis took about <B>{FACTS.referralToDiagnosis} days</B>. Sourced (single regional study). Not a national figure.
       </>
     ),
   }),
@@ -50,8 +48,7 @@ export const explain = {
     title: "Specialist work-up",
     body: (
       <>
-        A suspicious scan still needs a specialist and more tests (like a biopsy) before the diagnosis. We assume this takes
-        half of today’s {FACTS.referralToDiagnosis} days: <B>{days} days</B>. The other half was waiting for the CT itself.
+        A suspicious scan still needs a specialist and more tests before a diagnosis. We do not know how much of the specialist work-up remains after a direct CT. The pilot measures it. The central guess uses half of the Satakunta {FACTS.referralToDiagnosis} days: <B>{days} days</B> (Estimate).
       </>
     ),
   }),

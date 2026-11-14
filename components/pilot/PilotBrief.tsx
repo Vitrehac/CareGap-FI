@@ -337,7 +337,7 @@ export function PilotBrief({ cfg, setCfg, onEdit, onRestart }: Props) {
       <section className="mt-10">
         <p className="font-display max-w-4xl text-[clamp(1.8rem,3.6vw,3rem)] leading-tight text-ink">{headline}</p>
         <div className="mt-10 grid gap-8 sm:grid-cols-3">
-          <Big value={`${Math.max(0, saved)} days`} label="Sooner to the CT report" tone="accent" tip={explain.daysSooner(saved, s.daysToday, s.daysScenario)} />
+          <Big value={`${s.savedDays.low}–${s.savedDays.high}`} label={`Days sooner (central ${s.savedDays.mid})`} tone="accent" tip={explain.daysSooner(s.savedDays.mid, s.daysToday, s.daysScenario)} />
           <Big value={n0(s.peopleReached)} label="People reached a year" tip={explain.cancersRoute(s.cancersRoute, s.cancersAll, s.reach)} />
           <Big value={n1(s.demand)} label="CT slots a week" tip={explain.scansWeek(s.demand, county.name)} />
         </div>
@@ -405,6 +405,34 @@ export function PilotBrief({ cfg, setCfg, onEdit, onRestart }: Props) {
           }
         >
           <Capacity need={s.demand} added={cfg.addedScans} wait={s.wait} setAdded={(n) => setCfg((c) => ({ ...c, addedScans: n }))} />
+          <p className="mt-4 text-sm text-ink-soft">
+            Estimated county chest CT: {n1(s.countyCtWeek)} a week (STUK 2024 national total, split by population, Estimate). This route is {(s.capacityShare * 100).toFixed(1)}% of that.
+            {s.blocked ? " Over the share limit, so do not announce." : " Under the share limit."}
+          </p>
+          <label className="mt-3 block text-sm text-ink-soft">
+            Block announcement above
+            <input
+              type="number"
+              min={1}
+              max={50}
+              value={Math.round(cfg.shareLimit * 100)}
+              onChange={(e) => setCfg((c) => ({ ...c, shareLimit: Number(e.target.value) / 100 }))}
+              className="mx-2 w-16 rounded border border-rule px-2 py-1 text-ink"
+            />
+            % of estimated county chest CT (Estimate/Mock, default 5)
+          </label>
+          <label className="mt-3 block text-sm text-ink-soft">
+            Pause intake if other non-urgent CT median wait rises more than
+            <input
+              type="number"
+              min={1}
+              max={30}
+              value={cfg.stopDays}
+              onChange={(e) => setCfg((c) => ({ ...c, stopDays: Number(e.target.value) }))}
+              className="mx-2 w-16 rounded border border-rule px-2 py-1 text-ink"
+            />
+            days versus baseline for 4 weeks (Mock, default 7)
+          </label>
         </Panel>
       )}
 

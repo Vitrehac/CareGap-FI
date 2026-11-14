@@ -289,7 +289,7 @@ export function PilotWizard() {
           <div>
             <H2>Make it faster to see a family doctor?</H2>
             <Sub>
-              Today people wait about {FACTS.gpWaitToday} days for a GP appointment. In the other Nordic countries it is under {FACTS.gpWaitNordic}. This helps every patient, not only the CT route.
+              A Helsinki news summary (Z12) puts the wait for a GP at about {FACTS.gpWaitToday} days in Finland and under {FACTS.gpWaitNordic} elsewhere in the Nordics. That is not a national waiting-time register.
             </Sub>
             <div className="mt-10 grid max-w-3xl gap-4 sm:grid-cols-2">
               <Choice active={!cfg.fastGp} onClick={() => pick({ fastGp: false }, 5)} title="Keep today’s wait" big={`${FACTS.gpWaitToday} days`} note="No change to GP access." />

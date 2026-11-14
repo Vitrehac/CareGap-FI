@@ -10,15 +10,15 @@ Working software on `/`, `/pilot`, and `/sources` (seeded JSON, no auth). See [D
 
 | Ready now | What is implemented | Proof |
 |---|---|---|
-| Nordic survival gap | NORDCAN 5-year relative survival bars (men, lung C33–C34, 2020–2024): Finland **17.9%** vs Sweden **31.3%** | [`app/page.tsx`](app/page.tsx) · [`data/sources.json`](data/sources.json) (`nordcan`) |
-| Referral gap locate | 4-step pathway; pulse on primary-care CT referral; treatment start marked unmeasured (clocks gap, not “no register”) | [`app/page.tsx`](app/page.tsx) · [REGISTER_COMPARE.md](REGISTER_COMPARE.md) |
-| County pilot + stop rule | County picker, CT slots/week (Estimate), comparator, pre-registered endpoint, capacity ceiling that blocks announce | [`components/PilotWorkbench.tsx`](components/PilotWorkbench.tsx) · [`data/counties.json`](data/counties.json) · [DEMO.md](DEMO.md) |
+| Nordic survival gap | Men, lung, NORDCAN extract year code 2022: Finland **17.9%** vs Sweden **31.3%** | [`components/HomeCockpit.tsx`](components/HomeCockpit.tsx) · [`raw/nordcan_survival_lung.csv`](raw/nordcan_survival_lung.csv) |
+| Referral rule | X-ray from primary care, CT usually not | [`components/HomeCockpit.tsx`](components/HomeCockpit.tsx) · [data/sources.json](data/sources.json) |
+| County pilot + stop rule | Wizard in `components/pilot/`. Block if demand exceeds a share of estimated county chest CT (default 5%, Estimate/Mock) | [`components/pilot/PilotWizard.tsx`](components/pilot/PilotWizard.tsx) · [`components/pilot/model.ts`](components/pilot/model.ts) · [DEMO.md](DEMO.md) |
 | Provenance vault | Every citation row from seeded sources, with category tags | [`app/sources/page.tsx`](app/sources/page.tsx) · [`lib/sources.ts`](lib/sources.ts) |
 | Evidence dial | Sourced / Estimate / Unknown tags next to figures | [`components/Provenance.tsx`](components/Provenance.tsx) |
 
 ## Screenshots
 
-No captured PNGs in `docs/` yet. Run `npm run dev` and follow [DEMO.md](DEMO.md) (landing, then pilot, then sources). Backup stills for pitch: landing survival bars, Kainuu pilot, City of Helsinki capacity-blocked, sources vault.
+Screenshots are not in the repo yet. Run `npm run dev` and follow [DEMO.md](DEMO.md).
 
 ## The problem
 
@@ -48,12 +48,12 @@ Static Next.js App Router app. Pages read precomputed JSON from `data/`. The dem
 flowchart TD
   seed["Seeded counties.json and sources.json under data"] ==> loaders["Typed loaders in lib/data.ts and lib/sources.ts"]
   loaders ==> home["Landing page rendered from app/page.tsx"]
-  loaders ==> workbench["PilotWorkbench component driving the county experiment"]
+  loaders ==> wizard["PilotWizard in components/pilot"]
   loaders ==> sourcesPage["Sources page rendered from app/sources/page.tsx"]
-  workbench ==> pilotPage["Pilot route at app/pilot/page.tsx wrapping the workbench"]
+  wizard ==> pilotPage["Pilot route at app/pilot/page.tsx"]
 ```
 
-Layout for a quick scan: `app/` holds `/`, `/pilot`, `/sources`; `components/` holds PilotWorkbench, Provenance, and nav; `lib/` loads typed seed JSON; `data/` is the demo source of truth (`counties.json`, `sources.json`); `docs/` has the cold brief PDF and docs map; `scripts/` and `raw/` are research pipelines and extracts (keep them; judges do not need them for the click path).
+`app/` holds `/`, `/pilot`, `/sources`. `components/pilot/` is the wizard and the model. `lib/` loads the seed JSON. `data/` holds `counties.json` and `sources.json`.
 
 ## Feature status
 
@@ -61,7 +61,7 @@ Layout for a quick scan: `app/` holds `/`, `/pilot`, `/sources`; `components/` h
 |---|---|---|
 | Landing gap + pathway locate | `/` | Working |
 | County pilot (slots, comparator, endpoint, stop rule) | `/pilot` | Working |
-| Capacity-blocked demo case | Helsinki over ceiling in `PilotWorkbench` | Working |
+| Capacity-blocked demo case | Broader eligibility and 0 added scans, share of estimated county CT over the limit | Working |
 | Provenance vault | `/sources` + `data/sources.json` | Working |
 | Evidence dial (Sourced / Estimate / Unknown) | `Provenance` tags | Working |
 | Cold planning brief PDF | `docs/Liwe-FI-brief.pdf` | Working (static) |

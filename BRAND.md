@@ -96,6 +96,6 @@ seamless, revolutionary, unlock, empower, leverage, AI diagnosis, lives saved, s
 
 ## Logo (mini guidelines)
 
-Mark file: [`public/Liwe-mark.svg`](public/Liwe-mark.svg). Wordmark preview: [`public/Liwe-wordmark.svg`](public/Liwe-wordmark.svg).
+Mark file: [`public/liwe-mark.svg`](public/liwe-mark.svg). The wordmark is the text “liwe” in the header.
 
 The mark is an open clock arc with a single gap tick (the missing pathway clock), used next to the **Liwe** wordmark. Keep clear space of at least half the mark height. Ship in one-colour ink or Baltic accent (`#1E4D8C`) on paper; gap tick may use alarm red (`#A61C1C`). No glow, gradients, teal, or purple fills. Below 24 px, use the mark alone; from 28 px up, pair with the wordmark.

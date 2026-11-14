@@ -328,10 +328,33 @@ export function PilotBrief({ cfg, setCfg, onEdit, onRestart }: Props) {
           <button type="button" onClick={onRestart} className="hack label border border-rule px-4 py-2.5 text-ink-soft">Start over</button>
           <button type="button" onClick={() => window.print()} className="cta label inline-flex items-center gap-2 bg-accent px-4 py-2.5 text-paper">
             <span className="cta-dot" />
-            <Glitch>Print</Glitch>
+            <Glitch>Print / PDF</Glitch>
           </button>
         </div>
       </header>
+
+      <section className="mt-8 text-sm leading-relaxed text-ink-soft">
+        <p>
+          Comparator: {s.comparator.name}. Picked because its need index is the closest county without a published direct-CT route.
+        </p>
+        {county.slug === "kainuu" && (
+          <p className="mt-2">
+            Kainuu is the default. Population in the seed: {county.population.toLocaleString("en-GB")}. Whether it has one central hospital: Unknown. Not in our files.
+          </p>
+        )}
+        <p className="mt-2">
+          Primary endpoint: median days from the symptomatic primary-care visit to the CT report, target ≤ 10 (Estimate, Swedish SVF). Secondary: CT positivity rate, share of cancers diagnosed via the emergency route, other CT wait times. Duration: 12 months.
+        </p>
+        <p className="mt-2">
+          Stop rule: pause intake if the median wait for other non-urgent CT rises more than {cfg.stopDays} days versus baseline for 4 consecutive weeks (Mock).
+        </p>
+        <p className="mt-2">
+          Direct CT access alone did not shift stage or diagnostic interval in a Danish cluster RCT (Guldbrandt 2015). Measure the process before promising anything.
+        </p>
+        <p className="mt-2">
+          Faster diagnosis inside a published time target is what a county can answer in 12 months. This pilot does not estimate survival.
+        </p>
+      </section>
 
       {/* the answer, first */}
       <section className="mt-10">

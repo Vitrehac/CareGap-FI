@@ -104,14 +104,14 @@ const PLAYBOOK: { keys: string[]; answer: string }[] = [
     keys: ["scan", "ct", "slot", "radiolog"],
     answer: "A scan slot is one chest CT a week reserved for the family-doctor route. More slots reach more patients, until there are no more cancers left to find — the plan builder tells you where that point is for each county.",
   },
-  { keys: ["hi", "hello", "hey", "ahoj", "moi"], answer: "Hi! I'm Liwi. I help you find lung cancer sooner. Ask me about the numbers, the data or how to build a plan." },
-  { keys: ["who are you", "name", "liwi"], answer: "I'm Liwi, Liwe's little helper. Fluffy, green and very into early diagnosis. 🌿" },
+  { keys: ["hi", "hello", "hey", "ahoj", "moi"], answer: "Hi, I'm Liwi. I can explain the public-door CT pilot, the 10-day target, or how to make a plan." },
+  { keys: ["who are you", "name", "liwi"], answer: "I'm Liwi. I explain the Liwe county pilot: who can order the CT, how long it takes, and what the weekly report measures." },
 ];
 
 function reply(q: string) {
-  const t = q.toLowerCase();
-  const hit = PLAYBOOK.find((p) => p.keys.some((k) => t.includes(k)));
-  return hit?.answer ?? "I'm still a demo, so I only know the basics for now. Try asking about the 10-day endpoint, where the data comes from, or how to make a plan.";
+  const words = q.toLowerCase().split(/[^a-z0-9]+/).filter(Boolean);
+  const hit = PLAYBOOK.find((p) => p.keys.some((k) => (k.includes(" ") ? q.toLowerCase().includes(k) : words.includes(k))));
+  return hit?.answer ?? "I only answer questions about the Liwe county pilot. Ask about the public-door CT wait, the 10-day target, or how to make a plan.";
 }
 
 export function Mascot() {

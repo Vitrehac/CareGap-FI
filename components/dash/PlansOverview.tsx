@@ -60,18 +60,6 @@ export function PlansOverview() {
                       <p className="text-xs text-ink-faint">days visit → CT</p>
                     </div>
                   </div>
-                  <div className="mt-5 space-y-1.5">
-                    {[
-                      { l: "Today", d: ev.sim.daysToday, c: "#c9cfcb" },
-                      { l: "Plan", d: ev.sim.daysToday - ev.sim.savedRoute, c: "#1f8a5c" },
-                    ].map((r) => (
-                      <div key={r.l} className="grid grid-cols-[3rem_1fr_3.5rem] items-center gap-2 text-xs text-ink-soft">
-                        <span>{r.l}</span>
-                        <span className="h-2 rounded-r-[4px]" style={{ width: `${(r.d / ev.sim.daysToday) * 100}%`, background: r.c }} />
-                        <span className="text-right">{r.d} days</span>
-                      </div>
-                    ))}
-                  </div>
                   <div className="mt-5 flex flex-wrap gap-x-4 gap-y-1 border-t border-rule pt-3 text-xs text-ink-faint">
                     <span>{money(ev.yearly)} / yr</span>
                     <span>{num(ev.scans)} scans / wk</span>

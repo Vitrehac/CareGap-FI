@@ -92,7 +92,7 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
           <p className="text-xs text-ink-faint">{ev.capacityShare > 0.05 ? "Over 5%. Pause the route." : "Under 5%. Stop rule clear."}</p>
         </div>
       </div>
-      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <div className="grid gap-4 sm:grid-cols-2 xl:grid-cols-3">
         <Kpi
           tone="accent"
           label="People get a CT answer sooner"
@@ -100,7 +100,6 @@ function EstimateView({ plan, ev, update }: { plan: Plan; ev: Evaluation; update
           sub={`a year · ${num(ev.ruledOutYear, 0)} hear it is not cancer`}
           tip={{ title: "Everyone the route scans", body: `${num(ev.scans)} reserved scans a week × 52. Each person gets the answer ${ev.sim.savedRoute} days sooner than on today's path, whether it turns out to be cancer or not.` }}
         />
-        <Kpi label="Diagnosis" value={`${ev.sim.daysToday - ev.sim.savedRoute} vs ${ev.sim.daysToday} days`} sub={ev.county.slug === "kainuu" ? "plan vs Liwe estimate for Kainuu today · Estimate" : "plan vs today · Estimate"} />
         <Kpi label="Lung cancers on the fast CT route" value={num(ev.sim.cancersRoute)} sub={`a year · ${num(ev.sim.reach * 100, 0)}% of ${Math.round(ev.county.casesPerYearEst)} new cases`} />
         <Kpi
           label="Public visit → CT report"

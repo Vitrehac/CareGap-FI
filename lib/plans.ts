@@ -3,7 +3,7 @@
 // Strategic plans live in the browser (localStorage) for the prototype.
 // One plan = one wellbeing-services county. A real deployment would keep them in the county's own database.
 import { useSyncExternalStore } from "react";
-import { getCounty, national } from "@/lib/data";
+import { counties, getCounty, national } from "@/lib/data";
 
 export type InvestmentKind = "one-off" | "yearly";
 export type InvestmentStatus = "planned" | "ordered" | "paid";
@@ -67,7 +67,10 @@ export type Plan = {
   weeks: WeekReport[];
 };
 
-const KEY = "liwe.plans.v4";
+const KEY = "liwe.plans.v6";
+const PREVIOUS_KEYS = ["liwe.plans.v5", "liwe.plans.v4"];
+/** Same chest-CT stop as the plan verdict. A starting plan should sit on the safe side of it. */
+const CAPACITY_SHARE = 0.05;
 const listeners = new Set<() => void>();
 let cacheRaw: string | null | undefined;
 let cache: Plan[] = [];
@@ -85,12 +88,35 @@ function read(): Plan[] {
   if (raw === cacheRaw) return cache;
   cacheRaw = raw;
   try {
-    cache = raw ? (JSON.parse(raw) as Plan[]) : seed();
+    cache = raw ? (JSON.parse(raw) as Plan[]) : plansFromPrevious();
   } catch {
     cache = seed();
   }
   if (!raw) write(cache);
   return cache;
+}
+
+/** Saved plans were sized to cancer counts, which put every county over the 5% stop. Pull them back to the stop. */
+function plansFromPrevious(): Plan[] {
+  let old: string | null = null;
+  try {
+    for (const key of PREVIOUS_KEYS) {
+      old = localStorage.getItem(key);
+      if (old) break;
+    }
+  } catch {
+    old = null;
+  }
+  if (!old) return seed();
+  try {
+    return (JSON.parse(old) as Plan[]).map((p) => {
+      const cap = scansInsideCapacity(p.inputs.slug);
+      if (p.inputs.scansPerWeek <= cap) return p;
+      return { ...p, inputs: { ...p.inputs, scansPerWeek: cap } };
+    });
+  } catch {
+    return seed();
+  }
 }
 
 function write(plans: Plan[]) {
@@ -149,10 +175,23 @@ export const DEFAULT_COSTS = {
   slotsPerScanner: 100, // ESTIMATE: chest-CT slots a week one extra scanner frees up
 };
 
-/** a sensible starting point: enough scans for about half of the county's lung cancers */
+const fiPopulation = () => counties.reduce((a, c) => a + c.population, 0);
+
+/** Most scans a week that stay at or under 5% of the county's estimated chest CT. */
+export function scansInsideCapacity(slug: string) {
+  const c = getCounty(slug);
+  const week = (national.thoraxCt2024 / 52) * (c.population / fiPopulation());
+  const max = week * CAPACITY_SHARE;
+  const halfStep = Math.floor(max * 2) / 2;
+  if (halfStep >= 0.5) return halfStep;
+  return Math.max(0.1, Math.floor(max * 10) / 10);
+}
+
+/** Start inside the 5% stop. The cancer-count figure is usually already past it. */
 export function suggestedScans(slug: string) {
   const c = getCounty(slug);
-  return Math.max(1, Math.round((c.casesPerYearEst * 0.5 * national.pathwaysPerConfirmedCancer) / 52));
+  const clinical = Math.max(1, Math.round((c.casesPerYearEst * 0.5 * national.pathwaysPerConfirmedCancer) / 52));
+  return Math.min(clinical, scansInsideCapacity(slug));
 }
 
 export function defaultInputs(slug: string): PlanInputs {
@@ -183,10 +222,9 @@ function seed(): Plan[] {
     weeks: [],
   });
   return [
-    mk("kainuu", "Kainuu · direct CT pilot", { start: "2026-01", scansPerWeek: 2, yearlyFunding: 60_000, radiologistHours: 2, spareCtSlots: 5 }),
+    mk("kainuu", "Kainuu · direct CT pilot", { start: "2026-01", yearlyFunding: 60_000, radiologistHours: 2, spareCtSlots: 5 }),
     mk("city-of-helsinki", "Helsinki · fast lung track", {
       start: "2026-03",
-      scansPerWeek: 12,
       yearlyFunding: 250_000,
       spareCtSlots: 10,
       radiologistHours: 6,

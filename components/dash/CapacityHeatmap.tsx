@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { counties } from "@/lib/data";
 import { capacityShare } from "@/components/pilot/model";
 import { num } from "@/lib/engine";
@@ -26,32 +26,57 @@ export function CapacityHeatmap({ planned = [] }: { planned?: string[] }) {
   const lo = Math.min(...rows.map((r) => r.share));
   const hi = Math.max(...rows.map((r) => r.share));
   const [hover, setHover] = useState<string | null>(null);
+  const [tip, setTip] = useState<{ x: number; y: number } | null>(null);
+  const mapRef = useRef<HTMLDivElement>(null);
   const active = rows.find((r) => r.c.slug === hover) ?? null;
+  const ordered = [...rows.filter((r) => r.c.slug !== hover), ...rows.filter((r) => r.c.slug === hover)];
+
+  const place = (e: React.MouseEvent) => {
+    const box = mapRef.current?.getBoundingClientRect();
+    if (!box) return;
+    setTip({
+      x: Math.min(Math.max(8, e.clientX - box.left + 14), box.width - 150),
+      y: Math.max(8, e.clientY - box.top - 36),
+    });
+  };
 
   return (
     <div>
-      <svg viewBox="250 0 520 1000" role="img" aria-label="Finland heatmap. Darker red means the lung pathway would use more of that county's chest CT." className="mx-auto h-auto w-full max-h-[32rem]">
-        {rows.map(({ c, share }) => {
-          const on = planned.includes(c.slug);
-          return (
-            <path
-              key={c.slug}
-              d={c.path}
-              fill={heatFill(share, lo, hi)}
-              stroke={on ? "#1d2b25" : "#faf6f0"}
-              strokeWidth={on ? 4 : 1.5}
-              className="cursor-pointer outline-none"
-              tabIndex={0}
-              onMouseEnter={() => setHover(c.slug)}
-              onMouseLeave={() => setHover(null)}
-              onFocus={() => setHover(c.slug)}
-              onBlur={() => setHover(null)}
-            >
-              <title>{`${c.name}: ${num(share * 100, 1)}% of estimated chest CT`}</title>
-            </path>
-          );
-        })}
-      </svg>
+      <div ref={mapRef} className="relative" onMouseLeave={() => { setHover(null); setTip(null); }}>
+        <svg viewBox="250 0 520 1000" role="img" aria-label="Finland heatmap. Darker red means the lung pathway would use more of that county's chest CT." className="mx-auto h-auto w-full max-h-[32rem]">
+          {ordered.map(({ c, share }) => {
+            const on = planned.includes(c.slug);
+            const hot = hover === c.slug;
+            return (
+              <path
+                key={c.slug}
+                d={c.path}
+                fill={heatFill(share, lo, hi)}
+                stroke={hot || on ? "#1d2b25" : "#faf6f0"}
+                strokeWidth={hot ? 6 : on ? 3.5 : 1.5}
+                opacity={hover && !hot ? 0.38 : 1}
+                className="cursor-pointer outline-none transition-[opacity,stroke-width] duration-150"
+                tabIndex={0}
+                onMouseEnter={(e) => { setHover(c.slug); place(e); }}
+                onMouseMove={place}
+                onFocus={() => setHover(c.slug)}
+                onBlur={() => setHover(null)}
+              >
+                <title>{`${c.name}: ${num(share * 100, 1)}% of estimated chest CT`}</title>
+              </path>
+            );
+          })}
+        </svg>
+        {active && tip && (
+          <div
+            className="pointer-events-none absolute z-10 max-w-[14rem] rounded-xl bg-ink px-3 py-2 text-paper shadow-[0_10px_24px_-12px_rgb(29_43_37/0.6)]"
+            style={{ left: tip.x, top: tip.y }}
+          >
+            <p className="text-sm font-semibold leading-tight">{active.c.name}</p>
+            <p className="mt-0.5 text-xs text-[#d7e8df]">{num(active.share * 100, 1)}% of chest CT · {num(active.c.ctPerWeekEst, 1)} scans a week</p>
+          </div>
+        )}
+      </div>
       <div className="mt-3 flex items-center gap-3 text-xs text-ink-soft">
         <span>{num(lo * 100, 0)}%</span>
         <span className="h-2 flex-1 rounded-full" style={{ background: `linear-gradient(90deg, ${mix(CLAY, ALARM, 0)}, ${mix(CLAY, ALARM, 1)})` }} />
